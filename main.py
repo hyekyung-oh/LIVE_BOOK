@@ -6,7 +6,7 @@ from pydub import AudioSegment
 # pip install PyMuPDF
 # pip install pyttsx3
 
-# 총 2074 pg 분량의 동화
+# 총 2074 pg 분량의 동화 모음집 
 PDF_FILE_PATH = "./data/kidsStorySample.pdf"
 
 doc = fitz.open(PDF_FILE_PATH)
@@ -45,7 +45,7 @@ for i in range(5, doc.page_count) :
     # tts 출력
     engine.say(text)
     # 페이지 별로 음성 저장 (이거 되야하는데 이상하게 안됨.. 확장자 .mp3만 안됨)
-    engine.save_to_file(text, f'./data/mp3/{pgNum}.mp3')
+    engine.save_to_file(text, f'./data/mp3/{pgNum}')
 
     engine.runAndWait()
     
