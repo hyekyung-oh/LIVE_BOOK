@@ -59,10 +59,15 @@ def save_mp3(text, insert_Pg) :
     engine.save_to_file(text, save_file_name)
     engine.runAndWait()
 
-    convert_To_Mp3_file = AudioSegment.from_wav(save_file_name)
-    convert_To_Mp3_file.export(f'{save_file_name[:-4]}.mp3', format="mp3")
+#     convert_To_Mp3_file = AudioSegment.from_wav(save_file_name)
+#     convert_To_Mp3_file.export(f'{save_file_name[:-4]}.mp3', format="mp3")
     
-    if os.path.isfile(f'{save_file_name[:-4]}.mp3') == True : 
+#     if os.path.isfile(f'{save_file_name[:-4]}.mp3') == True : 
+#         print(f"성공적으로 {insert_Pg}page의 mp3가 저장되었습니다.")
+#     else : 
+#         print("파일 저장에 실패했습니다.")
+    
+    if os.path.isfile(save_file_name) == True : 
         print(f"성공적으로 {insert_Pg}page의 mp3가 저장되었습니다.")
     else : 
         print("파일 저장에 실패했습니다.")
