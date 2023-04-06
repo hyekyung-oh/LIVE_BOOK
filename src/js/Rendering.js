@@ -4,7 +4,8 @@ import back from '../logo/backward.jpg';
 import play from '../logo/play.jpg';
 import forward from '../logo/forward.jpg';
 import book from '../logo/book.jpg';
-import speak from '../logo/speed.png';
+import volume from '../logo/volume.jpg';
+import speed from '../logo/speed.png';
 import stop from '../logo/stop.jpg';
 import img from '../logo/sindaerella.jpg';
 import "../css/Render.css";
@@ -77,12 +78,13 @@ const Render=() => {
                     <div class={"div4"}>
                         <div id={"setting"}>
                             <div><input type={"image"} id={"backward"} src={back} alt="back" /></div>
-                            <div><input type={"image"} id={"book"} src={book} alt="book" /></div>
                             <div><input type={"image"} id={"play"} src={playing ? play : stop} alt="play" 
-                            onClick={playClick}/></div>
+                                onClick={playClick}/></div>
                             <div><input type={"image"} id={"forward"} src={forward} alt="forward" /></div>
-                            <div><input type={"image"} id={"speak"} src={speak} alt="speak" onClick={modalhandle}/>
-                                <div class={modal ? "" : "container"} ></div>
+                            <div><input type={"image"} id={"book"} src={book} alt="book" /></div>
+                            
+                            <div><input type={"image"} id={"speed"} src={speed} alt="speed" onClick={modalhandle}/>
+                                <div class={modal ? "" : "container_speed"} ></div>
                             </div>
                         </div>
                     </div>
@@ -94,10 +96,7 @@ const Render=() => {
             </div>
             <div class={hamclickd ? "dived3" : "" }>
                 <div id={hamclickd? "text" : "" }></div>
-            </div>
-            
-            
-            
+            </div>            
         </div>
     );
 };
