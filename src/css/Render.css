@@ -1,6 +1,10 @@
 /*  id에 대해서는 #을 사용, class에 대해서는 .을 사용한다. 
     태그 안에 태그에 접근하려면 > 을 사용.
 */
+.divmom{
+    display: block;
+    font-size: 0;
+}
 .div1 {
     position: relative;
     z-index: 2;
@@ -24,16 +28,18 @@
 }
 .dived2{
     position: relative;
-    z-index: 1;
+    z-index: 1; /* 태그 겹치기 했을 때 보이는 순서 */
     margin-top: 1vh;
     margin-left: 1vw;
     width: 74vw;
 }
-.div5{
+.dived3{
+    border: 2px solid palevioletred;
     position: relative;
     z-index: 3;
+    margin-top: 1vh;
     margin-left: 75vw;
-    
+    width: 24vw;
 }
 .divbox{
     border: 2px solid greenyellow;
@@ -65,16 +71,6 @@
     width: 100%;
     height: 96vh;
 }
-#text::before,
-#text::after{
-    clear: both;
-}
-#text{
-    border: 2px solid palevioletred;
-    position: absolute;
-    width: 24vw;
-    height: 87vh;
-}
 #bar {
     position: relative;
     border: 2px solid blue;
@@ -100,16 +96,12 @@
 #book{
     width: 7vw;
 }
-#set::before,
-#set::after{
-    clear: both;
-}
 #set{
     float: right;
 }
 #setting > div > input {
     height: 100%;
-    padding: 0 2vw;
+    padding: 0 1.5vw;
     background-color: rgba(255, 255, 255, 0.1);
 
 }
@@ -117,4 +109,32 @@
     width: 20%;
     height: 100%;
     background-color: violet;
+}
+.container {
+    /* 환경설정 창 크기 */
+    width: 200px;
+    height: 130px;
+  
+    /* 위치 */
+    z-index: 999;
+    
+    /* 중앙 배치 */
+    /* top, bottom, left, right 는 브라우저 기준으로 작동한다. */
+    /* translate는 본인의 크기 기준으로 작동한다. */
+    position: absolute;
+    bottom: 10%;
+    right: 9%;
+    transform: translate(50%, -30%);
+  
+    /* 환경설정 창 디자인 */
+    background-color: gray;
+    opacity: 0.7;
+    border: 2px solid black;
+    border-radius: 1px;
+  }
+
+#text{
+
+    width: 24vw;
+    height: 87vh;
 }
