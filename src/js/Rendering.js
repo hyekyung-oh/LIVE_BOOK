@@ -12,15 +12,19 @@ const Render=() => {
     const [modal,setModal] = useState(true)
     const modalhandle = () => {
         setModal(!modal);
-    }
+    };
+    const [clickd,setClicked] = useState(false);
+    const handleClick = () => {
+        setClicked(!clickd);
+    };
     return (
-        <div>
-            <div class={"div1"}>
+        <div class={"divmom"}>
+            <div class={clickd ? 'div1' : 'dived1'}>
                 <input type={"image"} id={"out"} src={out} alt="out" />
-                <input type={"image"} id={"ham"} src={ham} alt="tag" />
+                <input type={"image"} id={"ham"} src={ham} alt="tag" onClick={handleClick}/>
             </div>
-            <div class={"div2"}>
-                <section id={"main"}></section>
+            <div class={clickd ? "div2" : "dived2"}>
+                <div id={"main"}></div>
                 <div class={"divbox"}>
                     <div class={"div3"}>
                         <section id={"bar"}>
@@ -39,6 +43,9 @@ const Render=() => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class={clickd ? "" : "dived3"}>
+                <div id={"text"}></div>
             </div>
         </div>
     );

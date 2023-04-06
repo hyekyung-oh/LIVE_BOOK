@@ -7,7 +7,7 @@ from pydub import AudioSegment
 # pip install pyttsx3
 
 # 총 2074 pg 분량의 동화 모음집 
-PDF_FILE_PATH = "./data/kidsStorySample.pdf"
+PDF_FILE_PATH = "../../data/kidsStorySample.pdf"
 
 doc = fitz.open(PDF_FILE_PATH)
 

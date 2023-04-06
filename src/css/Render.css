@@ -1,18 +1,45 @@
 /*  id에 대해서는 #을 사용, class에 대해서는 .을 사용한다. 
     태그 안에 태그에 접근하려면 > 을 사용.
 */
-
+.divmom{
+    display: block;
+    font-size: 0;
+}
 .div1 {
     position: relative;
     z-index: 2;
     margin-top: 1vh;
     margin-left: 1vw;
+    width: 98vw;
+}
+.dived1{
+    position: relative;
+    z-index: 2;
+    margin-top: 1vh;
+    margin-left: 1vw;
+    width: 74vw;
 }
 .div2{
     position: relative;
     z-index: 1; /* 태그 겹치기 했을 때 보이는 순서 */
     margin-top: 1vh;
     margin-left: 1vw;
+    width: 98vw;
+}
+.dived2{
+    position: relative;
+    z-index: 1; /* 태그 겹치기 했을 때 보이는 순서 */
+    margin-top: 1vh;
+    margin-left: 1vw;
+    width: 74vw;
+}
+.dived3{
+    border: 2px solid palevioletred;
+    position: relative;
+    z-index: 3;
+    margin-top: 1vh;
+    margin-left: 75vw;
+    width: 24vw;
 }
 .divbox{
     border: 2px solid greenyellow;
@@ -41,7 +68,7 @@
 #main{
     position: absolute;
     border: 2px solid orange;
-    width: 98vw;
+    width: 100%;
     height: 96vh;
 }
 #bar {
@@ -105,3 +132,9 @@
     border: 2px solid black;
     border-radius: 1px;
   }
+
+#text{
+
+    width: 24vw;
+    height: 87vh;
+}
