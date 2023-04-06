@@ -4,28 +4,70 @@ import back from '../logo/backward.jpg';
 import play from '../logo/play.jpg';
 import forward from '../logo/forward.jpg';
 import book from '../logo/book.jpg';
-import set from '../logo/speed.png';
+import speak from '../logo/speed.png';
+import stop from '../logo/stop.jpg';
 import "../css/Render.css";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Render=() => {
+    // 상태값 
     const [modal,setModal] = useState(true)
+    const [hamclickd,sethamClicked] = useState(false);
+    const [isMouseMoving, setIsMouseMoving] = useState(false);
+    const [opacity, setOpacity] = useState(1);
+    const [delay, setDelay] = useState(2000); // 딜레이 상태 추가
+    const [playing,setPlaying] = useState(true);
+    
+    // 변수
+    let timeid;
+
+    // 이벤트 핸들링
+    useEffect(() => {
+        const handleMouseMove = () => {
+            setIsMouseMoving(true);
+            setOpacity(1);
+            clearTimeout(timeid);
+            timeid = setTimeout(() => {
+                setIsMouseMoving(false);
+                setOpacity(0.1);
+                if (delay === 5000) {
+                    setDelay(2000);
+                  }
+            }, delay);
+        };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+        clearTimeout(timeid);
+        };
+    }, [delay]);
+
     const modalhandle = () => {
         setModal(!modal);
     };
-    const [clickd,setClicked] = useState(false);
+
     const handleClick = () => {
-        setClicked(!clickd);
+        sethamClicked(!hamclickd);
+        if(delay === 2000 & !hamclickd){
+            setDelay(5000);
+        }
     };
+
+    const playClick = () => {
+        setPlaying(!playing);
+    }
+
     return (
         <div class={"divmom"}>
-            <div class={clickd ? 'div1' : 'dived1'}>
-                <input type={"image"} id={"out"} src={out} alt="out" />
-                <input type={"image"} id={"ham"} src={ham} alt="tag" onClick={handleClick}/>
+            <div class={hamclickd ? 'dived1' : 'div1'}>
+                <input type={"image"} id={"out"} src={out} alt="out" 
+                style={{ opacity: isMouseMoving ? 1 : opacity }}/>
+                <input type={"image"} id={"ham"} src={ham} alt="tag" 
+                onClick={handleClick} style={{ opacity: isMouseMoving ? 1 : opacity }}/>
             </div>
-            <div class={clickd ? "div2" : "dived2"}>
+            <div class={hamclickd ? "dived2" : "div2"}>
                 <div id={"main"}></div>
-                <div class={"divbox"}>
+                <div class={"divbox"} style={{ opacity: isMouseMoving ? 1 : opacity }}>
                     <div class={"div3"}>
                         <section id={"bar"}>
                             <div id={"controllbar"}></div>
@@ -35,18 +77,26 @@ const Render=() => {
                         <div id={"setting"}>
                             <div><input type={"image"} id={"backward"} src={back} alt="back" /></div>
                             <div><input type={"image"} id={"book"} src={book} alt="book" /></div>
-                            <div><input type={"image"} id={"play"} src={play} alt="play" /></div>
+                            <div><input type={"image"} id={"play"} src={playing ? play : stop} alt="play" 
+                            onClick={playClick}/></div>
                             <div><input type={"image"} id={"forward"} src={forward} alt="forward" /></div>
-                            <div><input type={"image"} id={"set"} src={set} alt="set" onClick={modalhandle}/>
-                                <div class={modal ? "" : "container"}></div>
+                            <div><input type={"image"} id={"speak"} src={speak} alt="speak" onClick={modalhandle}/>
+                                <div class={modal ? "" : "container"} ></div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class={"Ofpages"} style={{opacity: isMouseMoving ? 1 : opacity }}>
+                    <div id={"page"}>10</div>
+                    <div id={"pages"}>20</div>
+                </div>
             </div>
-            <div class={clickd ? "" : "dived3"}>
-                <div id={"text"}></div>
+            <div class={hamclickd ? "dived3" : "" }>
+                <div id={hamclickd? "text" : "" }></div>
             </div>
+            
+            
+            
         </div>
     );
 };
