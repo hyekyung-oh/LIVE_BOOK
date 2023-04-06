@@ -6,6 +6,7 @@ import forward from '../logo/forward.jpg';
 import book from '../logo/book.jpg';
 import speak from '../logo/speed.png';
 import stop from '../logo/stop.jpg';
+import img from '../logo/sindaerella.jpg';
 import "../css/Render.css";
 import { useState, useEffect } from 'react';
 
@@ -66,7 +67,7 @@ const Render=() => {
                 onClick={handleClick} style={{ opacity: isMouseMoving ? 1 : opacity }}/>
             </div>
             <div class={hamclickd ? "dived2" : "div2"}>
-                <div id={"main"}></div>
+                <div id={"main"} ></div>
                 <div class={"divbox"} style={{ opacity: isMouseMoving ? 1 : opacity }}>
                     <div class={"div3"}>
                         <section id={"bar"}>
