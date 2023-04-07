@@ -13,7 +13,8 @@ import { useState, useEffect } from 'react';
 
 const Render=() => {
     // 상태값 
-    const [modal,setModal] = useState(true)
+    const [volumeClick,setVolume] = useState(true)
+    const [speedClick,setSpeed] = useState(true)
     const [hamclickd,sethamClicked] = useState(false);
     const [isMouseMoving, setIsMouseMoving] = useState(false);
     const [opacity, setOpacity] = useState(1);
@@ -44,8 +45,12 @@ const Render=() => {
         };
     }, [delay]);
 
-    const modalhandle = () => {
-        setModal(!modal);
+    const volumehandle = () => {
+        setVolume(!volumeClick);
+    };
+
+    const speedhandle = () => {
+        setSpeed(!speedClick);
     };
 
     const handleClick = () => {
@@ -82,10 +87,10 @@ const Render=() => {
                                 onClick={playClick}/></div>
                             <div><input type={"image"} id={"forward"} src={forward} alt="forward" /></div>
                             <div><input type={"image"} id={"book"} src={book} alt="book" /></div>
-                            
-                            <div><input type={"image"} id={"speed"} src={speed} alt="speed" onClick={modalhandle}/>
-                                <div class={modal ? "" : "container_speed"} ></div>
-                            </div>
+                            <div><input type={"image"} id={"volume"} src={volume} alt="volume" onClick={volumehandle}/></div>
+                                <div class={volumeClick ? "" : "container_volume"} ></div>           
+                            <div><input type={"image"} id={"speed"} src={speed} alt="speed" onClick={speedhandle}/></div>
+                                <div class={speedClick ? "" : "container_speed"} ></div>
                         </div>
                     </div>
                 </div>
