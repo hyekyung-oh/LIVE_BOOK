@@ -235,4 +235,9 @@
     border: 2px solid black;
     border-radius: 1px;
   }
-
+  
+#contents{ /* 페이지 본문 내용 디자인 */
+    margin-left: 20px;
+    margin-right: 20px; 
+    font-size: 20px
+}
