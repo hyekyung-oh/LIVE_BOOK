@@ -10,6 +10,7 @@ import stop from '../logo/stop.jpg';
 import img from '../logo/sindaerella.jpg';
 import "../css/Render.css";
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Render=() => {
     // 상태값 
@@ -20,7 +21,19 @@ const Render=() => {
     const [opacity, setOpacity] = useState(1);
     const [delay, setDelay] = useState(2000); // 딜레이 상태 추가
     const [playing,setPlaying] = useState(true);
+    const [contents, setContents] = useState(''); // 텍스트 상태 추가
+    const [page, setPage] = useState(1);
     
+    //플라스크로 연 서버로부터 json파일을 불러옴
+    useEffect(() => {
+        axios
+            .get(`http://223.222.16.248:5001///page/${page}`)
+            .then((response) => {
+                console.log(response.data['contents']);
+                setContents(response.data['contents']);
+            });
+    }, [page, hamclickd]);
+
     // 변수
     let timeid;
 
@@ -38,12 +51,23 @@ const Render=() => {
                   }
             }, delay);
         };
+    
     window.addEventListener('mousemove', handleMouseMove);
     return () => {
         window.removeEventListener('mousemove', handleMouseMove);
         clearTimeout(timeid);
         };
     }, [delay]);
+
+    const nextPage = () => {
+        setPage(page + 1);
+    };
+
+    const beforePage = () => {
+        if (page > 0) {
+            setPage(page - 1);
+        }
+    }
 
     const volumehandle = () => {
         setVolume(!volumeClick);
@@ -82,10 +106,13 @@ const Render=() => {
                     </div>
                     <div class={"div4"}>
                         <div id={"setting"}>
-                            <div><input type={"image"} id={"backward"} src={back} alt="back" /></div>
+                        {/* 한 페이지 뒤로 넘기기 */}
+                        <div><input type={"image"} id={"backward"} src={back} alt="back" onClick={beforePage} /></div>
                             <div><input type={"image"} id={"play"} src={playing ? play : stop} alt="play" 
                                 onClick={playClick}/></div>
-                            <div><input type={"image"} id={"forward"} src={forward} alt="forward" /></div>
+                            
+                            {/* 한 페이지 넘기기버튼 */}
+                            <div><input type={"image"} id={"forward"} src={forward} alt="forward" onClick={nextPage} /></div>
                             <div><input type={"image"} id={"book"} src={book} alt="book" /></div>
                             <div><input type={"image"} id={"volume"} src={volume} alt="volume" onClick={volumehandle}/></div>
                                 <div class={volumeClick ? "" : "container_volume"} ></div>           
@@ -100,7 +127,8 @@ const Render=() => {
                 </div>
             </div>
             <div class={hamclickd ? "dived3" : "" }>
-                <div id={hamclickd? "text" : "" }></div>
+                 {/* 본문 내용 출력부 */}
+                 <div id={hamclickd ? "contents" : ""} style={{ opacity: hamclickd ? 1 : 0 }}>{contents} <br></br> <br></br> {page}페이지</div>
             </div>            
         </div>
     );
