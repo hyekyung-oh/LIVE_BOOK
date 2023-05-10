@@ -9,6 +9,7 @@ import tkinter as tk
 from tkinter import filedialog
 import os
 
+# api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
 openai.api_key = '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'
 
 # 번역 함수
