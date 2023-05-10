@@ -10,7 +10,7 @@ from tkinter import filedialog
 import os
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-openai.api_key = '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'
+openai.api_key = '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'
 
 # 번역 함수
 def translate_enTokr(text) :
@@ -37,7 +37,7 @@ def extract_book_info_and_create_query(text):
     return query
 
 # A부터 B까지의 내용을 요약해서 책정보 추출
-def insert_query(doc, rangeA, rangeB) :
+def extract_AtoB(doc, rangeA, rangeB) :
     tokenized_text = []
     
     for pno in range(rangeA, rangeB):
@@ -58,7 +58,7 @@ def insert_query(doc, rangeA, rangeB) :
     if check == 'Y' or check == 'y':
         return create_query
     elif check == 'N' or check == 'n':
-        return insert_query(doc, rangeA, rangeB)
+        return extract_AtoB(doc, rangeA, rangeB)
     else:
         print("프로그램을 다시 시작해주세요.")
         sys.exit()
@@ -154,6 +154,13 @@ def Insert_Sql(SQLcontents, update_summarize_data) :
     print("성공적으로 database에 데이터를 입력하였습니다!")
 
 
+
+
+
+
+
+
+
 root = tk.Tk()
 root.withdraw() # tkinter root window를 숨김
 
@@ -167,10 +174,10 @@ print(f"선택된 파일: \n -> {filename}")
 doc = fitz.open(PDF_FILE_PATH)
 
 # # doc의 0~4페이지 책정보 추출
-extractData = insert_query(doc, 0, 4)
+extractData = extract_AtoB(doc, 0, 3)
 
 # doc의 5~7페이지로부터 내용 요약 출력 및 리턴 
-update_summarize_data = print_summarize(doc, 5, 7)
+update_summarize_data = print_summarize(doc, 6, 8)
 
 # 추출한 정보를 입력 후, 그 행에 요약정보(Info)를 추가함
 Insert_Sql(extractData, update_summarize_data)

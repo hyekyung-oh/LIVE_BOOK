@@ -25,7 +25,7 @@ book_title = os.path.splitext(filename)[0] # 파일명에서 확장자 제거
 os.makedirs(f'../temp/{book_title}', exist_ok=True)
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-openai.api_key = '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'
+openai.api_key = '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'
 
 count = 0
 start_pno = 6
