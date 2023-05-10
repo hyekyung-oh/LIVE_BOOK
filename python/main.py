@@ -9,7 +9,7 @@ import tkinter as tk
 from tkinter import filedialog
 import os
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 # 번역 함수
 def translate_enTokr(text) :

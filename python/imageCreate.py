@@ -24,7 +24,7 @@ book_title = os.path.splitext(filename)[0] # 파일명에서 확장자 제거
 
 os.makedirs(f'../temp/{book_title}', exist_ok=True)
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 count = 0
 start_pno = 5
