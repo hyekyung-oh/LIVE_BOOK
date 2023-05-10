@@ -132,7 +132,7 @@ def Insert_Sql(SQLcontents, update_summarize_data) :
                         charset='utf8'
                         )
 
-    # 커서 생성
+    # 커서 생성 
     cursor = db.cursor()
 
     sql = f"""{SQLcontents}"""
@@ -151,7 +151,7 @@ def Insert_Sql(SQLcontents, update_summarize_data) :
 
     # 데이터 변화 적용
     db.commit()
-    print("성공적으로 database에 데이터를 입력하였습니다!")
+    print("성공적으로 database에 데이터를 입력하였습니다!  ")
 
 
 
