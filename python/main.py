@@ -10,7 +10,7 @@ from tkinter import filedialog
 import os
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-openai.api_key = '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'
+openai.api_key = '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'
 
 # 번역 함수
 def translate_enTokr(text) :

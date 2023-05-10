@@ -25,10 +25,10 @@ book_title = os.path.splitext(filename)[0] # 파일명에서 확장자 제거
 os.makedirs(f'../temp/{book_title}', exist_ok=True)
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-openai.api_key = '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'
+openai.api_key = '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'
 
 count = 0
-start_pno = 5
+start_pno = 6
 
 # 내용 요약 함수
 def summarize_text(text):
@@ -64,6 +64,7 @@ for pno in range(start_pno, doc.page_count) :
     img_url = res_img['data'][0]['url']
     img_path = f'../temp/{book_title}/{pno}.png'
     
+    print(str(pno) + "페이지입니다!!!---" + summarize_text(doc[pno]))
     urllib.request.urlretrieve(img_url, img_path)
 
 
