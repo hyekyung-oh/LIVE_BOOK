@@ -56,55 +56,63 @@ print(f"선택된 파일: \n -> {filename}")
 
 doc = fitz.open(PDF_FILE_PATH)
 
-Book_text_list = get_pdf_page_text(doc)
+# 선택한 pdf인 doc, 본문 시작부분의 페이지
+def DB_SetContents(doc, startPno) :
+    # db연결 설정
+    db = pymysql.connect(host='selab.hknu.ac.kr',
+                        port=51714,
+                        user='pbl3_team3',
+                        passwd='12345678',
+                        db='2023_1_pbl3',
+                        charset='utf8'
+                        )
 
-print(str(len(Book_text_list)) + "page분량의 책")
+    # 커서 생성
+    cursor = db.cursor()
 
-# 페이지 개수만큼 for문 돈다 len(Book_text_list)
-for i in range(0, len(Book_text_list)) :
-    currntPg = i
-    SelectPage_text_list = Book_text_list[currntPg-1]
-    
-    page_FullText = ""
-    print("----------------------------")
-    print(str(i) + " page번째 I for문 도는 중")
-    print("----------------------------")
-    
-    print(str(len(SelectPage_text_list)) + "개의 문장 리스트를 가집니다.")
-    
-    # 선택한 페이지 리스트의 문장 갯수만큼 for문 
-    for j in range(0, len(SelectPage_text_list)) :
+    Book_text_list = get_pdf_page_text(doc)
+
+    print(str(len(Book_text_list)) + "page분량의 책")
+
+    # 본문 페이지 지정하면 됨
+    startPno = 13
+    lastPg = len(Book_text_list)
+
+    # 페이지 개수만큼 for문 돈다 
+    for i in range(startPno, lastPg) :
+        currntPg = i
+        SelectPage_text_list = Book_text_list[currntPg-1]
         
-        print(str(i) + " page의 " + str(j) + "번쨰 J for문 도는중")
+        page_FullText = ""
+        print("----------------------------")
+        print(str(i) + " page번째 I for문 도는 중")
+        print("----------------------------")
         
-        # 페이지리스트의 j번째 문장의 공백을 제거한 new_text
-        new_text = re.sub(r'\s', ' ', SelectPage_text_list[j])
-        # 공백 제거된 문장을 한글로 번역
-        kr_text = translate_enTokr(new_text).text
+        print(str(len(SelectPage_text_list)) + "개의 문장 리스트를 가집니다.")
         
-        #진행상황 확인 ㅋㅋ..
-        print(kr_text)
+        # 선택한 페이지 리스트의 문장 갯수만큼 for문 
+        for j in range(0, len(SelectPage_text_list)) :
+            
+            print(str(i) + " page의 " + str(j) + "번쨰 J for문 도는중")
+            
+            # 페이지리스트의 j번째 문장의 공백을 제거한 new_text
+            new_text = re.sub(r'\s', ' ', SelectPage_text_list[j])
+            # 공백 제거된 문장을 한글로 번역
+            kr_text = translate_enTokr(new_text).text
+            
+            #진행상황 확인 ㅋㅋ..
+            print(kr_text)
+            
+            page_FullText += kr_text + " "
+            
+        sql = f"INSERT INTO  2023_1_pbl3.team3_Imgs_Pages (team3_BooksID, team3_page_number, team3_text) VALUES ('{2}', '{i}', '{page_FullText}');"
+        # SQL query 실행
+        cursor.execute(sql)
+        time.sleep(3)  # 3초간 쉬기
+        print(f"********************* {filename} : {i} 페이지 DB입력 완료 ********************* ")
         
-        page_FullText += kr_text + " "
 
-
-# # db연결 설정
-# db = pymysql.connect(host='selab.hknu.ac.kr',
-#                     port=51714,
-#                     user='pbl3_team3',
-#                     passwd='12345678',
-#                     db='2023_1_pbl3',
-#                     charset='utf8'
-#                     )
-
-# # 커서 생성
-# cursor = db.cursor()
-
-# sql = f"INSERT INTO  2023_1_pbl3.team3_Imgs_Pages (team3_BooksID, team3_page_number, team3_text) VALUES ('{2}', '{insert_Pg-1}', '{page_FullText}');"
-
-#  # SQL query 실행
-# cursor.execute(sql)
-# # 데이터 변화 적용
-# db.commit()
-# print(f"성공적으로 {insert_Pg-1}페이지의 내용을 database에 데이터를 입력하였습니다!")
+    # 데이터 변화 적용
+    db.commit()
+    print(f"성공적으로 {i}페이지의 내용을 database에 데이터를 입력하였습니다!")
 
