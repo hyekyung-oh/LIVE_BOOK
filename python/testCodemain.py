@@ -52,6 +52,7 @@ def extract_AtoB(doc, rangeA, rangeB) :
         # 전체 본문 내용에 페이지 내용 리스트 추가
         tokenized_text += tokenized_page
     
+    # 테스트 코드가 담김
     create_query = TEST_extract_book_info_and_create_query()
     print("***책 정보를 추출하겠습니다*** \n------\n생성된 query문 \n--> " + create_query)
     print("-------------")
@@ -99,11 +100,13 @@ def print_summarize(doc,rangeA, rangeB) :
             next_page_first_sentence = sent_tokenize(next_page_text)[0]
             next_page_first_sentence = next_page_first_sentence[3:]
             
+        # 데이터 전처리
         tokenized_page[-1] = re.sub(r'or Media, Inc.*', '', tokenized_page[-1], flags=re.DOTALL)
         tokenized_page[-1] = tokenized_page[-1] + next_page_first_sentence
 
         # 전체 본문 내용에 페이지 내용 리스트 추가
         tokenized_text += tokenized_page
+        
     #책 요약 정보 text 출력
     # summarize_contents = summarize_book_content(tokenized_text)
     summariz_KR_contents = "음.. 테스트 내용 요약입니다. 아아 테스트 테스트"
@@ -174,23 +177,26 @@ def Insert_Sql(doc ,SQLcontents, update_summarize_data) :
             time.sleep(3)
             Insert_Sql(doc ,SQLcontents, update_summarize_data)
             
-        
-    # 지정된 범위만큼 for문 돈다 
-    for i in tqdm(range(int(startPno), int(lastPg))) :
-        currntPg = i
+    
+    # 책의 요약을 추가할 SQL query
+    update_sql = "UPDATE team3_Books SET team3_BooksInfo = %s WHERE team3_BooksID = %s"
+    values = (update_summarize_data, last_insert_id)
+
+    # Books_Info 입력 sql query 실행
+    cursor.execute(update_sql, values)
+    
+    # -------------- 여기까지 책정보까지 입력완료!! 페이지 정보는 아래서부터 입력 --------------------#
+            
+
+    # 지정된 범위만큼 for문 돈다 team3_Books_Imgs_Pages의 각 페이지 입력
+    for page in tqdm(range(int(startPno), int(lastPg))) :
+        currntPg = page
         SelectPage_text_list = Book_text_list[currntPg-1]
         
         page_FullText = ""
         
-        # 책의 요약을 추가할 SQL query
-        update_sql = "UPDATE team3_Books SET team3_BooksInfo = %s WHERE team3_BooksID = %s"
-        values = (update_summarize_data, last_insert_id)
-
-        # Books_Info 입력 sql query 실행
-        cursor.execute(update_sql, values)
-        
         print("----------------------------")
-        print(str(i) + " 페이지 DB입력 중...")
+        print(str(page) + " 페이지 DB입력 중...")
         print("----------------------------")
         
         # 선택한 페이지 리스트의 문장 갯수만큼 for문 
@@ -205,15 +211,16 @@ def Insert_Sql(doc ,SQLcontents, update_summarize_data) :
             # print(kr_text)
             page_FullText += kr_text + " "
         
-        print(f"입력될 {str(i)} 페이지 contents \n ----> {page_FullText}")    
-    
-        insert_text_sql = f"INSERT INTO  2023_1_pbl3.team3_Imgs_Pages (team3_BooksID, team3_page_number, team3_text) VALUES ('{last_insert_id}', '{i}', '{page_FullText}');"
+        print(f"입력될 {str(page)} 페이지 contents \n ----> {page_FullText}")    
+        
+        # team3_Books_Imgs_Pages 테이블에 입력
+        insert_text_sql = f"INSERT INTO  2023_1_pbl3.team3_Imgs_Pages (team3_BooksID, team3_page_number, team3_text) VALUES ('{last_insert_id}', '{page}', '{page_FullText}');"
         # SQL query 실행
         cursor.execute(insert_text_sql)
         
         time.sleep(3)  # 3초간 쉬기
         print("----------------------------")
-        print(f"********************* {filename} : {i} 페이지 DB입력 완료 ********************* ")
+        print(f"********************* {filename} : {page} 페이지 DB입력 완료 ********************* ")
     
     
     

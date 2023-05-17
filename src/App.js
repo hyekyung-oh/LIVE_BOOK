@@ -1,9 +1,12 @@
+import Main from './js/Main';
 import './App.css';
-import Render from './js/Rendering';
+
 
 function App() {
   return (
-    <Render/>
+    <div className="App">
+      <Main />
+    </div>
   );
 }
 
