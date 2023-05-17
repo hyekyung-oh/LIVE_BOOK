@@ -25,7 +25,7 @@ book_title = os.path.splitext(filename)[0] # 파일명에서 확장자 제거
 os.makedirs(f'../temp/{book_title}', exist_ok=True)
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-openai.api_key = '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'
+openai.api_key = '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'
 
 count = 0
 start_pno = 6
@@ -62,7 +62,7 @@ for pno in range(start_pno, doc.page_count) :
     )
     
     img_url = res_img['data'][0]['url']
-    img_path = f'../temp/{book_title}/{pno}.png'
+    img_path = f'../temp/{book_title}/{pno}.jpg'
     
     print(str(pno) + "페이지입니다!!!---" + summarize_text(doc[pno]))
     urllib.request.urlretrieve(img_url, img_path)

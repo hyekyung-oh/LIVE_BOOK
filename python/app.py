@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from flask_cors import CORS
 import fitz
 import re
@@ -8,7 +8,7 @@ import kss # 한국어 문장 분리 패키지
 # 서버를 여는 파일입니다 !!!!!!!!!!!!!!! 안 열면 작동안함 ! ********************************* #
 
 # 총 2074 pg 분량의 동화 모음집 
-PDF_FILE_PATH = "./data/신데렐라.pdf"
+PDF_FILE_PATH = "../data/legend_is_borned.pdf"
 
 doc = fitz.open(PDF_FILE_PATH)
 
@@ -52,6 +52,7 @@ def print_text(insert_Pg) :
 # 지정한 페잉지의 json 형식 출력
 @app.route('/page/<int:id>')
 def print_Page(id):
+    
     return print_text(id)
     
     
