@@ -37,7 +37,7 @@ def translate_enTokr(text) :
 
 # 토큰 낭비 줄이기 위한 테스트 코드 !!!!!!!! 
 def TEST_extract_book_info_and_create_query():
-    return "INSERT INTO 2023_1_pbl3.team3_Books (team3_BooksTitle, team3_Books_genre, team3_Books_author) VALUES ('Title', 'Genre', 'Author');"
+    return "INSERT INTO 2023_pbl3.team3_Books (team3_BooksTitle, team3_Books_genre, team3_Books_author) VALUES ('Title', 'Genre', 'Author');"
 
 # A부터 B까지의 내용을 요약해서 책정보 추출
 def extract_AtoB(doc, rangeA, rangeB) :
@@ -57,7 +57,7 @@ def extract_AtoB(doc, rangeA, rangeB) :
     print("***책 정보를 추출하겠습니다*** \n------\n생성된 query문 \n--> " + create_query)
     print("-------------")
     print("다음과 같은 형식으로 출력되어야 합니다")
-    print(">> INSERT INTO 2023_1_pbl3.team3_Books (team3_BooksTitle, team3_Books_genre, team3_Books_author) VALUES ('Title', 'Genre', 'Author');")
+    print(">> INSERT INTO 2023_pbl3.team3_Books (team3_BooksTitle, team3_Books_genre, team3_Books_author) VALUES ('Title', 'Genre', 'Author');")
     print("------------------------------------------------------------------------\n")
     check = input("***관리자님이 원하는 Query문이 출력되었나요?, 종료하려면 아무키나 입력하세요.. Y/N ***: ")
     
@@ -115,13 +115,13 @@ def print_summarize(doc,rangeA, rangeB) :
     
     return summariz_KR_contents
 
-def Insert_Sql(doc ,SQLcontents, update_summarize_data) :
+def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
     # db연결 설정
     db = pymysql.connect(host='selab.hknu.ac.kr',
                         port=51714,
                         user='pbl3_team3',
                         passwd='12345678',
-                        db='2023_1_pbl3',
+                        db='2023_pbl3',
                         charset='utf8'
                         )
 
@@ -189,7 +189,7 @@ def Insert_Sql(doc ,SQLcontents, update_summarize_data) :
             
 
     # 지정된 범위만큼 for문 돈다 team3_Books_Imgs_Pages의 각 페이지 입력
-    for page in tqdm(range(int(startPno), int(lastPg))) :
+    for page in tqdm(range(int(startPno), int(lastPg)+1)) :
         currntPg = page
         SelectPage_text_list = Book_text_list[currntPg-1]
         
@@ -211,19 +211,22 @@ def Insert_Sql(doc ,SQLcontents, update_summarize_data) :
             # print(kr_text)
             page_FullText += kr_text + " "
         
-        print(f"입력될 {str(page)} 페이지 contents \n ----> {page_FullText}")    
+        print(f"입력될 {str(page)} 페이지 contents \n ----> {page_FullText}")   
+        
+        filename = os.path.basename(PDF_FILE_PATH) # 파일명 추출
+        filename = re.sub(r"\.[^.]+$", "", filename) # 확장자명 제거
+       
+        #불러올 이미지 경로
+        filePath =f"../temp/{filename}/{page}.png" 
         
         # team3_Books_Imgs_Pages 테이블에 입력
-        insert_text_sql = f"INSERT INTO  2023_1_pbl3.team3_Imgs_Pages (team3_BooksID, team3_page_number, team3_text) VALUES ('{last_insert_id}', '{page}', '{page_FullText}');"
+        insert_text_sql = f"INSERT INTO 2023_pbl3.team3_Imgs_Pages (team3_BooksID, team3_page_number, team3_text, team3_imgPath) VALUES ('{last_insert_id}', '{page}', '{page_FullText}', '{filePath}');"
         # SQL query 실행
         cursor.execute(insert_text_sql)
         
         time.sleep(3)  # 3초간 쉬기
         print("----------------------------")
         print(f"********************* {filename} : {page} 페이지 DB입력 완료 ********************* ")
-    
-    
-    
     
     # 데이터 변화 적용
     db.commit()
@@ -250,5 +253,5 @@ extractData = extract_AtoB(doc, 0, 3)
 update_summarize_data = print_summarize(doc, 6, 8)
 
 # 추출한 정보를 입력 후, 그 행에 요약정보(Info)를 추가함
-Insert_Sql(doc, extractData, update_summarize_data)
+Insert_Sql(PDF_FILE_PATH, doc, extractData, update_summarize_data)
 

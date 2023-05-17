@@ -14,7 +14,7 @@ from tqdm import tqdm
 global last_insert_id
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-openai.api_key = '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'
+openai.api_key = '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'
 
 # 번역 함수
 def translate_enTokr(text) :
@@ -35,7 +35,7 @@ def translate_enTokr(text) :
 # Extract the team3_BooksTitle, team3_Books_genre, and team3_Books_author from the given text and provide a query statement to insert them into the database 2023_1_pbl3.team3_Books,
 # 책 정보 추출 및 query 생성 함수
 def extract_book_info_and_create_query(text):
-    prompt = f"Extract the team3_BooksTitle, team3_Books_genre, and team3_Books_author from the given text and provide a query statement to insert them into the database  2023_1_pbl3.team3_Books, and Values should be a single tuple.\n\n {text}"
+    prompt = f"Extract the team3_BooksTitle, team3_Books_genre, and team3_Books_author from the given text and provide a query statement to insert them into the database  2023_pbl3.team3_Books, and Values should be a single tuple.\n\n {text}"
     completions = openai.Completion.create(
         engine="text-davinci-002",
         prompt=prompt,
@@ -136,13 +136,13 @@ def print_summarize(doc,rangeA, rangeB) :
     
     return summariz_KR_contents
 
-def Insert_Sql(doc ,SQLcontents, update_summarize_data) :
+def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
     # db연결 설정
     db = pymysql.connect(host='selab.hknu.ac.kr',
                         port=51714,
                         user='pbl3_team3',
                         passwd='12345678',
-                        db='2023_1_pbl3',
+                        db='2023_pbl3',
                         charset='utf8'
                         )
 
@@ -151,7 +151,21 @@ def Insert_Sql(doc ,SQLcontents, update_summarize_data) :
     
     Book_text_list = get_pdf_page_text(doc)
     
-    last_insert_id = None
+    # SQL 책의 정보를 입력 query 실행
+    try :
+        # openAI가 추출한 책 정보
+        sql = f"""{SQLcontents}"""
+        cursor.execute(sql)
+        
+        # 데이터 삽입 후, 마지막으로 생성된 primary key 값을 가져옴
+        last_insert_id = cursor.lastrowid
+    except Exception as ex :
+        print("다음과 같은 error가 발생했습니다 ", ex)
+        print("잘못된 SQL 구문을 입력했습니다. 다시 프로그램을 실행해주세요.")
+        sys.exit()
+        
+    # try에서 저장한 변수를 다음 for문에서 쓰기위해 살려두자..
+    last_insert_id = last_insert_id
     
     # 본문 페이지 지정하면 됨
     while(True) :
@@ -184,37 +198,26 @@ def Insert_Sql(doc ,SQLcontents, update_summarize_data) :
             time.sleep(3)
             Insert_Sql(doc ,SQLcontents, update_summarize_data)
             
-        # SQL 책의 정보를 입력 query 실행
-        try :
-            # openAI가 추출한 책 정보
-            sql = f"""{SQLcontents}"""
-            cursor.execute(sql)
-            last_insert_id = cursor.lastrowid
-            # 데이터 삽입 후, 마지막으로 생성된 primary key 값을 가져옴
-        except Exception as ex :
-            print("다음과 같은 error가 발생했습니다 ", ex)
-            print("잘못된 SQL 구문을 입력했습니다. 다시 프로그램을 실행해주세요.")
-            sys.exit()
-        
-        # try에서 저장한 변수를 다음 for문에서 쓰기위해 살려두자..
-        last_insert_id = last_insert_id
-        
-    # 지정된 범위만큼 for문 돈다 
-    for i in tqdm(range(int(startPno), int(lastPg))) :
-        currntPg = i
+    
+    # 책의 요약을 추가할 SQL query
+    update_sql = "UPDATE team3_Books SET team3_BooksInfo = %s WHERE team3_BooksID = %s"
+    values = (update_summarize_data, last_insert_id)
+
+    # Books_Info 입력 sql query 실행
+    cursor.execute(update_sql, values)
+    
+    # -------------- 여기까지 책정보까지 입력완료!! 페이지 정보는 아래서부터 입력 --------------------#
+            
+
+    # 지정된 범위만큼 for문 돈다 team3_Books_Imgs_Pages의 각 페이지 입력
+    for page in tqdm(range(int(startPno), int(lastPg)+1)) :
+        currntPg = page
         SelectPage_text_list = Book_text_list[currntPg-1]
         
         page_FullText = ""
         
-        # 책의 요약을 추가할 SQL query
-        update_sql = "UPDATE team3_Books SET team3_BooksInfo = %s WHERE team3_BooksID = %s"
-        values = (update_summarize_data, last_insert_id)
-
-        # Books_Info 입력 sql query 실행
-        cursor.execute(update_sql, values)
-        
         print("----------------------------")
-        print(str(i) + " 페이지 DB입력 중...")
+        print(str(page) + " 페이지 DB입력 중...")
         print("----------------------------")
         
         # 선택한 페이지 리스트의 문장 갯수만큼 for문 
@@ -229,20 +232,29 @@ def Insert_Sql(doc ,SQLcontents, update_summarize_data) :
             # print(kr_text)
             page_FullText += kr_text + " "
         
-        print(f"입력될 {str(i)} 페이지 contents \n ----> {page_FullText}")    
-    
-        insert_text_sql = f"INSERT INTO  2023_1_pbl3.team3_Imgs_Pages (team3_BooksID, team3_page_number, team3_text) VALUES ('{last_insert_id}', '{i}', '{page_FullText}');"
+        print(f"입력될 {str(page)} 페이지 contents \n ----> {page_FullText}")   
+        
+        filename = os.path.basename(PDF_FILE_PATH) # 파일명 추출
+        filename = re.sub(r"\.[^.]+$", "", filename) # 확장자명 제거
+       
+        #불러올 이미지 경로
+        filePath =f"../temp/{filename}/{page}.png" 
+        
+        # team3_Books_Imgs_Pages 테이블에 입력
+        insert_text_sql = f"INSERT INTO 2023_pbl3.team3_Imgs_Pages (team3_BooksID, team3_page_number, team3_text, team3_imgPath) VALUES ('{last_insert_id}', '{page}', '{page_FullText}', '{filePath}');"
         # SQL query 실행
         cursor.execute(insert_text_sql)
+        
         time.sleep(3)  # 3초간 쉬기
         print("----------------------------")
-        print(f"********************* {filename} : {i} 페이지 DB입력 완료 ********************* ")
+        print(f"********************* {filename} : {page} 페이지 DB입력 완료 ********************* ")
     
     # 데이터 변화 적용
     db.commit()
     print("성공적으로 team3_Books 테이블의 데이터를 입력하였습니다!")
 
 
+#-------- main --------#
 root = tk.Tk()
 root.withdraw() # tkinter root window를 숨김
 
@@ -259,8 +271,8 @@ doc = fitz.open(PDF_FILE_PATH)
 extractData = extract_AtoB(doc, 0, 3)
 
 # doc의 5~7페이지로부터 내용 요약 출력 및 리턴 
-update_summarize_data = print_summarize(doc, 6, 8)
+update_summarize_data = print_summarize(doc, 6, 7)
 
 # 추출한 정보를 입력 후, 그 행에 요약정보(Info)를 추가함
-Insert_Sql(doc, extractData, update_summarize_data)
+Insert_Sql(PDF_FILE_PATH, doc, extractData, update_summarize_data)
 
