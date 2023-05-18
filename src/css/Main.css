@@ -61,6 +61,7 @@
     cursor: pointer;
 }
 .input_search{
+    border: 2px solid khaki;
     width: 50vw;
     margin-top: 2vh;
     margin-left: 26vw;
@@ -77,13 +78,19 @@
     background-color: white;
 }
 
-.searchValue{
+.input_searchValue{
     border: 2px solid indianred;
-    width: 20vw;
-    height: 20vh;
+    width: 36vw;
+    height: 5vh;
+    position: absolute;
+    margin-top: 16vh;
+    margin-left: 33vw;
 }
-.searchBox{
-    border: 2px solid olivedrab;
-    width: 20vw;
-    height: 20vh;
+.input_searchListBox{
+    border: 2px solid cadetblue;
+    width: 84vw;
+    height: 73vh;
+    position: absolute;
+    margin-top: 23vh;
+    margin-left: 8vw;
 }
