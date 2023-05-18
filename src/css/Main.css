@@ -1,0 +1,89 @@
+.main{
+    width: 100vw;
+    height: 100vh;
+    background-color: lightblue;
+    opacity: 0.9;
+}
+.logo{
+    /*border: 2px solid greenyellow;*/
+    width: auto;
+    height: 30vh;
+}
+.search{
+    /*border: 2px solid blueviolet;*/
+    width: auto;
+    height: 8vh;
+    z-index: 3;
+}
+#logo_livebook{
+    /*border: 2px solid palegreen;*/
+    margin-top: 8vh;
+    width: 500px;
+    height: 150px;
+}
+#searchbox{
+    /*border: 2px solid orange;*/
+    width: 50vw;
+    height: 10.5vh;
+    margin-left: 26vw;
+    margin-bottom: 4vh;
+    border-radius: 2vw 2vw 2vw 2vw / 4vh 4vh 4vh 4vh ;
+    background-color: white;
+}
+.alpha{
+    opacity: 0%;
+}
+
+/** changing css */
+.input_main{
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.9;
+    position: relative;
+    background-color: lightblue;
+}
+.input_logo{
+    width: 12vw;
+    height: 11vh;
+    position: absolute;
+}
+#input_logo_livebook::before,
+#input_logo_livebook::after{
+    clear: both;
+}
+#input_logo_livebook{
+    float: left;
+    margin-top: 1vh;
+    margin-left: 2vw;
+    width: 160px;
+    height: 80px;
+    z-index: 10;
+    cursor: pointer;
+}
+.input_search{
+    width: 50vw;
+    margin-top: 2vh;
+    margin-left: 26vw;
+    height: 11vh;
+    position: absolute;
+    z-index: 2;
+}
+#input_searchbox{
+    /*border: 2px solid orange;*/
+    width: 50vw;
+    height: 10.5vh;
+    margin-bottom: 4vh;
+    border-radius: 2vw 2vw 2vw 2vw / 4vh 4vh 4vh 4vh ;
+    background-color: white;
+}
+
+.searchValue{
+    border: 2px solid indianred;
+    width: 20vw;
+    height: 20vh;
+}
+.searchBox{
+    border: 2px solid olivedrab;
+    width: 20vw;
+    height: 20vh;
+}

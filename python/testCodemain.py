@@ -10,11 +10,14 @@ from tkinter import filedialog
 import os
 import time
 from tqdm import tqdm
-
-global last_insert_id
+import pymysql
+from PIL import Image
+import base64
+from io import BytesIO
+import time
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-openai.api_key = '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'
+openai.api_key = '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'
 
 # 번역 함수
 def translate_enTokr(text) :
@@ -32,26 +35,15 @@ def translate_enTokr(text) :
         time.sleep(3)  # 3초간 쉬기
         return translate_enTokr(text)
 
-# Extract the team3_BooksTitle, team3_Books_genre, and team3_Books_author from the given text and provide a query statement to insert them into the database 2023_1_pbl3.team3_Books,
-# 책 정보 추출 및 query 생성 함수
-def extract_book_info_and_create_query(text):
-    prompt = f"Extract the team3_BooksTitle, team3_Books_genre, and team3_Books_author from the given text and provide a query statement to insert them into the database  2023_pbl3.team3_Books, and Values should be a single tuple.\n\n {text}"
-    completions = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=prompt,
-        max_tokens=300,
-        n=1,
-        stop=None,
-        temperature=1,
-    )
-    query = completions.choices[0].text.strip()
-    return query
+# 토큰 낭비 줄이기 위한 테스트 코드 !!!!!!!! 
+def TEST_extract_book_info_and_create_query():
+    return "INSERT INTO 2023_pbl3.team3_Books (team3_BooksTitle, team3_Books_genre, team3_Books_author) VALUES ('Title', 'Genre', 'Author');"
 
 # A부터 B까지의 내용을 요약해서 책정보 추출
 def extract_AtoB(doc, rangeA, rangeB) :
     tokenized_text = []
     
-    for pno in range(rangeA, rangeB):
+    for pno in range(rangeA, rangeB+1):
         
         text = doc[pno].get_text()
         # 페이지의 문장들을 리스트로 저장
@@ -60,11 +52,12 @@ def extract_AtoB(doc, rangeA, rangeB) :
         # 전체 본문 내용에 페이지 내용 리스트 추가
         tokenized_text += tokenized_page
     
-    create_query = extract_book_info_and_create_query(tokenized_text)
+    # 테스트 코드가 담김
+    create_query = TEST_extract_book_info_and_create_query()
     print("***책 정보를 추출하겠습니다*** \n------\n생성된 query문 \n--> " + create_query)
     print("-------------")
     print("다음과 같은 형식으로 출력되어야 합니다")
-    print(">> INSERT INTO 2023_1_pbl3.team3_Books (team3_BooksTitle, team3_Books_genre, team3_Books_author) VALUES ('Title', 'Genre', 'Author');")
+    print(">> INSERT INTO 2023_pbl3.team3_Books (team3_BooksTitle, team3_Books_genre, team3_Books_author) VALUES ('Title', 'Genre', 'Author');")
     print("------------------------------------------------------------------------\n")
     check = input("***관리자님이 원하는 Query문이 출력되었나요?, 종료하려면 아무키나 입력하세요.. Y/N ***: ")
     
@@ -76,22 +69,6 @@ def extract_AtoB(doc, rangeA, rangeB) :
         print("프로그램을 다시 시작해주세요.")
         sys.exit()
     
-
-
-# 책 본문 내용 2줄 요약 함수
-def summarize_book_content(text):
-    prompt = (f"Please summarize the plot in two sentences. \n\n{text}")
-    completions = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=prompt,
-        max_tokens=200,
-        n=1,
-        stop=None,
-        temperature=1,
-    )
-    message = completions.choices[0].text.strip()
-    return message
-
 # pdf로부터 본문내용을 페이지별로 리스트에 담는 함수
 def get_pdf_page_text(doc) :
     # ex) contents_text[1] 는 1페이지의 문장 리스트를 담고 있습니다
@@ -111,7 +88,7 @@ def get_pdf_page_text(doc) :
 # A~B 내용을 두줄 요약해서 출력 및 번역된 텍스트 리턴
 def print_summarize(doc,rangeA, rangeB) :
     tokenized_text = []
-    for pno in range(rangeA, rangeB+1):
+    for pno in range(rangeA, rangeB):
         text = doc[pno].get_text()
         # 페이지의 문장들을 리스트로 저장
         tokenized_page = sent_tokenize(text)
@@ -123,14 +100,16 @@ def print_summarize(doc,rangeA, rangeB) :
             next_page_first_sentence = sent_tokenize(next_page_text)[0]
             next_page_first_sentence = next_page_first_sentence[3:]
             
+        # 데이터 전처리
         tokenized_page[-1] = re.sub(r'or Media, Inc.*', '', tokenized_page[-1], flags=re.DOTALL)
         tokenized_page[-1] = tokenized_page[-1] + next_page_first_sentence
 
         # 전체 본문 내용에 페이지 내용 리스트 추가
         tokenized_text += tokenized_page
+        
     #책 요약 정보 text 출력
-    summarize_contents = summarize_book_content(tokenized_text)
-    summariz_KR_contents = translate_enTokr(summarize_contents).text
+    # summarize_contents = summarize_book_content(tokenized_text)
+    summariz_KR_contents = "음.. 테스트 내용 요약입니다. 아아 테스트 테스트"
     print("***책 정보를 요약하겠습니다*** \n------\n" + summariz_KR_contents)
     print("------------")
     
@@ -254,7 +233,7 @@ def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
     print("성공적으로 team3_Books 테이블의 데이터를 입력하였습니다!")
 
 
-#-------- main --------#
+#--------------------- main ----------------------#
 root = tk.Tk()
 root.withdraw() # tkinter root window를 숨김
 
@@ -271,7 +250,7 @@ doc = fitz.open(PDF_FILE_PATH)
 extractData = extract_AtoB(doc, 0, 3)
 
 # doc의 5~7페이지로부터 내용 요약 출력 및 리턴 
-update_summarize_data = print_summarize(doc, 6, 7)
+update_summarize_data = print_summarize(doc, 6, 8)
 
 # 추출한 정보를 입력 후, 그 행에 요약정보(Info)를 추가함
 Insert_Sql(PDF_FILE_PATH, doc, extractData, update_summarize_data)
