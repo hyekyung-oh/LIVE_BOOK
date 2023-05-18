@@ -40,12 +40,13 @@ const Main=() => {
                     <SearchBar text={text} onChange={onChange} option={option} handleChange={handleChange}/>
                 </div>
             </div>
-            <div>
+            <div className={isInput ? "input_searchValue" : null}>
                 <div>
 
                 </div>
-                <div>
-                </div>
+            </div>
+            <div className={isInput ? "input_searchListBox" : ""}>
+
             </div>
         </div>
     );

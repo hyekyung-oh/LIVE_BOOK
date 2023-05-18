@@ -4,7 +4,6 @@ import PropTypes from "prop-types"
 import NativeSelect from "@mui/material/NativeSelect";
 import FormControl from "@mui/material/FormControl";
 import Box from "@mui/material/Box";
-// npm install @mui/icons-material 모듈 설치!
 import TextField from "@mui/material/TextField";
 import { memo } from "react";
 
