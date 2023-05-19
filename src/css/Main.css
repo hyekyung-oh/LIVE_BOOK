@@ -79,7 +79,7 @@
 }
 
 .input_searchValue{
-    border: 2px solid indianred;
+    /* border: 2px solid indianred; */
     width: 36vw;
     height: 5vh;
     position: absolute;
@@ -87,10 +87,11 @@
     margin-left: 33vw;
 }
 .input_searchListBox{
-    border: 2px solid cadetblue;
+    /* border: 2px solid cadetblue; */
     width: 84vw;
     height: 73vh;
     position: absolute;
     margin-top: 23vh;
     margin-left: 8vw;
+    
 }
