@@ -10,11 +10,12 @@ from tkinter import filedialog
 import os
 import time
 from tqdm import tqdm
+import subprocess
 
 global last_insert_id
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-openai.api_key = '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'
+openai.api_key = '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'
 
 # 번역 함수
 def translate_enTokr(text) :
@@ -156,6 +157,8 @@ def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
         
     # try에서 저장한 변수를 다음 for문에서 쓰기위해 살려두자..
     last_insert_id = last_insert_id
+    
+    subprocess.Popen(['open', PDF_FILE_PATH])
     
     # 본문 페이지 지정하면 됨
     while(True) :

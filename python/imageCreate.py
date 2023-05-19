@@ -3,10 +3,11 @@ import re
 import urllib
 import os
 import openai
-import sys
 import tkinter as tk
 from tkinter import filedialog
 from tqdm import tqdm
+import subprocess
+import time
 
 # 내용 요약 함수
 def summarize_text(text):
@@ -40,6 +41,7 @@ def createImage(summarize_text, book_title, pno) :
     except openai.error.InvalidRequestError as ex :
         
         print("예외가 발생했습니다." , ex)
+        time.sleep(3)
         createImage(summarize_text, book_title, pno)
 
 #썸네일 생성 함수
@@ -69,12 +71,12 @@ book_title = os.path.splitext(filename)[0] # 파일명에서 확장자 제거
 os.makedirs(f'../temp/{book_title}', exist_ok=True)
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-openai.api_key = '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'
+openai.api_key = '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'
 
 # 썸네일 생성
 thumnail_fromPDF(doc, book_title)
 
-
+subprocess.Popen(['open', PDF_FILE_PATH])
 startPno = int(input("이미지를 생성할 페이지의 시작점을 정해주세요 \n>>"))
 lastPg = int(input("이미지를 생성할 마지막 페이지를 입력해주세요 \n>>"))
 
