@@ -1,47 +1,33 @@
-import {out, ham, back, play, forward, book, volume, speed, stop, img} from logos;
+import out from '../logo/out.jpg';
+import ham from '../logo/hambuger.jpg';
+import back from '../logo/backward.jpg';
+import play from '../logo/play.jpg';
+import forward from '../logo/forward.jpg';
+import book from '../logo/book.jpg';
+import volume from '../logo/volume.jpg';
+import speed from '../logo/speed.png';
+import stop from '../logo/stop.jpg';
+import img from '../logo/sindaerella.jpg';
 import "../css/Render.css";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { click } from '@testing-library/user-event/dist/click';
 
-const logos = {
-    out: require("../logo/out.jpg"),
-    ham: require("../logo/hambuger.jpg"),
-    back: require("../logo/backward.jpg"),
-    play: require("../logo/play.jpg"),
-    forward: require("../logo/forward.jpg"),
-    book: require("../logo/book.jpg"),
-    volume: require("../logo/volume.jpg"),
-    speed: require("../logo/speed.png"),
-    stop: require("../logo/stop.jpg"),
-    img: require('../logo/sindaerella.jpg');
-  };
-  
 const Render=() => {
     // 상태값 
-    const [clicks, setClicks] = useState({
-        volume : true,
-        speed : true,
-        ham : false,
-        isMouseMoving : false,
-        opacity : 1,
-        delay : 2000, // 딜레이 상태 추가
-        playing : true,
-        contents : "", // 텍스트 상태 추가
-        page : 1
-    })
-
-    const {volume, speed, ham, isMouseMoving, opacity, delay, playing, contents, page} = clicks;
-
-    setClicks({
-        ...click,
-        
-    })
-
+    const [volumeClick,setVolume] = useState(true)
+    const [speedClick,setSpeed] = useState(true)
+    const [hamclickd,sethamClicked] = useState(false);
+    const [isMouseMoving, setIsMouseMoving] = useState(false);
+    const [opacity, setOpacity] = useState(1);
+    const [delay, setDelay] = useState(2000); // 딜레이 상태 추가
+    const [playing,setPlaying] = useState(true);
+    const [contents, setContents] = useState(''); // 텍스트 상태 추가
+    const [page, setPage] = useState(1);
+    
     //플라스크로 연 서버로부터 json파일을 불러옴
     useEffect(() => {
         axios
-            .get(`http://223.222.16.248:5001///page/${page}`)
+            .get(`http://223.222.16.248:5001/page/${page}`)
             .then((response) => {
                 console.log(response.data['contents']);
                 setContents(response.data['contents']);
@@ -73,14 +59,15 @@ const Render=() => {
         };
     }, [delay]);
 
-    const nextPage = useCallback(() => {
-        setPage((page) => page + 1);
-      }, []);
-      
-      const beforePage = useCallback(() => {
-        setPage((page) => (page > 0 ? page - 1 : 0));
-      }, []);
-      
+    const nextPage = () => {
+        setPage(page + 1);
+    };
+
+    const beforePage = () => {
+        if (page > 0) {
+            setPage(page - 1);
+        }
+    }
 
     const volumehandle = () => {
         setVolume(!volumeClick);

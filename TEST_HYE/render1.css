@@ -34,7 +34,7 @@
     width: 74vw;
 }
 /*  <------ 텍스트 창 div 태그 ------->  */
-.div_right_Click {  /* hamclickd(true) */
+.div_right_Click {
     position: relative;
     z-index: 3;
     margin-left: 75vw;

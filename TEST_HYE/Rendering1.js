@@ -128,9 +128,7 @@ const Render=() => {
                 <input type={"image"} id={"ham"} src={ham} alt="tag" onClick={handleClick} style={{ opacity: isMouseMoving ? 1 : opacity }}/>
             </div>
             <div class={hamclick ? "div_bottom_Click" : "div_bottom_UnClick"}>
-                {/* set background-image */}
                 <div id={"main"} ></div>
-                {/* set background-image */}
                 <div class={"divbox"} style={{ opacity: isMouseMoving ? 1 : opacity }}>
                     <div class={"playbarBox"}> 
                         <section id={"playbar"}>
@@ -162,9 +160,9 @@ const Render=() => {
                 </div>
             </div>
             <div class={hamclick ? "div_right_Click" : "" }>
-                {/* 본문 내용 출력부 */}
-                <div id={hamclick ? "contents" : ""} style={{ opacity: hamclick ? 1 : 0 }}>{contents} <br></br> <br></br> {page}페이지</div>
-            </div>   
+                 {/* 본문 내용 출력부 */}
+                 <div id={hamclick ? "contents" : ""} style={{ opacity: hamclick ? 1 : 0 }}>{contents} <br></br> <br></br> {page}페이지</div>
+            </div>            
         </div>
     );
 };
