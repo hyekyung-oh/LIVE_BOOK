@@ -10,11 +10,12 @@ from tkinter import filedialog
 import os
 import time
 from tqdm import tqdm
+import subprocess
 
 global last_insert_id
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-openai.api_key = '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'
+openai.api_key = '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'
 
 # 번역 함수
 def translate_enTokr(text) :
@@ -27,9 +28,9 @@ def translate_enTokr(text) :
         print("\n\n=====================")
         print("*********** 에러가 발생했습니다 *********", ex)
         print("=====================")
-        print("3초 후다시 시도합니다...\n\n")
+        print("1초 후다시 시도합니다...\n\n")
         
-        time.sleep(3)  # 3초간 쉬기
+        time.sleep(1)  # 1초간 쉬기
         return translate_enTokr(text)
 
 # Extract the team3_BooksTitle, team3_Books_genre, and team3_Books_author from the given text and provide a query statement to insert them into the database 2023_1_pbl3.team3_Books,
@@ -115,17 +116,7 @@ def print_summarize(doc,rangeA, rangeB) :
         text = doc[pno].get_text()
         # 페이지의 문장들을 리스트로 저장
         tokenized_page = sent_tokenize(text)
-
-        # 페이지의 마지막 문장이 "."로 끝나지 않는 경우, 
-        # 다음 페이지의 첫 문장과 합쳐서 하나의 문장으로 처리
-        if pno != doc.page_count-1 and not tokenized_page[-1].endswith("."):
-            next_page_text = doc[pno+1].get_text()
-            next_page_first_sentence = sent_tokenize(next_page_text)[0]
-            next_page_first_sentence = next_page_first_sentence[3:]
-            
-        tokenized_page[-1] = re.sub(r'or Media, Inc.*', '', tokenized_page[-1], flags=re.DOTALL)
-        tokenized_page[-1] = tokenized_page[-1] + next_page_first_sentence
-
+        
         # 전체 본문 내용에 페이지 내용 리스트 추가
         tokenized_text += tokenized_page
     #책 요약 정보 text 출력
@@ -167,6 +158,8 @@ def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
     # try에서 저장한 변수를 다음 for문에서 쓰기위해 살려두자..
     last_insert_id = last_insert_id
     
+    subprocess.Popen(['open', PDF_FILE_PATH])
+    
     # 본문 페이지 지정하면 됨
     while(True) :
         print(f"이 책의 분량은 0 ~ {len(Book_text_list)} 페이지입니다.")
@@ -183,8 +176,8 @@ def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
                 continue
                 
             else :
-                print("원하는 값을 입력했는지 확인해주세요")
-                print(f"시작 페이지 : {startPno}page, 마지막 페이지 : {lastPg}page")
+                print("\n원하는 값을 입력했는지 확인해주세요\n")
+                print(f"시작 페이지 : {startPno}page, 마지막 페이지 : {lastPg}page\n")
                 
                 check = input("맞나요 ? (Y/N) >> ")
                 if check == 'Y' or check == 'y':
@@ -199,9 +192,15 @@ def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
             Insert_Sql(doc ,SQLcontents, update_summarize_data)
             
     
+    filename = os.path.basename(PDF_FILE_PATH) # 파일명 추출
+    book_title = re.sub(r"\.[^.]+$", "", filename) # 확장자명 제거
+    thumnail_path = f'temp/{book_title}/{book_title}_thumnail.png'
+    
     # 책의 요약을 추가할 SQL query
-    update_sql = "UPDATE team3_Books SET team3_BooksInfo = %s WHERE team3_BooksID = %s"
-    values = (update_summarize_data, last_insert_id)
+    update_sql = "UPDATE team3_Books SET team3_BooksInfo = %s, team3_Books_Thumnail = %s WHERE team3_BooksID = %s"
+    
+    
+    values = (update_summarize_data, thumnail_path ,last_insert_id)
 
     # Books_Info 입력 sql query 실행
     cursor.execute(update_sql, values)
@@ -238,14 +237,24 @@ def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
         filename = re.sub(r"\.[^.]+$", "", filename) # 확장자명 제거
        
         #불러올 이미지 경로
-        filePath =f"../temp/{filename}/{page}.png" 
+        filePath =f"temp/{filename}/{page}.png" 
         
         # team3_Books_Imgs_Pages 테이블에 입력
-        insert_text_sql = f"INSERT INTO 2023_pbl3.team3_Imgs_Pages (team3_BooksID, team3_page_number, team3_text, team3_imgPath) VALUES ('{last_insert_id}', '{page}', '{page_FullText}', '{filePath}');"
-        # SQL query 실행
-        cursor.execute(insert_text_sql)
+        # 쿼리 문장
+        sql_query = "INSERT INTO team3_Imgs_Pages (team3_BooksID, team3_page_number, team3_text, team3_imgPath) VALUES (%s, %s, %s, %s)"
         
-        time.sleep(3)  # 3초간 쉬기
+        # SQL query 실행
+        with db.cursor() as cursor:
+            # 변수 값
+            team3_BooksID = last_insert_id
+            team3_page_number = page
+            team3_text = page_FullText
+            team3_imgPath = filePath
+            
+            # 쿼리 실행
+            cursor.execute(sql_query, (team3_BooksID, team3_page_number, team3_text, team3_imgPath))
+        
+        time.sleep(0.5)  #0.5초 
         print("----------------------------")
         print(f"********************* {filename} : {page} 페이지 DB입력 완료 ********************* ")
     
@@ -267,12 +276,12 @@ print(f"선택된 파일: \n -> {filename}")
 
 doc = fitz.open(PDF_FILE_PATH)
 
-# # doc의 0~4페이지 책정보 추출
+# doc의 0~4페이지 책정보 추출
 extractData = extract_AtoB(doc, 0, 3)
 
 # doc의 5~7페이지로부터 내용 요약 출력 및 리턴 
 update_summarize_data = print_summarize(doc, 6, 7)
 
-# 추출한 정보를 입력 후, 그 행에 요약정보(Info)를 추가함
+# 추출한 정보를 입력 후2, 그 행에 요약정보(Info)를 추가함
 Insert_Sql(PDF_FILE_PATH, doc, extractData, update_summarize_data)
 
