@@ -10,7 +10,7 @@ const db = mysql.createPool({
     port:'51714',
     user:'pbl3_team3',
     password:'12345678',
-    database:'2023_1_pbl3',
+    database:'2023_pbl3',
 });
 
 app.use(cors({
@@ -33,9 +33,8 @@ app.get("/api/book", (req, res) => {
     const sqlQuery = "select * from team3_Books";
 
     db.query(sqlQuery, (err, result) => {
-        if(err){
-            console.log(err)
-        }
-        res.send(result);
+        if(err) throw err;
+        return res.send(result);
     });
 });
+// app.get("/api/book/")

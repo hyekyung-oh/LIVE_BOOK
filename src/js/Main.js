@@ -1,5 +1,7 @@
 import "../css/Main.css"
 import logo_main from '../logo/Live_Book.png'
+import SearchBookCount from "./SearchBookCount";
+import SearchBookList from "./SearchBookList";
 import SearchBar from "./Searchbar";
 import { useState, useCallback } from "react";
 
@@ -26,7 +28,6 @@ const Main=() => {
       setIsInput(false);
     }, [setText, setOption, setIsInput]);
     
-
     return (
         <div className={isInput? "input_main" : "main"}>
             <div className={isInput ? "input_logo" : "logo"}>
@@ -40,14 +41,19 @@ const Main=() => {
                     <SearchBar text={text} onChange={onChange} option={option} handleChange={handleChange}/>
                 </div>
             </div>
+            {isInput ? 
             <div className={isInput ? "input_searchValue" : null}>
-                <div>
-
-                </div>
+                    <SearchBookCount text={text}/>
             </div>
-            <div className={isInput ? "input_searchListBox" : ""}>
-
-            </div>
+            :
+            <div></div>}
+            {isInput? 
+              <div className={isInput ? "input_searchListBox" : null}>
+                  <SearchBookList text={text} option={option}/>
+              </div>
+              :
+            <div></div>}
+            
         </div>
     );
 };
