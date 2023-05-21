@@ -194,7 +194,7 @@ def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
     
     filename = os.path.basename(PDF_FILE_PATH) # 파일명 추출
     book_title = re.sub(r"\.[^.]+$", "", filename) # 확장자명 제거
-    thumnail_path = f'temp/{book_title}/{book_title}_thumnail.png'
+    thumnail_path = f'../public/temp/{book_title}/{book_title}_thumnail.png'
     
     # 책의 요약을 추가할 SQL query
     update_sql = "UPDATE team3_Books SET team3_BooksInfo = %s, team3_Books_Thumnail = %s WHERE team3_BooksID = %s"
@@ -237,7 +237,7 @@ def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
         filename = re.sub(r"\.[^.]+$", "", filename) # 확장자명 제거
        
         #불러올 이미지 경로
-        filePath =f"temp/{filename}/{page}.png" 
+        filePath =f"../public/temp/{filename}/{page}.png" 
         
         # team3_Books_Imgs_Pages 테이블에 입력
         # 쿼리 문장
