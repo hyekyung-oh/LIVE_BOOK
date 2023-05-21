@@ -38,7 +38,7 @@ const SearchBar = memo(({ text, onChange, option, handleChange }) => {
         </FormControl>
         <TextField
           sx={{ marginTop: "1vh", minWidth: "10vw", maxWidth: "35vw", marginLeft: "1vw" }}
-          label="책이나 내용를 검색"
+          label="책이나 내용을 검색"
           type="text"
           value={text}
           onChange={onChange}

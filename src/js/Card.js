@@ -8,14 +8,16 @@ import Typography from '@mui/material/Typography';
 import { memo } from "react";
 import CardModal from "./CardModal";
 
-const MediaCard = memo(({ id,title, author, genre }) => {
+const MediaCard = memo(({ id,title, author, genre, thumnail }) => {
 
 
     return (
-      <Card sx={{ width: "250px",height:"260px",  borderRadius:"2vw/3vh"}}>
+      <Card sx={{ width: "250px",height:"350px",  borderRadius:"2vw/3vh"}}>
         <CardMedia
-          sx={{ height: "15vh" }}
-          src={"../logo/sindaerella.jpg"}
+          component="img"
+          sx={{ height: "30vh" }}
+          alt={thumnail.slice(10,)}
+          src={thumnail.slice(10,)}
           title="sin"
         />
         <CardContent sx={{height:"10vh"}}>

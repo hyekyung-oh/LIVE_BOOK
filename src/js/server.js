@@ -37,4 +37,3 @@ app.get("/api/book", (req, res) => {
         return res.send(result);
     });
 });
-// app.get("/api/book/")
