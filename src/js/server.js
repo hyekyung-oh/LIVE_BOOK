@@ -37,3 +37,18 @@ app.get("/api/book", (req, res) => {
         return res.send(result);
     });
 });
+
+app.get("/play/:param", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    
+    const paramValue = req.params.param; // URL 파라미터 값 가져오기
+
+    const sqlQuery = "SELECT * FROM team3_Imgs_Pages WHERE team3_BooksID = ?";
+    
+    const values = [paramValue]; // 동적인 값
+
+    db.query(sqlQuery, values, (err, result) => {
+        if (err) throw err;
+        return res.send(result);
+    });
+});
