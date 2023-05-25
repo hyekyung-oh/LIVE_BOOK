@@ -12,10 +12,10 @@ const MediaCard = memo(({ id,title, author, genre, thumnail }) => {
 
 
     return (
-      <Card sx={{ width: "250px",height:"400px",  borderRadius:"2vw/3vh"}}>
+      <Card sx={{ width: "270px",height:"400px",  borderRadius:"2vw/3vh"}}>
         <CardMedia
           component="img"
-          sx={{ height: "30vh" }}
+          sx={{ height: "34vh" }}
           alt={thumnail.slice(10,)}
           src={thumnail.slice(10,)}
           title="sin"

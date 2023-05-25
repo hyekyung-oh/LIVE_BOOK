@@ -16,7 +16,7 @@ const CardModal = (props) => {
     return (
         <>
             <Button size="small" onClick={clickModal}>더보기</Button>
-            {showModal && <Modal clickModal={clickModal} />}
+            {showModal && <Modal id={id} clickModal={clickModal} />}
         </>
     )
 }

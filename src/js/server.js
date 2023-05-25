@@ -52,3 +52,18 @@ app.get("/play/:param", (req, res) => {
         return res.send(result);
     });
 });
+app.get("/api/bookinfo/", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    
+    // /api/bookinfo?BookID=1 같은 형식
+    const paramValue = req.param('BookID'); // URL 파라미터 값 가져오기
+
+    const sqlQuery = "SELECT * FROM team3_Books WHERE team3_BooksID = ?";
+    
+    const values = [paramValue]; // 동적인 값
+
+    db.query(sqlQuery, values, (err, result) => {
+        if (err) throw err;
+        return res.send(result);
+    });
+});
