@@ -128,7 +128,9 @@ const Render=() => {
                 <input type={"image"} id={"ham"} src={ham} alt="tag" onClick={handleClick} style={{ opacity: isMouseMoving ? 1 : opacity }}/>
             </div>
             <div class={hamclick ? "div_bottom_Click" : "div_bottom_UnClick"}>
+                {/* set background-image */}
                 <div id={"main"} ></div>
+                {/* 진행률 상태바 */}
                 <div class={"divbox"} style={{ opacity: isMouseMoving ? 1 : opacity }}>
                     <div class={"playbarBox"}> 
                         <section id={"playbar"}>
