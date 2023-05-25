@@ -13,7 +13,7 @@ const Modal = (props) => {
         <SearchModalBox onClick={clickModal}>
             <SearchModalContent onClick={(e) => e.stopPropagation()}>
                 
-            <BookInfo id={id} />
+            <BookInfo id={id}/>
                 <div>
                     <button >재생하기</button>
                     <button onClick={clickModal}>뒤로가기</button>
