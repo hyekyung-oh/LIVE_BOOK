@@ -7,10 +7,11 @@ import book from '../logo/book.jpg';
 import volume from '../logo/volume.jpg';
 import speed from '../logo/speed.png';
 import stop from '../logo/stop.jpg';
-import img from '../logo/sindaerella.jpg';
 import "../css/Render.css";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Render=() => {
     // 상태값 
@@ -24,15 +25,19 @@ const Render=() => {
     const [contents, setContents] = useState(''); // 텍스트 상태 추가
     const [page, setPage] = useState(1);
     
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const id = searchParams.get('id');
+
     //플라스크로 연 서버로부터 json파일을 불러옴
     useEffect(() => {
         axios
-            .get(`http://223.222.16.248:5001/page/${page}`)
+            .get(`http://localhost:4000/play/${id}`)
             .then((response) => {
-                console.log(response.data['contents']);
-                setContents(response.data['contents']);
+                console.log(response.data[page]);
+                setContents(response.data[page]);
             });
-    }, [page, hamclickd]);
+    }, [page]);
 
     // 변수
     let timeid;
@@ -65,7 +70,7 @@ const Render=() => {
 
     const beforePage = () => {
         if (page > 0) {
-            setPage(page - 1);
+        setPage(page - 1);
         }
     }
 
@@ -91,7 +96,7 @@ const Render=() => {
     return (
         <div class={"divmom"}>
             <div class={hamclickd ? 'dived1' : 'div1'}>
-                <input type={"image"} id={"out"} src={out} alt="out" 
+                <input type={"image"} id={"out"} src={out} alt="out"
                 style={{ opacity: isMouseMoving ? 1 : opacity }}/>
                 <input type={"image"} id={"ham"} src={ham} alt="tag" 
                 onClick={handleClick} style={{ opacity: isMouseMoving ? 1 : opacity }}/>
@@ -128,7 +133,12 @@ const Render=() => {
             </div>
             <div class={hamclickd ? "dived3" : "" }>
                  {/* 본문 내용 출력부 */}
-                 <div id={hamclickd ? "contents" : ""} style={{ opacity: hamclickd ? 1 : 0 }}>{contents} <br></br> <br></br> {page}페이지</div>
+                 <div id={hamclickd ? "contents" : ""} 
+                      style={{ opacity: hamclickd ? 1 : 0 }}>
+                    {contents['team3_text']}{contents['team3_page_number']}
+                  <br></br> <br></br> 
+                  {page}
+                  페이지</div>
             </div>            
         </div>
     );

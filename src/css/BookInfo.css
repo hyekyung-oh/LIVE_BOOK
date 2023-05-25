@@ -1,0 +1,10 @@
+.left > div, .right>div {
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 5vh;
+    border-top: 1px solid black;
+}
+.left{
+    border-right: 1px solid black;
+}

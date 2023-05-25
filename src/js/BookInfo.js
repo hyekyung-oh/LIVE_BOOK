@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import "../css/BookInfo.css"
 
 const BookInfo = (props) => {
     const {id} = props;
@@ -20,27 +20,28 @@ const BookInfo = (props) => {
     return (
         <>
             {book.map(info =>
-                <>
-                    
-                    <img src={info.team3_Books_Thumnail.substr(10)} 
-                    style={{width: "30vw", height: "40vh"}} />
-                    <>
-                        <div className={"Left"} style={{float:"left", width:"5vw"}}>
+                <div style={{border:"2px solid black"}}>
+                    <div>
+                        <img src={info.team3_Books_Thumnail.substr(10)} 
+                        style={{width: "43vw", height: "40vh", display:"inline",objectFit:"contain", marginTop:"1vh"}} />
+                    </div>
+                    <div style={{height:"40vh", marginTop:"1vh"}}>
+                        {/* 왼쪽 창 */}
+                        <div className={"left"} style={{ height:"40vh",width:"12vw",position:"absolute"}}>
                             <div>제목</div>
                             <div>저자</div>
                             <div>장르</div>
-                            <div>책 정보</div>
+                            <div>책 소개</div>
                         </div>
-                        <div className={"right"} style={{float:"right", width:"10vw"}}>
+                        {/* 오른쪽 창 */}
+                        <div className={"right"} style={{ height:"40vh", marginLeft:"12vw"}}>
                             <div>{info.team3_BooksTitle}</div>
                             <div>{info.team3_Books_author}</div>
                             <div>{info.team3_Books_genre}</div>
                             <div>{info.team3_BooksInfo}</div>
                         </div>
-                    </>
-                    
-                    
-                </>
+                    </div>
+                </div>
                 )}
             
         </>
