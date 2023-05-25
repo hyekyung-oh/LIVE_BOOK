@@ -5,7 +5,7 @@ import { memo } from "react";
 import PropTypes from "prop-types"
 
 
-const SearchBookList = memo(({text,option}) => {
+const SearchBookList = memo(({text}) => {
 
     
 
@@ -16,9 +16,7 @@ const SearchBookList = memo(({text,option}) => {
             await fetch(
                 "http://localhost:4000/api/book")
         ).json();
-        console.log(json[0])
         setBooks(json);
-
     }
 
     const filterTitle = books.filter((p) => {
@@ -33,7 +31,7 @@ const SearchBookList = memo(({text,option}) => {
         <div className="card_book">
                 {filterTitle.map(book =>
                 <div style={{padding:"4px"}}>
-                <MediaCard id = {book.team3_BooksID} title = {book.team3_BooksTitle} 
+                <MediaCard variant="outlined" id = {book.team3_BooksID} title = {book.team3_BooksTitle} 
                 author={book.team3_Books_author} genre={book.team3_Books_genre}
                 thumnail={book.team3_Books_Thumnail}/>
                 </div>

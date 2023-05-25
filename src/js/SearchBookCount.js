@@ -11,7 +11,6 @@ const SearchBookCount =memo(({text, option})=>{
             await fetch(
                 "http://localhost:4000/api/book")
         ).json();
-        console.log(json[0])
         setBooks(json);
 
     }
@@ -26,7 +25,7 @@ const SearchBookCount =memo(({text, option})=>{
     return(
         <div style={{fontSize:"30px"}}>
             {filterTitle.length ?
-            <span>Found {filterTitle.length} Book</span>
+            <span>검색결과 : {filterTitle.length} 개</span>
             : <span>검색결과 없음</span>
             }
         </div>
