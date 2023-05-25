@@ -5,7 +5,7 @@ import Modal from './Modal';
 
 const CardModal = (props) => {
 
-    const id = props;
+    const id = props.id;
 
     // 모달 버튼 클릭 유무를 저장할 state
     const [showModal, setShowModal] = useState(false)
@@ -16,7 +16,7 @@ const CardModal = (props) => {
     return (
         <>
             <Button size="small" onClick={clickModal}>더보기</Button>
-            {showModal && <Modal clickModal={clickModal} />}
+            {showModal && <Modal id={id} clickModal={clickModal} />}
         </>
     )
 }
