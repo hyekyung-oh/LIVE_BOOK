@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 const Modal = (props) => {
   	// 전달받은 state 함수
-    const clickModal = props.clickModal
+    const clickModal = props;
     const {id} = props.id    
     
     return (
