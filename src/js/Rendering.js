@@ -130,7 +130,7 @@ const Render=() => {
             <div class={hamclick ? "div_bottom_Click" : "div_bottom_UnClick"}>
                 {/* set background-image */}
                 <div id={"main"} ></div>
-                {/* 진행률 바 */}
+                {/* 진행률 상태바 */}
                 <div class={"divbox"} style={{ opacity: isMouseMoving ? 1 : opacity }}>
                     <div class={"playbarBox"}> 
                         <section id={"playbar"}>
@@ -156,16 +156,15 @@ const Render=() => {
                         </div>
                     </div>
                 </div>
-                {/* 페이지 수 */}
                 <div class={"Ofpages"} style={{opacity: isMouseMoving ? 1 : opacity }}>
                     <div id={"page"}>10</div>
                     <div id={"pages"}>20</div>
                 </div>
             </div>
             <div class={hamclick ? "div_right_Click" : "" }>
-                {/* 본문 내용 출력부 */}
-                <div id={hamclick ? "contents" : ""} style={{ opacity: hamclick ? 1 : 0 }}>{contents} <br></br> <br></br> {page}페이지</div>
-            </div>   
+                 {/* 본문 내용 출력부 */}
+                 <div id={hamclick ? "contents" : ""} style={{ opacity: hamclick ? 1 : 0 }}>{contents} <br></br> <br></br> {page}페이지</div>
+            </div>            
         </div>
     );
 };

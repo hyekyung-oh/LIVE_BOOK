@@ -10,7 +10,14 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+<<<<<<< HEAD
     "axios": "^1.4.0",
+=======
+    "axios": "^1.3.5",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mysql2": "^3.3.2",
+>>>>>>> 31aa5d12f740976a91e1d621559b24f5b31192f7
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",

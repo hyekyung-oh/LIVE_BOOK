@@ -57,17 +57,15 @@
     margin-left: 2vw;
     width: 160px;
     height: 80px;
-    z-index: 10;
     cursor: pointer;
 }
 .input_search{
-    border: 2px solid khaki;
+    /* border: 2px solid khaki; */
     width: 50vw;
     margin-top: 2vh;
     margin-left: 26vw;
     height: 11vh;
     position: absolute;
-    z-index: 2;
 }
 #input_searchbox{
     /*border: 2px solid orange;*/
@@ -79,18 +77,19 @@
 }
 
 .input_searchValue{
-    border: 2px solid indianred;
+    /* border: 2px solid indianred; */
     width: 36vw;
     height: 5vh;
     position: absolute;
-    margin-top: 16vh;
+    margin-top: 15vh;
     margin-left: 33vw;
 }
 .input_searchListBox{
-    border: 2px solid cadetblue;
+    /* border: 2px solid cadetblue; */
     width: 84vw;
     height: 73vh;
     position: absolute;
-    margin-top: 23vh;
+    margin-top: 22vh;
     margin-left: 8vw;
+    
 }

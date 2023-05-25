@@ -10,7 +10,7 @@ const db = mysql.createPool({
     port:'51714',
     user:'pbl3_team3',
     password:'12345678',
-    database:'2023_1_pbl3',
+    database:'2023_pbl3',
 });
 
 app.use(cors({
@@ -33,9 +33,37 @@ app.get("/api/book", (req, res) => {
     const sqlQuery = "select * from team3_Books";
 
     db.query(sqlQuery, (err, result) => {
-        if(err){
-            console.log(err)
-        }
-        res.send(result);
+        if(err) throw err;
+        return res.send(result);
+    });
+});
+
+app.get("/play/:param", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    
+    const paramValue = req.params.param; // URL 파라미터 값 가져오기
+
+    const sqlQuery = "SELECT * FROM team3_Imgs_Pages WHERE team3_BooksID = ?";
+    
+    const values = [paramValue]; // 동적인 값
+
+    db.query(sqlQuery, values, (err, result) => {
+        if (err) throw err;
+        return res.send(result);
+    });
+});
+app.get("/api/bookinfo/", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    
+    // /api/bookinfo?BookID=1 같은 형식
+    const paramValue = req.param('BookID'); // URL 파라미터 값 가져오기
+
+    const sqlQuery = "SELECT * FROM team3_Books WHERE team3_BooksID = ?";
+    
+    const values = [paramValue]; // 동적인 값
+
+    db.query(sqlQuery, values, (err, result) => {
+        if (err) throw err;
+        return res.send(result);
     });
 });

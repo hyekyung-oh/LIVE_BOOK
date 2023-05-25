@@ -1,9 +1,9 @@
-// npm i props-types 설치
 import PropTypes from "prop-types"
 // npm install @mui/material @emotion/react @emotion/styled 설치!!
 import NativeSelect from "@mui/material/NativeSelect";
 import FormControl from "@mui/material/FormControl";
 import Box from "@mui/material/Box";
+// npm install @mui/icons-material 모듈 설치!
 import TextField from "@mui/material/TextField";
 import { memo } from "react";
 
@@ -31,14 +31,14 @@ const SearchBar = memo(({ text, onChange, option, handleChange }) => {
             value={option}
           >
             <option value={"*"}>통합검색</option>
-            <option value={"title"}>제목</option>
-            <option value={"author"}>작가</option>
-            <option value={"genre"}>장르</option>
+            <option value={"team3_BooksTitle"}>제목</option>
+            <option value={"team3_Books_author"}>작가</option>
+            <option value={"team3_Books_genre"}>장르</option>
           </NativeSelect>
         </FormControl>
         <TextField
           sx={{ marginTop: "1vh", minWidth: "10vw", maxWidth: "35vw", marginLeft: "1vw" }}
-          label="책이나 내용를 검색"
+          label="책이나 내용을 검색"
           type="text"
           value={text}
           onChange={onChange}
