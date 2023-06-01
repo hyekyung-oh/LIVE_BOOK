@@ -1,58 +1,65 @@
-import out from '../logo/out.jpg';
-import ham from '../logo/hambuger.jpg';
-import back from '../logo/backward.jpg';
-import play from '../logo/play.jpg';
-import forward from '../logo/forward.jpg';
-import book from '../logo/book.jpg';
-import volume from '../logo/volume.jpg';
-import speed from '../logo/speed.png';
-import stop from '../logo/stop.jpg';
-import "../css/Render.css";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import logos from './logodata';
+
+import "../css/Render.css";
 
 const Render=() => {
-    // 상태값 
-    const [volumeClick,setVolume] = useState(true)
-    const [speedClick,setSpeed] = useState(true)
-    const [hamclickd,sethamClicked] = useState(false);
-    const [isMouseMoving, setIsMouseMoving] = useState(false);
-    const [opacity, setOpacity] = useState(1);
-    const [delay, setDelay] = useState(2000); // 딜레이 상태 추가
-    const [playing,setPlaying] = useState(true);
-    const [contents, setContents] = useState(''); // 텍스트 상태 추가
-    const [page, setPage] = useState(1);
-    
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const id = searchParams.get('id');
+    const { out, ham, back, play, stop, forward, book, volume, speed } = logos;
 
-    //플라스크로 연 서버로부터 json파일을 불러옴
+    // 상태값 
+    const [clicks, setClicks] = useState({
+        volumeclick: true,
+        speedclick: true,
+        hamclick: false,
+        isMouseMoving: false,
+        opacity: 1, // 투명도 조절//
+        delay: 2000, // 딜레이 상태 추가
+        playing: true,
+        contents: "", // 텍스트 상태 추가
+        page: 1
+    });
+
+    const { volumeclick, speedclick, hamclick, isMouseMoving, opacity, delay, playing, contents, page } = clicks;
+    
+    // 플라스크로 연 서버로부터 json파일을 불러옴
     useEffect(() => {
         axios
-            .get(`http://localhost:4000/play/${id}`)
+            .get(`http://223.222.16.248:5001/page/${page}`)
             .then((response) => {
-                console.log(response.data[page]);
-                setContents(response.data[page]);
+                console.log(response.data['contents']);
+                setClicks(prevState => ({
+                    ...prevState,
+                    contents: response.data['contents']
+                }));
             });
-    }, [page]);
-
-    // 변수
-    let timeid;
+    }, [page, hamclick]); // end useEffect()
 
     // 이벤트 핸들링
     useEffect(() => {
+
+        // 변수
+        let timeid;
+
         const handleMouseMove = () => {
-            setIsMouseMoving(true);
-            setOpacity(1);
+            setClicks(prevState => ({
+                ...prevState,
+                isMouseMoving: true,
+                opacity: 1
+            }));
+
             clearTimeout(timeid);
             timeid = setTimeout(() => {
-                setIsMouseMoving(false);
-                setOpacity(0.1);
+                setClicks(prevState => ({
+                    ...prevState,
+                    isMouseMoving: false,
+                    opacity: 0.1
+                }));
                 if (delay === 5000) {
-                    setDelay(2000);
+                    setClicks(prevState => ({
+                        ...prevState,
+                        delay: 2000
+                    }));
                   }
             }, delay);
         };
@@ -62,67 +69,90 @@ const Render=() => {
         window.removeEventListener('mousemove', handleMouseMove);
         clearTimeout(timeid);
         };
-    }, [delay]);
+    }, [delay]); // end useEffect()
 
     const nextPage = () => {
-        setPage(page + 1);
+        setClicks(prevState => ({
+            ...prevState,
+            page: prevState.page + 1
+        }));
     };
 
     const beforePage = () => {
         if (page > 0) {
-        setPage(page - 1);
+            setClicks(prevState => ({
+                ...prevState,
+                page: prevState.page - 1
+            }));
         }
-    }
+    };
 
     const volumehandle = () => {
-        setVolume(!volumeClick);
+        setClicks(prevState => ({
+            ...prevState,
+            volumeclick: !prevState.volumeclick
+        }));
     };
 
     const speedhandle = () => {
-        setSpeed(!speedClick);
+        setClicks(prevState => ({
+            ...prevState,
+            speedclick: !prevState.speedclick
+        }));
     };
 
     const handleClick = () => {
-        sethamClicked(!hamclickd);
-        if(delay === 2000 & !hamclickd){
-            setDelay(5000);
+        setClicks(prevState => ({
+            ...prevState,
+            hamclick: !prevState.hamclick
+        }));
+        if (delay === 2000 && !hamclick) {
+            setClicks(prevState => ({
+                ...prevState,
+                delay: 5000
+            }));
         }
     };
-
+    
     const playClick = () => {
-        setPlaying(!playing);
-    }
+        setClicks(prevState => ({
+            ...prevState,
+            playing: !prevState.playing
+        }));
+    };
 
     return (
-        <div class={"divmom"}>
-            <div class={hamclickd ? 'dived1' : 'div1'}>
-                <input type={"image"} id={"out"} src={out} alt="out"
-                style={{ opacity: isMouseMoving ? 1 : opacity }}/>
-                <input type={"image"} id={"ham"} src={ham} alt="tag" 
-                onClick={handleClick} style={{ opacity: isMouseMoving ? 1 : opacity }}/>
+        <div class={"divRender"}>
+            <div class={hamclick ? 'div_top_Click' : 'div_top_UnClick'}>
+                <input type={"image"} id={"out"} src={out} alt="out" style={{ opacity: isMouseMoving ? 1 : opacity }}/>
+                <input type={"image"} id={"ham"} src={ham} alt="tag" onClick={handleClick} style={{ opacity: isMouseMoving ? 1 : opacity }}/>
             </div>
-            <div class={hamclickd ? "dived2" : "div2"}>
+            <div class={hamclick ? "div_bottom_Click" : "div_bottom_UnClick"}>
+                {/* set background-image */}
                 <div id={"main"} ></div>
+                {/* 진행률 상태바 */}
                 <div class={"divbox"} style={{ opacity: isMouseMoving ? 1 : opacity }}>
-                    <div class={"div3"}>
-                        <section id={"bar"}>
-                            <div id={"controllbar"}></div>
+                    <div class={"playbarBox"}> 
+                        <section id={"playbar"}>
+                            <div id={"controlPlaybar"}></div>
                         </section>
                     </div>
-                    <div class={"div4"}>
-                        <div id={"setting"}>
-                        {/* 한 페이지 뒤로 넘기기 */}
-                        <div><input type={"image"} id={"backward"} src={back} alt="back" onClick={beforePage} /></div>
-                            <div><input type={"image"} id={"play"} src={playing ? play : stop} alt="play" 
-                                onClick={playClick}/></div>
-                            
-                            {/* 한 페이지 넘기기버튼 */}
+                    <div class={"settingBox"}>
+                        <div id={"settingbar"}>
+                            {/* 한 페이지 이전으로 넘기기 */}
+                            <div><input type={"image"} id={"backward"} src={back} alt="back" onClick={beforePage} /></div>
+                            {/* 재생 / 일시정지 */}
+                            <div><input type={"image"} id={"play"} src={playing ? play : stop} alt="play" onClick={playClick}/></div>
+                            {/* 한 페이지 다음으로 넘기기 */}
                             <div><input type={"image"} id={"forward"} src={forward} alt="forward" onClick={nextPage} /></div>
+                            {/* 책 아이콘 */}
                             <div><input type={"image"} id={"book"} src={book} alt="book" /></div>
+                            {/* 볼륨 조절 */}
                             <div><input type={"image"} id={"volume"} src={volume} alt="volume" onClick={volumehandle}/></div>
-                                <div class={volumeClick ? "" : "container_volume"} ></div>           
+                                <div class={volumeclick ? "" : "control_volume"} ></div> 
+                            {/* 배속 조절 */}
                             <div><input type={"image"} id={"speed"} src={speed} alt="speed" onClick={speedhandle}/></div>
-                                <div class={speedClick ? "" : "container_speed"} ></div>
+                                <div class={speedclick ? "" : "control_speed"} ></div>
                         </div>
                     </div>
                 </div>
@@ -131,14 +161,9 @@ const Render=() => {
                     <div id={"pages"}>20</div>
                 </div>
             </div>
-            <div class={hamclickd ? "dived3" : "" }>
+            <div class={hamclick ? "div_right_Click" : "" }>
                  {/* 본문 내용 출력부 */}
-                 <div id={hamclickd ? "contents" : ""} 
-                      style={{ opacity: hamclickd ? 1 : 0 }}>
-                    {contents['team3_text']}{contents['team3_page_number']}
-                  <br></br> <br></br> 
-                  {page}
-                  페이지</div>
+                 <div id={hamclick ? "contents" : ""} style={{ opacity: hamclick ? 1 : 0 }}>{contents} <br></br> <br></br> {page}페이지</div>
             </div>            
         </div>
     );

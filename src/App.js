@@ -1,4 +1,5 @@
 import Main from './js/Main';
+import Rendering from './js/Rendering';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Render from './js/Rendering';
