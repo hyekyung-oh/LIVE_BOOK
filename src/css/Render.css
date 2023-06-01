@@ -254,8 +254,7 @@
     height: 95vh;
     margin-left: 20px;
     z-index: 2;
-
-
+    text-align: left;
 }
 #contents_text{
     border: 10px solid black;
@@ -265,6 +264,7 @@
     position: absolute;
     font-family: cursive;
     background-color: azure;
+    letter-spacing: 2.5px;
 }
 #contents_page{
     /* border: 2px solid olivedrab; */
