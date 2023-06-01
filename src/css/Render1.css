@@ -16,7 +16,7 @@
     z-index: 2;
     margin-top: 2vh;
     margin-left: 1vw;
-    width: 50vw;
+    width: 74vw;
 }
 /*  <------ 메인 화면, 하단 바 div 태그 ------->  */
 .div2{
@@ -31,19 +31,19 @@
     z-index: 1; /* 태그 겹치기 했을 때 보이는 순서 */
     margin-top: 1vh;
     margin-left: 1vw;
-    width: 50vw;
+    width: 74vw;
 }
 /*  <------ 텍스트 창 div 태그 ------->  */
 .dived3{
     position: relative;
     z-index: 3;
-    margin-left: 50vw;
+    margin-left: 75vw;
 }
 #text{
     /*border: 2px solid palevioletred;*/
     position: absolute;
     width: 24vw;
-    height: 50vh;
+    height: 87vh;
 }
 /*  <------ 하단 컨트롤 바 div 태그 ------->  */
 .divbox{
@@ -58,10 +58,8 @@
     opacity: 0.1;
 }
 /*  <------ 나가기 아이콘 태그 ------->  */
-#out {
-    position: fixed;
-    top: 2vh;
-    left: 2vh;
+#out{
+    position: absolute;
     width: 4vw;
     height: 8vh;
     opacity: 0.7;
@@ -153,9 +151,6 @@
 
 /*  <------ 책 아이콘 태그 ------->  */
 #book{
-    position: absolute;
-    bottom: 0.5vw;
-    left: 41.5vw;
     width: 14vw;
 }
 /*  <------ 페이지 태그 ------->  */
@@ -244,5 +239,5 @@
 #contents{ /* 페이지 본문 내용 디자인 */
     margin-left: 20px;
     margin-right: 20px; 
-    font-size: 20px
+    font-size: 10px
 }

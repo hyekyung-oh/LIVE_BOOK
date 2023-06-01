@@ -20,7 +20,7 @@ const BookInfo = (props) => {
     return (
         <>
             {book.map(info =>
-                <div style={{border:"2px solid black"}}>
+                <div style={{border:"2px solid black"}} key={info.team3_BooksID}>
                     <div>
                         <img src={info.team3_Books_Thumnail.substr(10)} 
                         style={{width: "43vw", height: "40vh", display:"inline",objectFit:"contain", marginTop:"1vh"}} />
