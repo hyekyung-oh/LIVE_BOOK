@@ -5,6 +5,7 @@ import logos from './logodata';
 import "../css/Render.css";
 
 const Render=() => {
+    const BookID = window.location.href.split("=")[1];
     const { out, ham, back, play, stop, forward, book, volume, speed } = logos;
 
     // 상태값 
@@ -17,24 +18,35 @@ const Render=() => {
         delay: 2000, // 딜레이 상태 추가
         playing: true,
         contents: "", // 텍스트 상태 추가
-        page: 1
+        page: 1,
+        img_path: ""
     });
 
-    const { volumeclick, speedclick, hamclick, isMouseMoving, opacity, delay, playing, contents, page } = clicks;
+    const { volumeclick, speedclick, hamclick, isMouseMoving, opacity, delay, playing, contents, page ,img_path } = clicks;
     
     // 플라스크로 연 서버로부터 json파일을 불러옴
     useEffect(() => {
         axios
-            .get(`http://223.222.16.248:5001/page/${page}`)
+            .get(`http://localhost:4000/play/${BookID}`)
             .then((response) => {
-                console.log(response.data['contents']);
+                console.log(response.data);
                 setClicks(prevState => ({
                     ...prevState,
-                    contents: response.data['contents']
+                    firpage: response.data[page-1]["team3_text"],
+                    contents: response.data[page-1]["team3_text"],
+                    img_path: response.data[page-1]["team3_imgPath"]
                 }));
             });
-    }, [page, hamclick]); // end useEffect()
+    }, [page]); // end useEffect()
 
+    // if(playings){
+    //     speakText();
+    // }
+    // const speakText=()=>{
+    //     // const text = document.getElementById('textToSpeak').value;
+    //     // const utterance = new SpeechSynthesisUtterance("text");
+    //     // window.speechSynthesis.speak(utterance);
+    // }
     // 이벤트 핸들링
     useEffect(() => {
 
