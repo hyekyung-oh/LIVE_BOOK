@@ -22,7 +22,7 @@ const Render=() => {
 
     const { volumeclick, speedclick, hamclick, isMouseMoving, opacity, delay, playing, contents, page } = clicks;
     
-    //플라스크로 연 서버로부터 json파일을 불러옴
+    // 플라스크로 연 서버로부터 json파일을 불러옴
     useEffect(() => {
         axios
             .get(`http://223.222.16.248:5001/page/${page}`)
