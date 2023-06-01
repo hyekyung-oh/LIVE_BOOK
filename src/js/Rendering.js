@@ -4,6 +4,7 @@ import logos from './logodata';
 import "../css/Render.css";
 
 const Render=() => {
+    const BookID = window.location.href.split("=")[1];
     const { out, ham, back, play, stop, forward, book, volume, speed } = logos;
 
     // 상태값 
@@ -15,24 +16,36 @@ const Render=() => {
         opacity: 1, // 투명도 조절//
         delay: 2000, // 딜레이 상태 추가
         playing: true,
-        contents: [], // 텍스트 상태 추가
-        page: 1
+        contents: "", // 텍스트 상태 추가
+        page: 1,
+        img_path: ""
     });
 
-    const { volumeclick, speedclick, hamclick, isMouseMoving, opacity, delay, playing, contents, page } = clicks;
+    const { volumeclick, speedclick, hamclick, isMouseMoving, opacity, delay, playing, contents, page ,img_path } = clicks;
     
     // 플라스크로 연 서버로부터 json파일을 불러옴
     useEffect(() => {
         axios
-            .get(`http://localhost:4000/play/${page}`)
+            .get(`http://localhost:4000/play/${BookID}`)
             .then((response) => {
                 setClicks(prevState => ({
                     ...prevState,
-                    contents: response.data[0]['team3_text']
+                    firpage: response.data[page-1]["team3_text"],
+                    contents: response.data[page-1]["team3_text"],
+                    img_path: response.data[page-1]["team3_imgPath"].substr(9)
                 }));
             });
     }, [page]); // end useEffect()
 
+    console.log(img_path)
+    // if(playings){
+    //     speakText();
+    // }
+    // const speakText=()=>{
+    //     // const text = document.getElementById('textToSpeak').value;
+    //     // const utterance = new SpeechSynthesisUtterance("text");
+    //     // window.speechSynthesis.speak(utterance);
+    // }
     // 이벤트 핸들링
     useEffect(() => {
 
@@ -128,7 +141,7 @@ const Render=() => {
             </div>
             <div className={hamclick ? "div_bottom_Click" : "div_bottom_UnClick"}>
                 {/* set background-image */}
-                <div id={"main"} style={{backgroundImage: `url(../../${contents.team3_imgPath})`}}></div>
+                <div id={"main"} style={{backgroundImage: `url("${img_path}")`}}></div>
                 
                 {/* 진행률 상태바 */}
                 <div className={"divbox"} style={{ opacity: isMouseMoving ? 1 : opacity }}>
