@@ -6,7 +6,7 @@ import "../css/Render.css";
 
 const Render=() => {
     const BookID = window.location.href.split("=")[1];
-    const { out, ham, back, play, stop, forward, book, volume, speed } = logos;
+    const { out, ham, back, play, stop, forward, book, volume, speed, img } = logos;
 
     // 상태값 
     const [clicks, setClicks] = useState({
@@ -32,21 +32,12 @@ const Render=() => {
                 console.log(response.data);
                 setClicks(prevState => ({
                     ...prevState,
-                    firpage: response.data[page-1]["team3_text"],
                     contents: response.data[page-1]["team3_text"],
-                    img_path: response.data[page-1]["team3_imgPath"]
+                    img_path: "temp/"+response.data[page-1]["team3_imgPath"].split("temp/")[1].split("/")[0]+"/"+response.data[page-1]["team3_imgPath"].split("temp/")[1].split("/")[0]+"_"+response.data[page-1]["team3_imgPath"].split(response.data[page-1]["team3_imgPath"].split("temp/")[1].split("/")[0]+"/")[1]
                 }));
             });
     }, [page]); // end useEffect()
 
-    // if(playings){
-    //     speakText();
-    // }
-    // const speakText=()=>{
-    //     // const text = document.getElementById('textToSpeak').value;
-    //     // const utterance = new SpeechSynthesisUtterance("text");
-    //     // window.speechSynthesis.speak(utterance);
-    // }
     // 이벤트 핸들링
     useEffect(() => {
 
@@ -140,8 +131,8 @@ const Render=() => {
                 <input type={"image"} id={"ham"} src={ham} alt="tag" onClick={handleClick} style={{ opacity: isMouseMoving ? 1 : opacity }}/>
             </div>
             <div class={hamclick ? "div_bottom_Click" : "div_bottom_UnClick"}>
-                {/* set background-image */}
-                <div id={"main"} ></div>
+                {/* set background-image  */}
+                <div id="main" style={{ backgroundImage: `url('${img_path}')` }}></div>
                 {/* 진행률 상태바 */}
                 <div class={"divbox"} style={{ opacity: isMouseMoving ? 1 : opacity }}>
                     <div class={"playbarBox"}> 
