@@ -4,46 +4,46 @@
 
 /*  <------ 상단 아이콘 div 태그 ------->  */
 
-.div_top_UnClick { /* hamclickd(false) */
+.div1 {
     position: relative;
     z-index: 2;
     margin-top: 2vh;
     margin-left: 1vw;
     width: 98vw;
 }
-.div_top_Click { /* hamclickd(true) */
+.dived1{
     position: relative;
     z-index: 2;
     margin-top: 2vh;
     margin-left: 1vw;
-    width: 50vw;
+    width: 74vw;
 }
 /*  <------ 메인 화면, 하단 바 div 태그 ------->  */
-.div_bottom_UnClick {  /* hamclickd(false) */
+.div2{
     position: relative;
     z-index: 1; /* 태그 겹치기 했을 때 보이는 순서 */
     margin-top: 1vh;
     margin-left: 1vw;
     width: 98vw;
 }
-.div_bottom_Click { /* hamclickd(true) */
+.dived2{
     position: relative;
     z-index: 1; /* 태그 겹치기 했을 때 보이는 순서 */
     margin-top: 1vh;
     margin-left: 1vw;
-    width: 50vw;
+    width: 74vw;
 }
 /*  <------ 텍스트 창 div 태그 ------->  */
-.div_right_Click {  /* hamclickd(true) */
+.dived3{
     position: relative;
     z-index: 3;
-    margin-left: 50vw;
+    margin-left: 75vw;
 }
 #text{
     /*border: 2px solid palevioletred;*/
     position: absolute;
     width: 24vw;
-    height: 50vh;
+    height: 87vh;
 }
 /*  <------ 하단 컨트롤 바 div 태그 ------->  */
 .divbox{
@@ -58,10 +58,8 @@
     opacity: 0.1;
 }
 /*  <------ 나가기 아이콘 태그 ------->  */
-#out {
-    position: fixed;
-    top: 2vh;
-    left: 2vh;
+#out{
+    position: absolute;
     width: 4vw;
     height: 8vh;
     opacity: 0.7;
@@ -80,7 +78,7 @@
 #hamed::before,#hamed::after{
     clear: both; /* clear를 해주어야지만 float 다음에 올 태그의 영역이 올바르게 차지함 */
 }
-#ham {
+#ham{
     position: relative;  /* 태그 겹치기 relative : 겹치기 허용, absolute : 원래자리 유지 */
     width: 4vw;
     height: 6vh;  /* vw, vh : 화면 비율에 맞춰서 작동*/
@@ -90,7 +88,7 @@
     filter: invert(100%);
     margin-top: 1vh;
 }
-#hamed {
+#hamed{
     position: relative;  /* 태그 겹치기 relative : 겹치기 허용, absolute : 원래자리 유지 */
     width: 4vw;
     height: 6vh;  /* vw, vh : 화면 비율에 맞춰서 작동*/
@@ -100,7 +98,7 @@
     margin-top: 1vh;
 }
 /*  <------ 이미지 출력 화면 태그 ------->  */
-#main {
+#main{
     position: absolute;
     /*border: 2px solid orange;*/
     width: 100%;
@@ -110,19 +108,19 @@
     opacity: 0.9;
 }
 /*  <------ 진행률 바 태그 ------->  */
-#playbar {
+#bar {
     position: relative;
     /*border: 2px solid blue;*/
     width: 98vw;
     height: 2vh;
 }
-#controlPlaybar { /* 진행률 태그 */
+#controllbar{ /* 진행률 태그 */
     width: 20%;
     height: 100%;
     background-color: violet;
 }
 /*  <------ 세팅 하단 바 태그 ------->  */
-#settingbar {
+#setting {
     display: table-cell; /* 테이블 속성으로 사용하게 만들어줌 */
     position: relative;
     /*border: 2px solid red;*/
@@ -133,19 +131,19 @@
                             속성 때문에 한줄로 텍스트가 삐져나오기 때문에 꼭 줘야하는 속성 */
     text-align: left;
 }
-#settingbar > div { /* 아이콘 묶음 태그 */
+#setting > div { /* 아이콘 묶음 태그 */
     display: inline; /* 태그들을 나란히 정렬 */
     height: 100%;
     /*background: aliceblue; /* 간격과 영역을 보여주기 위한 속성 */
 }
-#settingbar > div > input { /* 각 아이콘 모양 */
+#setting > div > input { /* 각 아이콘 모양 */
     height: 100%;
     padding: 0 1.5vw;
     filter: invert(90%);
 
 }
 
-/*  <------ 다음으로가기 아이콘 태그 ------->  */
+/*  <------ 앞으로가기 아이콘 태그 ------->  */
 #forward{
     margin-right: 23vw;
 }
@@ -153,9 +151,6 @@
 
 /*  <------ 책 아이콘 태그 ------->  */
 #book{
-    position: absolute;
-    bottom: 0.5vw;
-    left: 41.5vw;
     width: 14vw;
 }
 /*  <------ 페이지 태그 ------->  */
@@ -188,7 +183,7 @@
 #volume{
     margin-left: 23vw;
 }
-.control_volume { /*  음량조절 이벤트 창  */
+.container_volume { /*  음량조절 이벤트 창  */
     /* 음량조절 창 크기 */
     width: 200px;
     height: 130px;
@@ -219,7 +214,7 @@
 #speed{
     float: right;
 }
-.control_speed { /*  재생속도 이벤트 창  */
+.container_speed { /*  재생속도 이벤트 창  */
     /* 재생속도 창 크기 */
     width: 150px;
     height: 200px;
@@ -244,5 +239,5 @@
 #contents{ /* 페이지 본문 내용 디자인 */
     margin-left: 20px;
     margin-right: 20px; 
-    font-size: 20px
+    font-size: 10px
 }

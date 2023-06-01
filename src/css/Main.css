@@ -5,9 +5,9 @@
     opacity: 0.9;
 }
 .logo{
-    /*border: 2px solid greenyellow;*/
+    /* border: 2px solid greenyellow; */
     width: auto;
-    height: 30vh;
+    height: 40vh;
 }
 .search{
     /*border: 2px solid blueviolet;*/
@@ -17,7 +17,7 @@
 }
 #logo_livebook{
     /*border: 2px solid palegreen;*/
-    margin-top: 8vh;
+    margin-top: 18vh;
     width: 500px;
     height: 150px;
 }

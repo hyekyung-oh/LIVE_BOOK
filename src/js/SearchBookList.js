@@ -30,7 +30,7 @@ const SearchBookList = memo(({text}) => {
     return (
         <div className="card_book">
                 {filterTitle.map(book =>
-                <div style={{padding:"4px"}}>
+                <div style={{padding:"4px"}} key={book.team3_BooksID}>
                 <MediaCard variant="outlined" id = {book.team3_BooksID} title = {book.team3_BooksTitle} 
                 author={book.team3_Books_author} genre={book.team3_Books_genre}
                 thumnail={book.team3_Books_Thumnail}/>
@@ -40,9 +40,8 @@ const SearchBookList = memo(({text}) => {
     );
 });
 
-SearchBookList.PropTypes ={
+SearchBookList.propTypes ={
     text : PropTypes.string.isRequired,
-    option : PropTypes.string.isRequired,
 }
 
 export default SearchBookList;
