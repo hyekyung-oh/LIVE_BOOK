@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import logos from './logodata';
-
 import "../css/Render.css";
 
 const Render=() => {
@@ -16,7 +15,7 @@ const Render=() => {
         opacity: 1, // 투명도 조절//
         delay: 2000, // 딜레이 상태 추가
         playing: true,
-        contents: "", // 텍스트 상태 추가
+        contents: [], // 텍스트 상태 추가
         page: 1
     });
 
@@ -25,15 +24,14 @@ const Render=() => {
     // 플라스크로 연 서버로부터 json파일을 불러옴
     useEffect(() => {
         axios
-            .get(`http://223.222.16.248:5001/page/${page}`)
+            .get(`http://localhost:4000/play/${page}`)
             .then((response) => {
-                console.log(response.data['contents']);
                 setClicks(prevState => ({
                     ...prevState,
-                    contents: response.data['contents']
+                    contents: response.data[0]['team3_text']
                 }));
             });
-    }, [page, hamclick]); // end useEffect()
+    }, [page]); // end useEffect()
 
     // 이벤트 핸들링
     useEffect(() => {
@@ -121,6 +119,7 @@ const Render=() => {
         }));
     };
 
+
     return (
         <div className={"divRender"}>
             <div className={hamclick ? 'div_top_Click' : 'div_top_UnClick'}>
@@ -129,7 +128,8 @@ const Render=() => {
             </div>
             <div className={hamclick ? "div_bottom_Click" : "div_bottom_UnClick"}>
                 {/* set background-image */}
-                <div id={"main"} ></div>
+                <div id={"main"} style={{backgroundImage: `url(../../${contents.team3_imgPath})`}}></div>
+                
                 {/* 진행률 상태바 */}
                 <div className={"divbox"} style={{ opacity: isMouseMoving ? 1 : opacity }}>
                     <div className={"playbarBox"}> 
