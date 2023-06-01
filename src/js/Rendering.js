@@ -18,10 +18,11 @@ const Render=() => {
         playing: true,
         contents: "", // 텍스트 상태 추가
         page: 1,
-        img_path: ""
+        img_path: "",
+        final_page:1,
     });
 
-    const { volumeclick, speedclick, hamclick, isMouseMoving, opacity, delay, playing, contents, page ,img_path } = clicks;
+    const { volumeclick, speedclick, hamclick, isMouseMoving, opacity, delay, playing, contents, page ,img_path,final_page } = clicks;
     
     // 플라스크로 연 서버로부터 json파일을 불러옴
     useEffect(() => {
@@ -31,7 +32,11 @@ const Render=() => {
                 setClicks(prevState => ({
                     ...prevState,
                     contents: response.data[page-1]["team3_text"],
-                    img_path: "temp/"+response.data[page-1]["team3_imgPath"].split("temp/")[1].split("/")[0]+"/"+response.data[page-1]["team3_imgPath"].split("temp/")[1].split("/")[0]+"_"+response.data[page-1]["team3_imgPath"].split(response.data[page-1]["team3_imgPath"].split("temp/")[1].split("/")[0]+"/")[1]
+                    img_path: "temp/"+response.data[page-1]["team3_imgPath"]
+                    .split("temp/")[1].split("/")[0]+"/"+response.data[page-1]["team3_imgPath"]
+                    .split("temp/")[1].split("/")[0]+"_"+response.data[page-1]["team3_imgPath"]
+                    .split(response.data[page-1]["team3_imgPath"].split("temp/")[1].split("/")[0]+"/")[1],
+                    final_page: response.data[response.data.length-1]["team3_page_number"] - response.data[0]["team3_page_number"] +1
                 }));
             });
     }, [page]); // end useEffect()
@@ -73,18 +78,24 @@ const Render=() => {
     }, [delay]); // end useEffect()
 
     const nextPage = () => {
-        setClicks(prevState => ({
-            ...prevState,
-            page: prevState.page + 1
-        }));
+        if(page < final_page){
+            setClicks(prevState => ({
+                ...prevState,
+                page: prevState.page + 1
+            }));
+        } else{
+            alert("마지막 페이지 입니다.")
+        }
     };
 
     const beforePage = () => {
-        if (page > 0) {
+        if (page > 1) {
             setClicks(prevState => ({
                 ...prevState,
                 page: prevState.page - 1
             }));
+        } else{
+            alert("첫 페이지 입니다.")
         }
     };
 

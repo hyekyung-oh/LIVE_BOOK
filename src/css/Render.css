@@ -268,9 +268,11 @@
 }
 #contents_page{
     /* border: 2px solid olivedrab; */
+    width: 7vw;
     height: 4vh;
-    border: 8px solid black;
-    margin-top: 91.5vh;
+    border: 6px solid black;
+    border-radius: 10px;
+    margin-top: 92vh;
     margin-left: 12vw;
     font-size: 20px;
     background-color: beige;
