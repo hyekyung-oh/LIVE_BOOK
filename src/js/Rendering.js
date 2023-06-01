@@ -5,7 +5,7 @@ import "../css/Render.css";
 
 const Render=() => {
     const BookID = window.location.href.split("=")[1];
-    const { out, ham, back, play, stop, forward, book, volume, speed } = logos;
+    const { out, ham, back, play, stop, forward, book, volume, speed, img } = logos;
 
     // 상태값 
     const [clicks, setClicks] = useState({
@@ -30,22 +30,12 @@ const Render=() => {
             .then((response) => {
                 setClicks(prevState => ({
                     ...prevState,
-                    firpage: response.data[page-1]["team3_text"],
                     contents: response.data[page-1]["team3_text"],
-                    img_path: response.data[page-1]["team3_imgPath"].substr(9)
+                    img_path: "temp/"+response.data[page-1]["team3_imgPath"].split("temp/")[1].split("/")[0]+"/"+response.data[page-1]["team3_imgPath"].split("temp/")[1].split("/")[0]+"_"+response.data[page-1]["team3_imgPath"].split(response.data[page-1]["team3_imgPath"].split("temp/")[1].split("/")[0]+"/")[1]
                 }));
             });
     }, [page]); // end useEffect()
 
-    console.log(img_path)
-    // if(playings){
-    //     speakText();
-    // }
-    // const speakText=()=>{
-    //     // const text = document.getElementById('textToSpeak').value;
-    //     // const utterance = new SpeechSynthesisUtterance("text");
-    //     // window.speechSynthesis.speak(utterance);
-    // }
     // 이벤트 핸들링
     useEffect(() => {
 
@@ -147,7 +137,7 @@ const Render=() => {
                 <div className={"divbox"} style={{ opacity: isMouseMoving ? 1 : opacity }}>
                     <div className={"playbarBox"}> 
                         <section id={"playbar"}>
-                            <div id={"controlPlaybar"}></div>
+                            <div id={"controlPlaybar"} style={{width: "20%"}}></div>
                         </section>
                     </div>
                     <div className={"settingBox"}>
@@ -176,7 +166,10 @@ const Render=() => {
             </div>
             <div className={hamclick ? "div_right_Click" : "" }>
                  {/* 본문 내용 출력부 */}
-                 <div id={hamclick ? "contents" : ""} style={{ opacity: hamclick ? 1 : 0 }}>{contents} <br></br> <br></br> {page}페이지</div>
+                 <div id={hamclick ? "contents" : ""} style={{ opacity: hamclick ? 1 : 0 }}>
+                    <div id={"contents_text"} style={{overflow: "auto"}}>{contents}</div> 
+                    <div id={"contents_page"}>{page}페이지</div> 
+                </div>
             </div>            
         </div>
     );
