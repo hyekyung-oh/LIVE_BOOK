@@ -22,6 +22,5 @@ export const SearchModalContent = styled.div`
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
-      
 }
 `

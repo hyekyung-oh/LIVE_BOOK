@@ -125,22 +125,22 @@ const Render=() => {
     };
 
     return (
-        <div class={"divRender"}>
-            <div class={hamclick ? 'div_top_Click' : 'div_top_UnClick'}>
+        <div className={"divRender"}>
+            <div className={hamclick ? 'div_top_Click' : 'div_top_UnClick'}>
                 <input type={"image"} id={"out"} src={out} alt="out" style={{ opacity: isMouseMoving ? 1 : opacity }}/>
                 <input type={"image"} id={"ham"} src={ham} alt="tag" onClick={handleClick} style={{ opacity: isMouseMoving ? 1 : opacity }}/>
             </div>
-            <div class={hamclick ? "div_bottom_Click" : "div_bottom_UnClick"}>
-                {/* set background-image  */}
-                <div id="main" style={{ backgroundImage: `url('${img_path}')` }}></div>
+            <div className={hamclick ? "div_bottom_Click" : "div_bottom_UnClick"}>
+                {/* set background-image */}
+                <div id={"main"} ></div>
                 {/* 진행률 상태바 */}
-                <div class={"divbox"} style={{ opacity: isMouseMoving ? 1 : opacity }}>
-                    <div class={"playbarBox"}> 
+                <div className={"divbox"} style={{ opacity: isMouseMoving ? 1 : opacity }}>
+                    <div className={"playbarBox"}> 
                         <section id={"playbar"}>
                             <div id={"controlPlaybar"}></div>
                         </section>
                     </div>
-                    <div class={"settingBox"}>
+                    <div className={"settingBox"}>
                         <div id={"settingbar"}>
                             {/* 한 페이지 이전으로 넘기기 */}
                             <div><input type={"image"} id={"backward"} src={back} alt="back" onClick={beforePage} /></div>
@@ -152,19 +152,19 @@ const Render=() => {
                             <div><input type={"image"} id={"book"} src={book} alt="book" /></div>
                             {/* 볼륨 조절 */}
                             <div><input type={"image"} id={"volume"} src={volume} alt="volume" onClick={volumehandle}/></div>
-                                <div class={volumeclick ? "" : "control_volume"} ></div> 
+                                <div className={volumeclick ? "" : "control_volume"} ></div> 
                             {/* 배속 조절 */}
                             <div><input type={"image"} id={"speed"} src={speed} alt="speed" onClick={speedhandle}/></div>
-                                <div class={speedclick ? "" : "control_speed"} ></div>
+                                <div className={speedclick ? "" : "control_speed"} ></div>
                         </div>
                     </div>
                 </div>
-                <div class={"Ofpages"} style={{opacity: isMouseMoving ? 1 : opacity }}>
+                <div className={"Ofpages"} style={{opacity: isMouseMoving ? 1 : opacity }}>
                     <div id={"page"}>10</div>
                     <div id={"pages"}>20</div>
                 </div>
             </div>
-            <div class={hamclick ? "div_right_Click" : "" }>
+            <div className={hamclick ? "div_right_Click" : "" }>
                  {/* 본문 내용 출력부 */}
                  <div id={hamclick ? "contents" : ""} style={{ opacity: hamclick ? 1 : 0 }}>{contents} <br></br> <br></br> {page}페이지</div>
             </div>            

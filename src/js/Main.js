@@ -7,7 +7,6 @@ import { useState, useCallback } from "react";
 
 const Main=() => {
     const [text, setText] = useState("");
-    const [option, setOption] = useState("");
     const [isInput, setIsInput] = useState(false);
   
     const onChange = useCallback(
@@ -18,15 +17,10 @@ const Main=() => {
       [setText, setIsInput]
     );
   
-    const handleChange = useCallback((e) => {
-      setOption(e.target.value);
-    }, [setOption]);
-  
     const logo_Click = useCallback(() => {
       setText("");
-      setOption("");
       setIsInput(false);
-    }, [setText, setOption, setIsInput]);
+    }, [setText, setIsInput]);
     
     return (
         <div className={isInput? "input_main" : "main"}>
@@ -38,7 +32,7 @@ const Main=() => {
             </div>
             <div className={isInput ? "input_search" : "search"}>
                 <div id={isInput ? "input_searchbox" : "searchbox"}>
-                    <SearchBar text={text} onChange={onChange} option={option} handleChange={handleChange}/>
+                    <SearchBar text={text} onChange={onChange}/>
                 </div>
             </div>
             {isInput ? 
@@ -49,7 +43,7 @@ const Main=() => {
             <div></div>}
             {isInput? 
               <div className={isInput ? "input_searchListBox" : null}>
-                  <SearchBookList text={text} option={option}/>
+                  <SearchBookList text={text}/>
               </div>
               :
             <div></div>}
