@@ -13,7 +13,7 @@ const Render=() => {
         speedclick: true,
         hamclick: false,
         isMouseMoving: false,
-        opacity: 1, // 투명도 조절
+        opacity: 1, // 투명도 조절//
         delay: 2000, // 딜레이 상태 추가
         playing: true,
         contents: "", // 텍스트 상태 추가
