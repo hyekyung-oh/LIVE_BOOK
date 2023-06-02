@@ -3,6 +3,7 @@ const cors    = require("cors");    // npm i cors | yarn add cors
 const mysql   = require("mysql2");   // npm i mysql2 | yarn add mysql2
 const app     = express();
 const PORT    = 4000; // 포트번호 설정
+const fs = require('fs');
 
 // MySQL 연결
 const db = mysql.createPool({
@@ -52,6 +53,7 @@ app.get("/play/:param", (req, res) => {
         return res.send(result);
     });
 });
+
 app.get("/api/bookinfo/", (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
     
@@ -65,5 +67,44 @@ app.get("/api/bookinfo/", (req, res) => {
     db.query(sqlQuery, values, (err, result) => {
         if (err) throw err;
         return res.send(result);
+    });
+});
+
+// 브금 리스트의 폴더 경로를 반환한다.
+app.get("/bgm/:param", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    
+    const paramValue = req.params.param; // URL 파라미터 값 가져오기
+    
+    let folderPath = "";
+    
+    if (paramValue === "sad") {
+        folderPath = '../../public/bgm/슬픔/';
+        
+    } else if (paramValue === "happy") {
+        folderPath = '../../public/bgm/행복/';
+    } else if (paramValue === "scary") {
+        folderPath = '../../public/bgm/공포/';
+    } else if (paramValue === "nervous") { 
+        folderPath = '../../public/bgm/긴장/';
+    } else if (paramValue === "slience") { 
+        folderPath = '../../public/bgm/고요/';
+    } else if (paramValue === "exciting") { 
+        folderPath = '../../public/bgm/신남/';
+    } else if (paramValue === "fail") { 
+        folderPath = '../../public/bgm/실패/';
+    } else if (paramValue === "mystery") { 
+        folderPath = '../../public/bgm/신비/';
+    }
+
+    fs.readdir(folderPath, (err, files) => {
+        if (err) {
+          console.error('폴더를 읽을 수 없습니다:', err);
+          return;
+        }
+      
+        const bgmFiles = files.map(file => folderPath + file);
+      
+        res.send(bgmFiles);
     });
 });
