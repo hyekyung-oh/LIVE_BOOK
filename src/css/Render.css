@@ -116,13 +116,24 @@
     background-size: 100% 100%;
     background: no-repeat, cover;
     opacity: 0.9;
+    background-color: #5f578a;
 }
 /*  <------ 진행률 바 태그 ------->  */
-#playbar {
+.playbarBox{
     position: relative;
-    /*border: 2px solid blue;*/
+    /* border: 2px solid blue; */
     width: 98vw;
     height: 2vh;
+}
+#playbar_UnClick{
+    width: 100vw;
+    /* border: 2px solid blue; */
+    height: 2vh;
+}
+#playbar_Click{
+    /* border: 2px solid blue; */
+    height: 2vh;
+    width: 70vw;
 }
 #controlPlaybar { /* 진행률 태그 */
     height: 100%;
@@ -250,32 +261,37 @@
   
 #contents{ /* 페이지 본문 내용 디자인 */
     /* border: 2px solid aquamarine; */
+    border: 5px solid lightgray;
     width: auto;
     height: 95vh;
     margin-left: 20px;
     z-index: 2;
+    background-color: azure;
+
     text-align: left;
 }
 #contents_text{
-    border: 10px solid black;
+    border-bottom: 5px solid lightgray;;
     height: 88vh;
     font-size: 20px;
     padding: 7px;
     position: absolute;
-    font-family: cursive;
+    /* font-family: cursive; */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: azure;
     letter-spacing: 2.5px;
 }
 #contents_page{
     /* border: 2px solid olivedrab; */
     width: 7vw;
-    height: 4vh;
-    border: 6px solid black;
+    height: 5vh;
+    /* border: 6px solid black; */
     border-radius: 10px;
-    margin-top: 92vh;
+    padding: 5px;
+    margin-top: 90.5vh;
     margin-left: 12vw;
     font-size: 20px;
-    background-color: beige;
+    /* background-color: beige; */
     position: absolute;
-
+    font-family: fantasy;
 }
