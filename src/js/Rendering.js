@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import logos from './logodata';
 import "../css/Render.css";
+import music from "../bgm/공포/공포1.mp3";
 
 const Render=() => {
     const BookID = window.location.href.split("=")[1];
@@ -71,7 +72,7 @@ const Render=() => {
                     }));
                   }
             }, delay);
-        };
+    };
     
     window.addEventListener('mousemove', handleMouseMove);
     return () => {
@@ -136,11 +137,42 @@ const Render=() => {
         }));
     };
 
+    const [bgm, setBgm] = useState(false);
+    const [audio, setAudio] = useState(null);
+
+    const playBgm = () => {
+        if (bgm) {
+          if (audio) {
+            console.log("재생 종료!");
+            audio.pause();
+            setAudio(null);
+          }
+          setBgm(false);
+        } else {
+          const newAudio = new Audio(music);
+          newAudio.play()
+            .then(() => {
+              // 재생이 시작되었을 때의 동작을 수행합니다.
+              console.log("재생 시작!");
+            })
+            .catch((error) => {
+              // 오디오 재생 중 오류가 발생했을 때의 동작을 수행합니다.
+              console.log("재생 오류:", error);
+            });
+          setBgm(true);
+          setAudio(newAudio);
+        }
+      };
 
     return (
         <div className={"divRender"}>
             <div className={hamclick ? 'div_top_Click' : 'div_top_UnClick'}>
                 <input type={"image"} id={"out"} src={out} alt="out" style={{ opacity: isMouseMoving ? 1 : opacity }}/>
+                <div>
+                <button id='playbgm' onClick={playBgm}>
+                    {bgm ? '음악 정지' : '음악 재생'}
+                </button>
+                </div>
                 <input type={"image"} id={"ham"} src={ham} alt="tag" onClick={handleClick} style={{ opacity: isMouseMoving ? 1 : opacity }}/>
             </div>
             <div className={hamclick ? "div_bottom_Click" : "div_bottom_UnClick"}>

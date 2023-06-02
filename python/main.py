@@ -15,7 +15,7 @@ import subprocess
 global last_insert_id
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-openai.api_key = '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'
+openai.api_key = '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'
 
 # 번역 함수
 def translate_enTokr(text) :
