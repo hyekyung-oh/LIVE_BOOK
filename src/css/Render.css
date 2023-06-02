@@ -140,7 +140,7 @@
     background-color: violet;
 }
 /*  <------ 세팅 하단 바 태그 ------->  */
-#settingbar {
+#settingbar_UnClick {
     display: table-cell; /* 테이블 속성으로 사용하게 만들어줌 */
     position: relative;
     /*border: 2px solid red;*/
@@ -151,12 +151,25 @@
                             속성 때문에 한줄로 텍스트가 삐져나오기 때문에 꼭 줘야하는 속성 */
     text-align: left;
 }
-#settingbar > div { /* 아이콘 묶음 태그 */
+#settingbar_Click{
+    display: table-cell; /* 테이블 속성으로 사용하게 만들어줌 */
+    position: relative;
+    /*border: 2px solid red;*/
+    width: 70vw;
+    height: 6vh;
+    table-layout: fixed; /* 고정된 영역 이상으로 넓어지지 않도록 테이블을 고정하는 속성 */
+    word-break: break-all; /* 테이블을 고정하게되면 table 태그의 기본으로 주어져있는 word-break: normal; 
+                            속성 때문에 한줄로 텍스트가 삐져나오기 때문에 꼭 줘야하는 속성 */
+    text-align: left;
+}
+#settingbar_UnClick > div,
+#settingbar_Click > div { /* 아이콘 묶음 태그 */
     display: inline; /* 태그들을 나란히 정렬 */
     height: 100%;
     /*background: aliceblue; /* 간격과 영역을 보여주기 위한 속성 */
 }
-#settingbar > div > input { /* 각 아이콘 모양 */
+#settingbar_UnClick > div > input,
+#settingbar_Click > div > input { /* 각 아이콘 모양 */
     height: 100%;
     padding: 0 1.5vw;
     filter: invert(90%);
@@ -167,49 +180,18 @@
 #forward{
     margin-right: 23vw;
 }
-
-
-/*  <------ 책 아이콘 태그 ------->  */
-#book{
-    position: absolute;
-    bottom: 0.5vw;
-    left: 41.5vw;
-    width: 14vw;
-}
-/*  <------ 페이지 태그 ------->  */
-.Ofpages{
-    position: absolute;
-    width: 11vw;
-    height: 5.5vh;
-    margin-top: 88vh;
-    margin-left: 45vw;
-
-}
-#page{ /* 현재 페이지 수 */
-    display: inline;
-    font-size: 2.5vw;
-    float: left;
-    margin-left: 1vw;
-}
-
-#pages{ /* 전체 페이지 수 */
-    display: inline;
-    font-size: 2.5vw;
-    float: right;
-    margin-right: 1.5vw;
-}
 /*  <------ 음량 아이콘 태그 ------->  */
 #volume::before,
 #volume::after{
     clear: both;
 }
 #volume{
-    margin-left: 23vw;
+    float: right;
 }
 .control_volume { /*  음량조절 이벤트 창  */
     /* 음량조절 창 크기 */
-    width: 200px;
-    height: 130px;
+    width: 8vw;
+    height: 20vh;
   
     /* 위치 */
     
@@ -218,16 +200,38 @@
     /* top, bottom, left, right 는 브라우저 기준으로 작동한다. */
     /* translate는 본인의 크기 기준으로 작동한다. */
     position: absolute;
-    bottom: 60%;
-    right: 8%;
-    transform: translate(-30%, -30%);
+    bottom: 80%;
+    right: 8vw;
+    transform: translate(30%, 0%);
   
     /* 음량조절 창 디자인 */
     background-color: gray;
     opacity: 0.7;
     border: 2px solid black;
     border-radius: 1px;
-  } 
+} 
+.control_volume_Click { /*  음량조절 이벤트 창  */
+    /* 음량조절 창 크기 */
+    width: 8vw;
+    height: 20vh;
+  
+    /* 위치 */
+    
+    
+    /* 중앙 배치 */
+    /* top, bottom, left, right 는 브라우저 기준으로 작동한다. */
+    /* translate는 본인의 크기 기준으로 작동한다. */
+    position: absolute;
+    bottom: 80%;
+    right: 36vw;
+    transform: translate(30%, 0%);
+  
+    /* 음량조절 창 디자인 */
+    background-color: gray;
+    opacity: 0.7;
+    border: 2px solid black;
+    border-radius: 1px;
+} 
 
 /*  <------ 재생속도 아이콘 태그 ------->  */
 #speed::before,
@@ -239,26 +243,45 @@
 }
 .control_speed { /*  재생속도 이벤트 창  */
     /* 재생속도 창 크기 */
-    width: 150px;
-    height: 200px;
+    width: 4vw;
+    height: 20vh;
   
     /* 위치 */
-   
     
     /* top, bottom, left, right 는 브라우저 기준으로 작동한다. */
     /* translate는 본인의 크기 기준으로 작동한다. */
     position: absolute;
-    bottom: 60%;
-    right: 8%;
-    transform: translate(60%, -30%);
+    bottom: 80%;
+    right: 3.5vw;
+    transform: translate(60%, 0%);
   
     /* 재생속도 창 디자인 */
     background-color: gray;
     opacity: 0.7;
     border: 2px solid black;
     border-radius: 1px;
-  }
+}
+.control_speed_Click { /*  재생속도 이벤트 창  */
+    /* 재생속도 창 크기 */
+    width: 4vw;
+    height: 20vh;
   
+    /* 위치 */
+    
+    /* top, bottom, left, right 는 브라우저 기준으로 작동한다. */
+    /* translate는 본인의 크기 기준으로 작동한다. */
+    position: absolute;
+    bottom: 80%;
+    right: 31.5vw;
+    transform: translate(60%, 0%);
+  
+    /* 재생속도 창 디자인 */
+    background-color: gray;
+    opacity: 0.7;
+    border: 2px solid black;
+    border-radius: 1px;
+}
+
 #contents{ /* 페이지 본문 내용 디자인 */
     /* border: 2px solid aquamarine; */
     border: 5px solid lightgray;
@@ -289,7 +312,7 @@
     border-radius: 10px;
     padding: 5px;
     margin-top: 90.5vh;
-    margin-left: 12vw;
+    margin-left: 12.5vw;
     font-size: 20px;
     /* background-color: beige; */
     position: absolute;
