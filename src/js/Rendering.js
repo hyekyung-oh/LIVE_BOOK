@@ -20,9 +20,12 @@ const Render=() => {
         page: 1,
         img_path: "",
         final_page:1,
+        state:0,
     });
 
-    const { volumeclick, speedclick, hamclick, isMouseMoving, opacity, delay, playing, contents, page ,img_path,final_page } = clicks;
+    
+    const { volumeclick, speedclick, hamclick, isMouseMoving,
+         opacity, delay, playing, contents, page ,img_path,final_page,state } = clicks;
     
     // 플라스크로 연 서버로부터 json파일을 불러옴
     useEffect(() => {
@@ -81,18 +84,20 @@ const Render=() => {
         if(page < final_page){
             setClicks(prevState => ({
                 ...prevState,
-                page: prevState.page + 1
+                page: prevState.page + 1,
+                state: (page+1)/final_page*100
             }));
+            
         } else{
             alert("마지막 페이지 입니다.")
         }
     };
-
     const beforePage = () => {
         if (page > 1) {
             setClicks(prevState => ({
                 ...prevState,
-                page: prevState.page - 1
+                page: prevState.page - 1,
+                state: (page+1)/final_page*100
             }));
         } else{
             alert("첫 페이지 입니다.")
@@ -133,7 +138,6 @@ const Render=() => {
         }));
     };
 
-
     return (
         <div className={"divRender"}>
             <div className={hamclick ? 'div_top_Click' : 'div_top_UnClick'}>
@@ -148,7 +152,7 @@ const Render=() => {
                 <div className={"divbox"} style={{ opacity: isMouseMoving ? 1 : opacity }}>
                     <div className={"playbarBox"}> 
                         <section id={"playbar"}>
-                            <div id={"controlPlaybar"} style={{width: "20%"}}></div>
+                            <div id={"controlPlaybar"} style={{width: state+"%"}}></div>
                         </section>
                     </div>
                     <div className={"settingBox"}>
@@ -179,7 +183,7 @@ const Render=() => {
                  {/* 본문 내용 출력부 */}
                  <div id={hamclick ? "contents" : ""} style={{ opacity: hamclick ? 1 : 0 }}>
                     <div id={"contents_text"} style={{overflow: "auto"}}>{contents}</div> 
-                    <div id={"contents_page"}>{page}페이지</div> 
+                    <div id={"contents_page"}>{page} / {final_page}</div> 
                 </div>
             </div>            
         </div>
