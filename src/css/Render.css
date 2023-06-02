@@ -119,11 +119,21 @@
     background-color: #5f578a;
 }
 /*  <------ 진행률 바 태그 ------->  */
-#playbar {
+.playbarBox{
     position: relative;
-    /*border: 2px solid blue;*/
+    /* border: 2px solid blue; */
     width: 98vw;
     height: 2vh;
+}
+#playbar_UnClick{
+    width: 100vw;
+    /* border: 2px solid blue; */
+    height: 2vh;
+}
+#playbar_Click{
+    /* border: 2px solid blue; */
+    height: 2vh;
+    width: 70vw;
 }
 #controlPlaybar { /* 진행률 태그 */
     height: 100%;
@@ -258,6 +268,7 @@
     z-index: 2;
     background-color: azure;
 
+    text-align: left;
 }
 #contents_text{
     border-bottom: 5px solid lightgray;;
@@ -268,6 +279,7 @@
     /* font-family: cursive; */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: azure;
+    letter-spacing: 2.5px;
 }
 #contents_page{
     /* border: 2px solid olivedrab; */

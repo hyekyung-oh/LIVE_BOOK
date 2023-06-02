@@ -16,7 +16,7 @@ const Render=() => {
         opacity: 1, // 투명도 조절//
         delay: 2000, // 딜레이 상태 추가
         playing: true,
-        contents: "", // 텍스트 상태 추가
+        contents: [], // 텍스트 상태 추가
         page: 1,
         img_path: "",
         final_page:1,
@@ -32,9 +32,12 @@ const Render=() => {
         axios
             .get(`http://localhost:4000/play/${BookID}`)
             .then((response) => {
+                const text = response.data[page - 1]["team3_text"];
+                const slicedText = text.split("\n"); // 개행 문자를 기준으로 텍스트를 자름
                 setClicks(prevState => ({
                     ...prevState,
-                    contents: response.data[page-1]["team3_text"],
+                    
+                    contents: slicedText,
                     img_path: "temp/"+response.data[page-1]["team3_imgPath"]
                     .split("temp/")[1].split("/")[0]+"/"+response.data[page-1]["team3_imgPath"]
                     .split("temp/")[1].split("/")[0]+"_"+response.data[page-1]["team3_imgPath"]
@@ -97,7 +100,7 @@ const Render=() => {
             setClicks(prevState => ({
                 ...prevState,
                 page: prevState.page - 1,
-                state: (page+1)/final_page*100
+                state: (page)/final_page*100
             }));
         } else{
             alert("첫 페이지 입니다.")
@@ -151,7 +154,7 @@ const Render=() => {
                 {/* 진행률 상태바 */}
                 <div className={"divbox"} style={{ opacity: isMouseMoving ? 1 : opacity }}>
                     <div className={"playbarBox"}> 
-                        <section id={"playbar"}>
+                        <section id={hamclick ? "playbar_Click" : "playbar_UnClick"}>
                             <div id={"controlPlaybar"} style={{width: state+"%"}}></div>
                         </section>
                     </div>
@@ -182,7 +185,13 @@ const Render=() => {
             <div className={hamclick ? "div_right_Click" : "" }>
                  {/* 본문 내용 출력부 */}
                  <div id={hamclick ? "contents" : ""} style={{ opacity: hamclick ? 1 : 0 }}>
-                    <div id={"contents_text"} style={{overflow: "auto"}}>{contents}</div> 
+                    <div id={"contents_text"} style={{ overflow: "auto" }}>
+                    {/* 배열로 된 텍스트를 맵 함수를 사용하여 출력 */}
+                    {contents.map((text, index) => (
+                        <span key={index}>{text}<br /></span>
+                    ))}
+                    </div>
+
                     <div id={"contents_page"}>{page} / {final_page}</div> 
                 </div>
             </div>            
