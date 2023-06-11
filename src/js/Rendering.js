@@ -23,18 +23,6 @@ const Render=() => {
         final_page:1,
         state:1,
     });
-
-    useEffect(() => {
-        // 페이지 이동 시 음악 재생 종료 및 Audio 객체 정리
-        return () => {
-          if (bgm && audio) {
-            console.log("재생 종료!");
-            audio.pause();
-            setAudio(null);
-            setBgm(false);
-          }
-        };
-      }, []);
     
     const { volumeclick, speedclick, hamclick, isMouseMoving,
          opacity, delay, playing, contents, page ,img_path,final_page,state, tense } = clicks;
@@ -63,11 +51,16 @@ const Render=() => {
             });
     }, [page]); // end useEffect()
 
-
-    const [Music, setMusic] = useState("");
-
     // 음악 파일 리스트를 받아온다.
     useEffect(() => {
+
+        // 페이지 이동시 기존 음악 종료
+        if (bgm && audio) {
+            console.log("재생 종료!");
+            audio.pause();
+            setBgm(false);
+          }
+
         let setTense = "";
         if(tense === "슬픔") {setTense = "sad";} 
         else if(tense === "고요") {setTense = "slience";}
@@ -80,6 +73,7 @@ const Render=() => {
         axios
         .get(`http://localhost:4000/bgm/${setTense}`) // Tense 값을 사용하여 요청
         .then((response) => {
+
             const bgmFiles = response.data;
             console.log(bgmFiles)
             let music = "";
@@ -87,10 +81,16 @@ const Render=() => {
             console.log(Index)
             music = bgmFiles[Index];
             music = music.slice(12);
+
             console.log(music)
-            setMusic(music);
+
+            const newAudio = new Audio(music);
+            newAudio.autoplay = true;
+            newAudio.loop = true;
+            setBgm(true);
+            setAudio(newAudio);
         });
-    }, [tense]); // end useEffect()
+    }, [tense, page]); // end useEffect()
 
     // 이벤트 핸들링
     useEffect(() => {
@@ -127,6 +127,7 @@ const Render=() => {
         clearTimeout(timeid);
         };
     }, [delay]); // end useEffect()
+    
 
     const nextPage = () => {
         if(page < final_page){
@@ -190,26 +191,16 @@ const Render=() => {
     const [audio, setAudio] = useState(null);
 
     const playBgm = () => {
-        if (bgm) {
-          if (audio) {
-            console.log("재생 종료!");
-            audio.pause();
-            setAudio(null);
-          }
+        if (bgm && audio) {
+          console.log("재생 정지!");
+          audio.pause();
           setBgm(false);
         } else {
-          const newAudio = new Audio(Music);
-          newAudio.play()
-            .then(() => {
-              // 재생이 시작되었을 때의 동작을 수행합니다.
-              console.log("재생 시작!");
-            })
-            .catch((error) => {
-              // 오디오 재생 중 오류가 발생했을 때의 동작을 수행합니다.
-              console.log("재생 오류:", error);
-            });
-          setBgm(true);
-          setAudio(newAudio);
+          if (audio) {
+            console.log("재생 중!");
+            audio.play();
+            setBgm(true);
+          }
         }
       };
 
