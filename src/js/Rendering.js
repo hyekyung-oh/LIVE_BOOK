@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Render=() => {
     const BookID = window.location.href.split("=")[1];
-    const { out, ham, back, play, stop, forward, volume, speed } = logos;
+    const { out, ham, back, play, stop, forward, volume, speed , mute } = logos;
 
     // 상태값 
     const [clicks, setClicks] = useState({
@@ -223,9 +223,9 @@ const Render=() => {
                 </Link>
 
                 <div>
-                <button id='playbgm' onClick={playBgm}>
+                {/* <button id='playbgm' onClick={playBgm}>
                     {bgm ? '음악 정지' : '음악 재생'}
-                </button>
+                </button> */}
                 </div>
                 <input type={"image"} id={"ham"} src={ham} alt="tag" onClick={handleClick} style={{ opacity: isMouseMoving ? 1 : opacity }}/>
             </div>
@@ -252,7 +252,7 @@ const Render=() => {
                             <div><input type={"image"} id={"speed"} src={speed} alt="speed" onClick={speedhandle}/></div>
                                 
                             {/* 볼륨 조절 */}
-                            <div><input type={"image"} id={"volume"} src={volume} alt="volume" onClick={volumehandle}/></div>
+                            <div><input type={"image"} id={"volume"} src={bgm ? volume : mute} alt="volume" onClick={playBgm}/></div>
                             
                         </div>
                     </div>
