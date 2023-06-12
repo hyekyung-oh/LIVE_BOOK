@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Render=() => {
     const BookID = window.location.href.split("=")[1];
-    const { out, ham, back, play, stop, forward, volume, speed } = logos;
+    const { out, ham, back, play, stop, forward, volume, speed , mute } = logos;
 
     // 상태값 
     const [clicks, setClicks] = useState({
@@ -23,16 +23,17 @@ const Render=() => {
         final_page:1,
         state:1,
     });
-
     
     const { volumeclick, speedclick, hamclick, isMouseMoving,
-         opacity, delay, playing, contents, page ,img_path,final_page,state } = clicks;
+         opacity, delay, playing, contents, page ,img_path,final_page,state, tense } = clicks;
     
-    // 플라스크로 연 서버로부터 json파일을 불러옴
+    //서버로부터 json파일을 불러옴
     useEffect(() => {
         axios
             .get(`http://localhost:4000/play/${BookID}`)
             .then((response) => {
+                const Tense = response.data[page-1]["team3_textTense"];
+                console.log(Tense)
                 const text = response.data[page - 1]["team3_text"];
                 const slicedText = text.split("\n"); // 개행 문자를 기준으로 텍스트를 자름
                 setClicks(prevState => ({
@@ -43,10 +44,53 @@ const Render=() => {
                     .split("temp/")[1].split("/")[0]+"/"+response.data[page-1]["team3_imgPath"]
                     .split("temp/")[1].split("/")[0]+"_"+response.data[page-1]["team3_imgPath"]
                     .split(response.data[page-1]["team3_imgPath"].split("temp/")[1].split("/")[0]+"/")[1],
-                    final_page: response.data[response.data.length-1]["team3_page_number"] - response.data[0]["team3_page_number"] +1
+                    final_page: response.data[response.data.length-1]["team3_page_number"] - response.data[0]["team3_page_number"] +1,
+                    state: page/final_page*100,
+                    tense: Tense,
                 }));
             });
     }, [page]); // end useEffect()
+
+    // 음악 파일 리스트를 받아온다.
+    useEffect(() => {
+
+        // 페이지 이동시 기존 음악 종료
+        if (bgm && audio) {
+            console.log("재생 종료!");
+            audio.pause();
+            setBgm(false);
+          }
+
+        let setTense = "";
+        if(tense === "슬픔") {setTense = "sad";} 
+        else if(tense === "고요") {setTense = "slience";}
+        else if(tense === "공포") {setTense = "scary";} 
+        else if(tense === "긴장") {setTense = "nervous";} 
+        else if(tense === "신남") {setTense = "exciting";} 
+        else if(tense === "실패") {setTense = "fail";} 
+        else if(tense === "신비") {setTense = "mystery";} 
+        else if(tense === "행복") { setTense = "happy";}
+        axios
+        .get(`http://localhost:4000/bgm/${setTense}`) // Tense 값을 사용하여 요청
+        .then((response) => {
+
+            const bgmFiles = response.data;
+            console.log(bgmFiles)
+            let music = "";
+            let Index = Math.floor(Math.random() * bgmFiles.length);
+            console.log(Index)
+            music = bgmFiles[Index];
+            music = music.slice(12);
+
+            console.log(music)
+
+            const newAudio = new Audio(music);
+            newAudio.autoplay = true;
+            newAudio.loop = true;
+            setBgm(true);
+            setAudio(newAudio);
+        });
+    }, [tense, page]); // end useEffect()
 
     // 이벤트 핸들링
     useEffect(() => {
@@ -83,6 +127,7 @@ const Render=() => {
         clearTimeout(timeid);
         };
     }, [delay]); // end useEffect()
+    
 
     const nextPage = () => {
         if(page < final_page){
@@ -141,13 +186,47 @@ const Render=() => {
             playing: !prevState.playing
         }));
     };
+    
+    const [bgm, setBgm] = useState(false);
+    const [audio, setAudio] = useState(null);
+
+    const playBgm = () => {
+        if (bgm && audio) {
+          console.log("재생 정지!");
+          audio.pause();
+          setBgm(false);
+        } else {
+          if (audio) {
+            console.log("재생 중!");
+            audio.play();
+            setBgm(true);
+          }
+        }
+      };
+
+    const movePageMusicOff = () => {
+        if(audio) {
+            console.log("재생 종료!");
+            audio.pause();
+            setAudio(null);
+        }
+        else {
+
+        }
+    }
 
     return (
         <div className={"divRender"}>
             <div className={hamclick ? 'div_top_Click' : 'div_top_UnClick'}>
                 <Link to={"/"}>
-                    <input type={"image"} id={"out"} src={out} alt="out" style={{ opacity: isMouseMoving ? 1 : opacity }}/>
+                    <input type={"image"} id={"out"} src={out} alt="out" onClick={movePageMusicOff}  style={{ opacity: isMouseMoving ? 1 : opacity }}/>
                 </Link>
+
+                <div>
+                {/* <button id='playbgm' onClick={playBgm}>
+                    {bgm ? '음악 정지' : '음악 재생'}
+                </button> */}
+                </div>
                 <input type={"image"} id={"ham"} src={ham} alt="tag" onClick={handleClick} style={{ opacity: isMouseMoving ? 1 : opacity }}/>
             </div>
             <div className={hamclick ? "div_bottom_Click" : "div_bottom_UnClick"}>
@@ -173,7 +252,7 @@ const Render=() => {
                             <div><input type={"image"} id={"speed"} src={speed} alt="speed" onClick={speedhandle}/></div>
                                 
                             {/* 볼륨 조절 */}
-                            <div><input type={"image"} id={"volume"} src={volume} alt="volume" onClick={volumehandle}/></div>
+                            <div><input type={"image"} id={"volume"} src={bgm ? volume : mute} alt="volume" onClick={playBgm}/></div>
                             
                         </div>
                     </div>
