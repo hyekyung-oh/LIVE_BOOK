@@ -43,8 +43,7 @@ const Render=() => {
                     .split("temp/")[1].split("/")[0]+"/"+response.data[page-1]["team3_imgPath"]
                     .split("temp/")[1].split("/")[0]+"_"+response.data[page-1]["team3_imgPath"]
                     .split(response.data[page-1]["team3_imgPath"].split("temp/")[1].split("/")[0]+"/")[1],
-                    final_page: response.data[response.data.length-1]["team3_page_number"] - response.data[0]["team3_page_number"] +1,
-                    state: page/final_page*100
+                    final_page: response.data[response.data.length-1]["team3_page_number"] - response.data[0]["team3_page_number"] +1
                 }));
             });
     }, [page]); // end useEffect()
