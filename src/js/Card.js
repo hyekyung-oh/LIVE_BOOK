@@ -12,22 +12,22 @@ const MediaCard = memo(({ id,title, author, genre, thumnail }) => {
 
 
     return (
-      <Card sx={{ width: "270px",height:"400px",  borderRadius:"2vw/3vh"}}>
+      <Card sx={{ width: "300px", height:"460px",  borderRadius:"25px/30px", boxShadow: "10"}}>
         <CardMedia
           component="img"
-          sx={{ height: "34vh" }}
+          sx={{ height: "340px" }}
           alt={thumnail.slice(10,)}
           src={thumnail.slice(10,)}
           title="sin"
         />
-        <CardContent sx={{height:"10vh"}}>
-          <Typography gutterBottom variant="h6" component="div" fontSize={"18px"}>
+        <CardContent sx={{height:"44px"}}>
+          <Typography gutterBottom variant="h6" component="div" fontSize={"18px"}  style={{fontFamily : 'Noto Sans, Noto Sans KR', fontWeight: "800"}}>
             {title}
           </Typography>
-          <Typography variant="body2" color="text.secondary" fontSize={"12px"} style={{float:"left"}}>
+          <Typography variant="body2" color="text.secondary" fontSize={"12px"} style={{float:"left", fontFamily : 'Noto Sans, Noto Sans KR', fontWeight: "500"}}>
             작가 : {author}
           </Typography>
-          <Typography variant='body2' color="text.secondary" fontSize={"12px"}>
+          <Typography variant='body2' color="text.secondary" fontSize={"12px"} style={{fontFamily : 'Noto Sans, Noto Sans KR', fontWeight: "500"}}>
             분류 : {genre}
           </Typography>
         </CardContent>

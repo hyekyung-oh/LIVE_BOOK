@@ -23,7 +23,7 @@ const SearchBookCount =memo(({text, option})=>{
             return book.team3_BooksTitle.toLocaleLowerCase().includes(text.toLocaleLowerCase())}
     )
     return(
-        <div style={{fontSize:"16px", color:"gray"}}>
+        <div style={{fontSize:"16px", color:"gray", fontFamily : 'Noto Sans, Noto Sans KR', fontWeight: "300"}}>
             {filterTitle.length ?
             <span>검색결과 : {filterTitle.length} 개</span>
             : <span>검색결과 없음</span>
