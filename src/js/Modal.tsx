@@ -16,11 +16,13 @@ export const SearchModalBox = styled.div`
 
 // 여기에 만들고 싶은 모달 스타일 구현
 export const SearchModalContent = styled.div`
-    padding: 1.5rem 3rem;
-    width: 40.125rem;
-    border-radius: 0.313rem;
+    padding: 1.0rem 1.0rem;
+    width: 42.5rem;
+    border-radius: 0.8rem;
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
+    justify-content: center;
+    align-items: center;
 }
 `

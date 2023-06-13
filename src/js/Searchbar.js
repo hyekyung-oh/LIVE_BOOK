@@ -13,11 +13,6 @@ const Search1 = styled('div')(({ theme }) => ({
     boxShadow: "0 0 0 3px #eede69",
     backgroundColor: alpha(theme.palette.common.white, 0.15),
     width: "100%",
-    padding: "5px",
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-      padding: 0,
-    },
   }));
   
 // GOOGLE 스타일의 검색창 적용 시 사용(현재 적용)
@@ -28,11 +23,6 @@ const Search2 = styled('div')(({ theme }) => ({
     boxShadow: theme.shadows[5],
     backgroundColor: alpha(theme.palette.common.white, 0.15),
     width: "100%",
-    padding: "5px",
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-      padding: 0,
-    },
   }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -42,7 +32,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   pointerEvents: 'none',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'center'
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -71,7 +61,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const SearchBar = memo(({text, onChange})=> {
     return (
       <Box sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-            <Search2>
+            <Search2 sx={{display: "flex", justifyContent: "start", alignItems: "center", padding: "5px 0"}}>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
@@ -80,6 +70,7 @@ const SearchBar = memo(({text, onChange})=> {
                 inputProps={{ 'aria-label': 'search' }}
                 value={text}
                 onChange={onChange}
+                
               />
             </Search2>
       </Box>
