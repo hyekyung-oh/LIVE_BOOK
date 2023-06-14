@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import logos from './logodata';
 import "../css/Render.css";
@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 const Render=() => {
     const BookID = window.location.href.split("=")[1];
     const { out, ham, back, play, stop, forward, volume, speed , mute } = logos;
+
+    const synthRef = React.useRef(window.speechSynthesis);
 
     // 상태값 
     const [clicks, setClicks] = useState({
@@ -35,7 +37,10 @@ const Render=() => {
                 const Tense = response.data[page-1]["team3_textTense"];
                 console.log(Tense)
                 const text = response.data[page - 1]["team3_text"];
-                const slicedText = text.split("\n"); // 개행 문자를 기준으로 텍스트를 자름
+                const slicedText = text.replace(/\. /g, '.\n\n')
+                                        .replace(/\? /g, '?\n\n')
+                                        .replace(/! /g, '!\n\n')
+                                        .split("\n"); // 개행 문자를 기준으로 텍스트를 자름
                 setClicks(prevState => ({
                     ...prevState,
                     
@@ -48,6 +53,15 @@ const Render=() => {
                     state: page/final_page*100,
                     tense: Tense,
                 }));
+                if (playing) {
+                    // 말하기 시작
+                    synthRef.current.cancel();
+                    const utterance = new SpeechSynthesisUtterance(slicedText);
+                    synthRef.current.speak(utterance);
+                    utterance.onend = function (event) {
+                        nextPage();
+                    };
+                }
             });
     }, [page]); // end useEffect()
 
@@ -136,7 +150,7 @@ const Render=() => {
                 page: prevState.page + 1,
                 state: (page+1)/final_page*100
             }));
-            
+            synthRef.current.cancel();
         } else{
             alert("마지막 페이지 입니다.")
         }
@@ -148,6 +162,7 @@ const Render=() => {
                 page: prevState.page - 1,
                 state: (page)/final_page*100
             }));
+            synthRef.current.cancel();
         } else{
             alert("첫 페이지 입니다.")
         }
@@ -181,6 +196,16 @@ const Render=() => {
     };
     
     const playClick = () => {
+        if(!playing){
+            synthRef.current.cancel();
+            const utterance = new SpeechSynthesisUtterance(contents);
+            synthRef.current.speak(utterance);
+            utterance.onend = function(event) {
+                nextPage();
+            };
+        }else{
+            synthRef.current.cancel();
+        }
         setClicks(prevState => ({
             ...prevState,
             playing: !prevState.playing
@@ -205,6 +230,7 @@ const Render=() => {
       };
 
     const movePageMusicOff = () => {
+        synthRef.current.cancel();
         if(audio) {
             console.log("재생 종료!");
             audio.pause();
@@ -245,7 +271,7 @@ const Render=() => {
                             {/* 한 페이지 이전으로 넘기기 */}
                             <div><input type={"image"} id={"backward"} src={back} alt="back" onClick={beforePage} /></div>
                             {/* 재생 / 일시정지 */}
-                            <div><input type={"image"} id={"play"} src={playing ? play : stop} alt="play" onClick={playClick}/></div>
+                            <div><input type={"image"} id={"play"} src={playing ? stop : play} alt="play" onClick={playClick}/></div>
                             {/* 한 페이지 다음으로 넘기기 */}
                             <div><input type={"image"} id={"forward"} src={forward} alt="forward" onClick={nextPage} /></div>
                             {/* 배속 조절 */}
