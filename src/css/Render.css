@@ -273,6 +273,9 @@
     border: 2px solid black;
     border-radius: 1px;
 }
+.note{
+    opacity: 0%;
+}
 
 #contents{ /* 페이지 본문 내용 디자인 */
     /* border: 2px solid aquamarine; */

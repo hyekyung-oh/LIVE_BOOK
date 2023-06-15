@@ -39,14 +39,17 @@ const Render=() => {
         bgm: false, // bgm 재생 여부
         audio: null, // bgm 소리
         tense: "", // 책의 분위기
+        playbackSpeed: 1.0,
+        playVol: 1.0,
     });
     
     // 상태값 정의
     const { speedclick, hamclick, isMouseMoving,
          opacity, delay, playing, contents, page, 
-         img_path,final_page,state, tense, bgm, audio } = clicks;
+         img_path,final_page,state, tense, bgm, audio
+         , playbackSpeed , playVol } = clicks;
     
-    // tts 기능
+    // tts 기능                                                     
     //서버로부터 json파일을 불러옴
     useEffect(() => {
         axios
@@ -73,7 +76,9 @@ const Render=() => {
                 if (playing) {
                     // 말하기 시작
                     synthRef.current.cancel();
-                    const utterance = new SpeechSynthesisUtterance(slicedText);
+                    const utterance = new SpeechSynthesisUtterance(slicedText); 
+                    utterance.volume = playVol;
+                    utterance.rate = playbackSpeed;
                     synthRef.current.speak(utterance);
                     utterance.onend = function (event) {
                         nextPage();
@@ -81,6 +86,17 @@ const Render=() => {
                 }
             });
     }, [page]); // end useEffect()
+
+    //볼륨 설정기능
+    useEffect(() => {
+        if(playing){
+            synthRef.current.pause();
+            synthRef.current.volume = playVol;
+            synthRef.current.rate = playbackSpeed;
+            synthRef.current.resume();
+        }
+        // volume 또는 playbackSpeed 상태가 변경될 때마다 호출됨
+    }, [playVol, playbackSpeed]);
 
     // bgm 기능
     // 음악 파일 리스트를 받아온다.
@@ -231,6 +247,8 @@ const Render=() => {
         if(!playing){
             synthRef.current.cancel();
             const utterance = new SpeechSynthesisUtterance(contents);
+            utterance.volume = playVol;
+            utterance.rate = playbackSpeed;
             synthRef.current.speak(utterance);
             utterance.onend = function(event) {
                 nextPage();
@@ -276,6 +294,23 @@ const Render=() => {
             }));
         }
     }
+    const handleVolumeChange = (event) => {
+        const newVolume = event.target.value;
+        setClicks(prevState => ({
+            ...prevState,
+            playVol: newVolume
+        }));
+        // 음악 재생 컴포넌트에게 소리 크기 업데이트 전달
+    };
+
+    const handlePlaybackSpeedChange = (event) => {
+        const newPlaybackSpeed = parseFloat(event.target.value);
+        setClicks(prevState => ({
+            ...prevState,
+            playbackSpeed: newPlaybackSpeed
+        }));
+        // 음악 재생 컴포넌트에게 재생 속도 업데이트 전달
+    };
 
     return (
         <div className={"divRender"}>
@@ -303,9 +338,9 @@ const Render=() => {
                             <FastRewindRoundedIcon id={"backward"} onClick={beforePage} sx={{marginLeft: "0.5vw", fontSize: 70, color: "white", cursor: "pointer"}} />
                             
                             {/* 재생 / 일시정지 */}
-                            {playing ? <PlayArrowRoundedIcon id={"play"} onClick={playClick} sx={{fontSize: 73, color: "white", cursor: "pointer"}} /> 
+                            {playing ? <PauseRoundedIcon id={"play"} onClick={playClick} sx={{fontSize: 73, color: "white", cursor: "pointer"}} />
                             : 
-                            <PauseRoundedIcon id={"play"} onClick={playClick} sx={{fontSize: 73, color: "white", cursor: "pointer"}} />}
+                            <PlayArrowRoundedIcon id={"play"} onClick={playClick} sx={{fontSize: 73, color: "white", cursor: "pointer"}} /> }
                             
                             {/* 한 페이지 다음으로 넘기기 */}
                             <FastForwardRoundedIcon id={"forward"} onClick={nextPage} sx={{fontSize: 70, color: "white", cursor: "pointer"}} />
@@ -319,7 +354,12 @@ const Render=() => {
                             <VolumeOffRoundedIcon id={"volume"} onClick={playBgm} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />}
                         </div>
                     </div>
-                        <div className={speedclick ? "" : ( hamclick ? "control_speed_Click" : "control_speed")} ></div>
+                        <div className={speedclick ? "" : ( hamclick ? "control_speed_Click" : "control_speed")} >
+                            <input className={speedclick ? "note" : ( hamclick ? "" : "")}
+                                type="range" min="0.2" max="2" step="0.1" value={playbackSpeed} onChange={handlePlaybackSpeedChange}/>
+                            <input className={speedclick ? "note" : ( hamclick ? "" : "")}
+                                type="range" min="0" max="1" step="0.01" value={playVol} onChange={handleVolumeChange}/>
+                        </div>
                         <div className={playBgm ? "" :( hamclick ? "control_volume_Click" : "control_volume")} ></div> 
                 </div>
             </div>
