@@ -4,7 +4,6 @@ const mysql   = require("mysql2");   // npm i mysql2 | yarn add mysql2
 const app     = express();
 const PORT    = 4000; // 포트번호 설정
 const fs = require('fs');
-const { Zoom } = require("@mui/material");
 
 // MySQL 연결.
 const db = mysql.createPool({
