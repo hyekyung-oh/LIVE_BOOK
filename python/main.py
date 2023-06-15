@@ -370,4 +370,3 @@ update_summarize_data = print_summarize(doc, 6, 7)
 
 # 추출한 정보를 입력 후2, 그 행에 요약정보(Info)를 추가함
 Insert_Sql(PDF_FILE_PATH, doc, extractData, update_summarize_data)
-

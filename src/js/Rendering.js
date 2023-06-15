@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import logos from './logodata';
 import "../css/Render.css";
 import { Link } from 'react-router-dom';
+
+// icon 모음
+import FastRewindRoundedIcon from '@mui/icons-material/FastRewindRounded';
+import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
+import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
+import FastForwardRoundedIcon from '@mui/icons-material/FastForwardRounded';
+import VolumeUpRoundedIcon from '@mui/icons-material/VolumeUpRounded';
+import VolumeOffRoundedIcon from '@mui/icons-material/VolumeOffRounded';
+import SlowMotionVideoRoundedIcon from '@mui/icons-material/SlowMotionVideoRounded';
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+
 
 // 책 재생 컴포넌트
 // 책에 대한 고유값을 가져와 그 책에 대한 이미지와 tts, bgm을 재생할 수 있다.
 const Render=() => {
     // 책에 대한 고유값
     const BookID = window.location.href.split("=")[1];
-    // 아이콘
-    const { out, ham, back, play, stop, forward, volume, speed , mute } = logos;
 
     const synthRef = React.useRef(window.speechSynthesis);
 
@@ -272,9 +281,10 @@ const Render=() => {
         <div className={"divRender"}>
             <div className={hamclick ? 'div_top_Click' : 'div_top_UnClick'}>
                 <Link to={"/"}>
-                    <input type={"image"} id={"out"} src={out} alt="out" onClick={movePageMusicOff}  style={{ opacity: isMouseMoving ? 1 : opacity }}/>
+                    <LogoutRoundedIcon id={"out"} onClick={movePageMusicOff} style={{opacity: isMouseMoving ? 1 : opacity}} sx={{marginLeft: "0.5vw", fontSize: 65, color: "white", cursor: "pointer"}} />
                 </Link>
-                <input type={"image"} id={"ham"} src={ham} alt="tag" onClick={handleClick} style={{ opacity: isMouseMoving ? 1 : opacity }}/>
+                {/* 햄버거 버튼 */}
+                <MenuRoundedIcon id={"ham"} onClick={handleClick} style={{opacity: isMouseMoving ? 1 : opacity}} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />
             </div>
             <div className={hamclick ? "div_bottom_Click" : "div_bottom_UnClick"}>
                 {/* set background-image */}
@@ -290,17 +300,23 @@ const Render=() => {
                     <div className={"settingBox"}>
                         <div id={hamclick ? "settingbar_Click" : "settingbar_UnClick"}>
                             {/* 한 페이지 이전으로 넘기기 */}
-                            <div><input type={"image"} id={"backward"} src={back} alt="back" onClick={beforePage} /></div>
+                            <FastRewindRoundedIcon id={"backward"} onClick={beforePage} sx={{marginLeft: "0.5vw", fontSize: 70, color: "white", cursor: "pointer"}} />
+                            
                             {/* 재생 / 일시정지 */}
-                            <div><input type={"image"} id={"play"} src={playing ? stop : play} alt="play" onClick={playClick}/></div>
+                            {playing ? <PlayArrowRoundedIcon id={"play"} onClick={playClick} sx={{fontSize: 73, color: "white", cursor: "pointer"}} /> 
+                            : 
+                            <PauseRoundedIcon id={"play"} onClick={playClick} sx={{fontSize: 73, color: "white", cursor: "pointer"}} />}
+                            
                             {/* 한 페이지 다음으로 넘기기 */}
-                            <div><input type={"image"} id={"forward"} src={forward} alt="forward" onClick={nextPage} /></div>
+                            <FastForwardRoundedIcon id={"forward"} onClick={nextPage} sx={{fontSize: 70, color: "white", cursor: "pointer"}} />
+                            
                             {/* 배속 조절 */}
-                            <div><input type={"image"} id={"speed"} src={speed} alt="speed" onClick={speedhandle}/></div>
+                            <SlowMotionVideoRoundedIcon id={"speed"} onClick={speedhandle} sx={{marginLeft: "2vw", marginRight: "0.5vw", fontSize: 65, color: "white", cursor: "pointer"}} />
                                 
                             {/* 볼륨 조절 */}
-                            <div><input type={"image"} id={"volume"} src={bgm ? volume : mute} alt="volume" onClick={playBgm}/></div>
-                            
+                            {bgm ? <VolumeUpRoundedIcon id={"volume"} onClick={playBgm} sx={{fontSize: 65, color: "white", cursor: "pointer"}} /> 
+                            : 
+                            <VolumeOffRoundedIcon id={"volume"} onClick={playBgm} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />}
                         </div>
                     </div>
                         <div className={speedclick ? "" : ( hamclick ? "control_speed_Click" : "control_speed")} ></div>

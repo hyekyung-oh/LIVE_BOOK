@@ -63,7 +63,6 @@ const SearchBar = memo(({text, onChange})=> {
                 inputProps={{ 'aria-label': 'search' }}
                 value={text}
                 onChange={onChange}
-                
               />
             </Search2>
       </Box>
