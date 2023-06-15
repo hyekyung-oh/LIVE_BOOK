@@ -82,22 +82,30 @@ const Render=() => {
     useEffect(() => {
         if (playing) {
             // 말하기 시작
-            synthRef.current.cancel();
-            const utterance = new SpeechSynthesisUtterance(contents[playstate]); 
-            utterance.volume = playVol;
-            utterance.rate = playbackSpeed;
-            synthRef.current.speak(utterance);
-            utterance.onend = function (event) {
-                if(playstate === contents.length){
-                    nextPage();
-                }else{
-                    setClicks(prevState => ({
-                        ...prevState,
-                        playstate: prevState.playstate + 1,
-                        state: (page)/final_page*100 + (prevState.playstate + 1)/contents.length*(1/final_page*100)
-                    }));
-                }
-            };
+            if(contents[playstate]){
+                synthRef.current.cancel();
+                const utterance = new SpeechSynthesisUtterance(contents[playstate]); 
+                utterance.volume = playVol;
+                utterance.rate = playbackSpeed;
+                synthRef.current.speak(utterance);
+                utterance.onend = function (event) {
+                    if(playstate > contents.length){
+                        nextPage();
+                    }else{
+                        setClicks(prevState => ({
+                            ...prevState,
+                            playstate: prevState.playstate + 1,
+                            state: (page)/final_page*100 + (prevState.playstate + 1)/contents.length*(1/final_page*100)
+                        }));
+                    }
+                };
+            }else{
+                setClicks(prevState => ({
+                    ...prevState,
+                    playstate: prevState.playstate + 1,
+                    state: (page)/final_page*100 + (prevState.playstate + 1)/contents.length*(1/final_page*100)
+                }));
+            }
         }
     }, [playstate, playing]);
 
