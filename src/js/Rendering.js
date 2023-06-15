@@ -3,7 +3,7 @@ import axios from 'axios';
 import "../css/Render.css";
 import { Link } from 'react-router-dom';
 import {FastRewindRoundedIcon, PlayArrowRoundedIcon, PauseRoundedIcon, FastForwardRoundedIcon, 
-        VolumeUpRoundedIcon, VolumeOffRoundedIcon, SlowMotionVideoRoundedIcon, MenuRoundedIcon, LogoutRoundedIcon} from './Logo';
+        VolumeUpRoundedIcon, VolumeOffRoundedIcon, MusicNoteRoundedIcon, MusicOffRoundedIcon, SlowMotionVideoRoundedIcon, MenuRoundedIcon, LogoutRoundedIcon} from './Logo';
 
 // 책 재생 컴포넌트
 // 책에 대한 고유값을 가져와 그 책에 대한 이미지와 tts, bgm을 재생할 수 있다.
@@ -15,6 +15,7 @@ const Render=() => {
 
     // 상태값 
     const [clicks, setClicks] = useState({
+        volumeclick: true,
         speedclick: true, // tts 속도 조절 이벤트 함수
         hamclick: false, // 텍스트 박스 on/off 이벤트 함수
         isMouseMoving: false, // 마우스의 움직임 이벤트 감지
@@ -35,7 +36,7 @@ const Render=() => {
     });
     
     // 상태값 정의
-    const { speedclick, hamclick, isMouseMoving,
+    const { volumeclick, speedclick, hamclick, isMouseMoving,
          opacity, delay, playing, contents, page, 
          img_path,final_page,state, tense, bgm, audio
          , playbackSpeed , playVol, playstate } = clicks;
@@ -226,6 +227,13 @@ const Render=() => {
         }
     };
 
+    const volumehandle = () => {
+        setClicks(prevState => ({
+            ...prevState,
+            volumeclick: !prevState.volumeclick
+        }));
+    };
+
     const speedhandle = () => {
         setClicks(prevState => ({
             ...prevState,
@@ -345,22 +353,31 @@ const Render=() => {
                             <FastForwardRoundedIcon id={"forward"} onClick={nextPage} sx={{fontSize: 70, color: "white", cursor: "pointer"}} />
                             
                             {/* 배속 조절 */}
-                            <SlowMotionVideoRoundedIcon id={"speed"} onClick={speedhandle} sx={{marginLeft: "2vw", marginRight: "0.5vw", fontSize: 65, color: "white", cursor: "pointer"}} />
+                            <SlowMotionVideoRoundedIcon id={"speed"} onClick={speedhandle} sx={{marginLeft: "1.5vw", marginRight: "0.5vw", fontSize: 65, color: "white", cursor: "pointer"}} />
                                 
-                            {/* 볼륨 조절 */}
-                            {bgm ? <VolumeUpRoundedIcon id={"volume"} onClick={playBgm} sx={{fontSize: 65, color: "white", cursor: "pointer"}} /> 
+                            {/* bgm 조절 */}
+                            {bgm ? <MusicNoteRoundedIcon id={"bgm"} onClick={playBgm} sx={{marginLeft: "1.5vw", fontSize: 65, color: "white", cursor: "pointer"}} /> 
                             : 
-                            <VolumeOffRoundedIcon id={"volume"} onClick={playBgm} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />}
+                            <MusicOffRoundedIcon id={"bgm"} onClick={playBgm} sx={{marginLeft: "1.5vw", fontSize: 65, color: "white", cursor: "pointer"}} />}
+
+                            {/* tts 볼륨 조절 */}
+                            <VolumeUpRoundedIcon id={"volume"} onClick={volumehandle}  sx={{fontSize: 65, color: "white", cursor: "pointer"}} /> 
+                            {/* {volumeclick ? <VolumeUpRoundedIcon id={"volume"} onClick={volumehandle} sx={{fontSize: 65, color: "white", cursor: "pointer"}} /> 
+                            : 
+                            <VolumeOffRoundedIcon id={"volume"} onClick={volumehandle} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />} */}
                         </div>
                     </div>
-                    {/* 속도 조절 */}
-                        <div className={speedclick ? "" : ( hamclick ? "control_speed_Click" : "control_speed")} style={{display: "flex", flexDirection: "row"}} >
-                            <input className={speedclick ? "note" : ( hamclick ? "" : "")}
-                                type="range" min="0.2" max="2" step="0.1" value={playbackSpeed} onChange={handlePlaybackSpeedChange} style={{appearance: "slider-vertical", width: "33px"}}/>
-                            <input className={speedclick ? "note" : ( hamclick ? "" : "")}
-                                type="range" min="0" max="1" step="0.01" value={playVol} onChange={handleVolumeChange} style={{appearance: "slider-vertical", width: "33px"}}/>
-                        </div>
-                        <div className={playBgm ? "" :( hamclick ? "control_volume_Click" : "control_volume")} ></div> 
+                    {/* tts 음량 조절 */}
+                    <div className={volumeclick ? "" : ( hamclick ? "control_volume_Click" : "control_volume")} style={{display: "flex", flexDirection: "row"}} >
+                        <input className={volumeclick ? "note" : ( hamclick ? "" : "")}
+                            type="range" min="0" max="1" step="0.01" value={playVol} onChange={handleVolumeChange} style={{appearance: "slider-vertical", width: "50px"}}/>
+                    </div> 
+                    {/* tts 속도 조절 */}
+                    <div className={speedclick ? "" : ( hamclick ? "control_speed_Click" : "control_speed")} style={{display: "flex", flexDirection: "row"}} >
+                        <input className={speedclick ? "note" : ( hamclick ? "" : "")}
+                            type="range" min="0.2" max="2" step="0.1" value={playbackSpeed} onChange={handlePlaybackSpeedChange} style={{appearance: "slider-vertical", width: "55px"}}/>
+                    </div>
+                    <div className={playBgm ? "" :( hamclick ? "control_volume_Click" : "control_volume")} ></div> 
                 </div>
             </div>
             <div className={hamclick ? "div_right_Click" : "" }>

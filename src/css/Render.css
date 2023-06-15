@@ -172,8 +172,16 @@
 
 }
 
+/*  <------ bgm 음량 아이콘 태그 ------->  */
+#bgm::before,
+#bgm::after{
+    clear: both;
+}
+#bgm{
+    float: right;
+}
 
-/*  <------ 음량 아이콘 태그 ------->  */
+/*  <------ tts 음량 아이콘 태그 ------->  */
 #volume::before,
 #volume::after{
     clear: both;
@@ -183,7 +191,7 @@
 }
 .control_volume { /*  음량조절 이벤트 창  */
     /* 음량조절 창 크기 */
-    width: 8vw;
+    width: 3vw;
     height: 20vh;
   
     /* 위치 */
@@ -194,7 +202,7 @@
     /* translate는 본인의 크기 기준으로 작동한다. */
     position: absolute;
     bottom: 80%;
-    right: 8vw;
+    right: 11.5vw;
     transform: translate(30%, 0%);
   
     /* 음량조절 창 디자인 */
@@ -205,7 +213,7 @@
 } 
 .control_volume_Click { /*  음량조절 이벤트 창  */
     /* 음량조절 창 크기 */
-    width: 8vw;
+    width: 3vw;
     height: 20vh;
   
     /* 위치 */
@@ -216,7 +224,7 @@
     /* translate는 본인의 크기 기준으로 작동한다. */
     position: absolute;
     bottom: 80%;
-    right: 36vw;
+    right: 39.5vw;
     transform: translate(30%, 0%);
   
     /* 음량조절 창 디자인 */
@@ -236,7 +244,7 @@
 }
 .control_speed { /*  재생속도 이벤트 창  */
     /* 재생속도 창 크기 */
-    width: 4vw;
+    width: 3vw;
     height: 20vh;
   
     /* 위치 */
@@ -245,7 +253,7 @@
     /* translate는 본인의 크기 기준으로 작동한다. */
     position: absolute;
     bottom: 80%;
-    right: 3.5vw;
+    right: 2.5vw;
     transform: translate(60%, 0%);
   
     /* 재생속도 창 디자인 */
@@ -256,7 +264,7 @@
 }
 .control_speed_Click { /*  재생속도 이벤트 창  */
     /* 재생속도 창 크기 */
-    width: 4vw;
+    width: 3vw;
     height: 20vh;
   
     /* 위치 */
@@ -265,7 +273,7 @@
     /* translate는 본인의 크기 기준으로 작동한다. */
     position: absolute;
     bottom: 80%;
-    right: 31.5vw;
+    right: 30.5vw;
     transform: translate(60%, 0%);
   
     /* 재생속도 창 디자인 */

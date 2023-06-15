@@ -40,6 +40,8 @@
 
 /** changing css */
 .input_main{
+    margin:0;
+    padding:0;
     width: 100vw;
     height: 100vh;
     opacity: 0.9;
@@ -67,14 +69,14 @@
 .input_search{
     /* border: 2px solid khaki; */
     float: left;
-    width: auto;
-    height: auto;
+    /* width: auto; */
+    /* height: auto; */
     margin-left: 70px;
 }
 .input_searchValue{
     /* border: 2px solid indianred; */
-    width: auto;
-    height: auto;
+    /* width: auto; */
+    /* height: auto; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,8 +84,8 @@
 }
 .input_down_box {
     clear: both;
-    width: auto;
-    height: auto;
+    /* width: auto; */
+    /* height: auto; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -91,8 +93,8 @@
 }
 .input_searchListBox{
     /* border: 2px solid cadetblue; */
-    width: auto;
-    height: auto;
+    /* width: auto; */
+    /* height: auto; */
     display: flex;
     justify-content: center;
     align-items: center;
