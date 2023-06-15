@@ -6,19 +6,19 @@ import SearchIcon from '@mui/icons-material/Search';
 import { memo } from "react";
 
 // NAVER 스타일의 검색창 적용 시 사용
-const Search1 = styled('div')(({ theme }) => ({
-    position: 'relative',
-    // borderRadius: theme.shape.borderRadius,
-    borderRadius: 32,
-    boxShadow: "0 0 0 3px #eede69",
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    width: "100%",
-    padding: "5px",
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-      padding: 0,
-    },
-  }));
+// const Search1 = styled('div')(({ theme }) => ({
+//     position: 'relative',
+//     // borderRadius: theme.shape.borderRadius,
+//     borderRadius: 32,
+//     boxShadow: "0 0 0 3px #eede69",
+//     backgroundColor: alpha(theme.palette.common.white, 0.15),
+//     width: "100%",
+//     padding: "5px",
+//     [theme.breakpoints.down('sm')]: {
+//       width: '100%',
+//       padding: 0,
+//     },
+//   }));
   
 // GOOGLE 스타일의 검색창 적용 시 사용(현재 적용)
 const Search2 = styled('div')(({ theme }) => ({
@@ -92,4 +92,4 @@ const SearchBar = memo(({text, onChange})=> {
 };
 
 export default SearchBar;
-export {Search1, Search2, SearchIconWrapper, StyledInputBase}
+export {Search2, SearchIconWrapper, StyledInputBase}

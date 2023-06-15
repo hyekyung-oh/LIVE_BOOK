@@ -1,4 +1,3 @@
-// import { useState } from 'react'
 import { SearchModalBox, SearchModalContent } from './Modal.tsx'
 import BookInfo from './BookInfo.js'
 import { Link } from 'react-router-dom'
