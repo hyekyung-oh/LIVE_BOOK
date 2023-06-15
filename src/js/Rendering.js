@@ -144,7 +144,7 @@ const Render=() => {
             const newAudio = new Audio(music);
             newAudio.autoplay = false;
             newAudio.loop = true;
-            newAudio.volume = 0.4;
+            newAudio.volume = 0.8;
             setClicks(prevState => ({
                 ...prevState,
                 audio: newAudio,
