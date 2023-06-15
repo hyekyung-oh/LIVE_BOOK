@@ -121,36 +121,38 @@ const Render=() => {
                 ...prevState,
                 bgm: false,
             }));
-          }
+        }
+        if(bgm){
+            let setTense = "";
+            if(tense === "슬픔") {setTense = "sad";} 
+            else if(tense === "고요") {setTense = "slience";}
+            else if(tense === "공포") {setTense = "scary";} 
+            else if(tense === "긴장") {setTense = "nervous";} 
+            else if(tense === "신남") {setTense = "exciting";} 
+            else if(tense === "실패") {setTense = "fail";} 
+            else if(tense === "신비") {setTense = "mystery";} 
+            else if(tense === "행복") {setTense = "happy";}
+            axios
+            .get(`http://localhost:4000/bgm?mood=${setTense}`) // Tense 값을 사용하여 요청
+            .then((response) => {
 
-        let setTense = "";
-        if(tense === "슬픔") {setTense = "sad";} 
-        else if(tense === "고요") {setTense = "slience";}
-        else if(tense === "공포") {setTense = "scary";} 
-        else if(tense === "긴장") {setTense = "nervous";} 
-        else if(tense === "신남") {setTense = "exciting";} 
-        else if(tense === "실패") {setTense = "fail";} 
-        else if(tense === "신비") {setTense = "mystery";} 
-        else if(tense === "행복") {setTense = "happy";}
-        axios
-        .get(`http://localhost:4000/bgm?mood=${setTense}`) // Tense 값을 사용하여 요청
-        .then((response) => {
+                const bgmFiles = response.data;
+                let music = "";
+                let Index = Math.floor(Math.random() * bgmFiles.length);
+                music = bgmFiles[Index];
+                music = music.slice(12);
 
-            const bgmFiles = response.data;
-            let music = "";
-            let Index = Math.floor(Math.random() * bgmFiles.length);
-            music = bgmFiles[Index];
-            music = music.slice(12);
-
-            const newAudio = new Audio(music);
-            newAudio.autoplay = true;
-            newAudio.loop = true;
-            setClicks(prevState => ({
-                ...prevState,
-                bgm: true,
-                audio: newAudio,
-            }));
-        });
+                const newAudio = new Audio(music);
+                newAudio.autoplay = true;
+                newAudio.loop = true;
+                setClicks(prevState => ({
+                    ...prevState,
+                    bgm: true,
+                    audio: newAudio,
+                }));
+            });
+        }
+        
     }, [tense, page]); // end useEffect()
 
     // 이벤트 핸들링
@@ -202,7 +204,8 @@ const Render=() => {
             setClicks(prevState => ({
                 ...prevState,
                 page: prevState.page + 1,
-                state: (page)/final_page*100
+                state: (page)/final_page*100,
+                playstate: 100
             }));
             synthRef.current.cancel();
         } else{
@@ -221,7 +224,8 @@ const Render=() => {
             setClicks(prevState => ({
                 ...prevState,
                 page: prevState.page - 1,
-                state: (page)/final_page*100
+                state: (page)/final_page*100,
+                playstate: 100
             }));
             synthRef.current.cancel();
         } else{
