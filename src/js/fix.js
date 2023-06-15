@@ -14,7 +14,6 @@ import SlowMotionVideoRoundedIcon from '@mui/icons-material/SlowMotionVideoRound
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
-
 // 책 재생 컴포넌트
 // 책에 대한 고유값을 가져와 그 책에 대한 이미지와 tts, bgm을 재생할 수 있다.
 const Render=() => {
@@ -243,6 +242,35 @@ const Render=() => {
             playing: !prevState.playing
         }));
     };
+    
+    const [bgm, setBgm] = useState(false);
+    const [audio, setAudio] = useState(null);
+
+    const playBgm = () => {
+        if (bgm && audio) {
+          console.log("재생 정지!");
+          audio.pause();
+          setBgm(false);
+        } else {
+          if (audio) {
+            console.log("재생 중!");
+            audio.play();
+            setBgm(true);
+          }
+        }
+      };
+
+    const movePageMusicOff = () => {
+        synthRef.current.cancel();
+        if(audio) {
+            console.log("재생 종료!");
+            audio.pause();
+            setAudio(null);
+        }
+        else {
+
+        }
+    }
 
     // 소리 아이콘 클릭 시 이벤트 핸들러 함수.
     // bgm 소리를 출력해줌.
@@ -283,6 +311,12 @@ const Render=() => {
                 <Link to={"/"}>
                     <LogoutRoundedIcon id={"out"} onClick={movePageMusicOff} style={{opacity: isMouseMoving ? 1 : opacity}} sx={{marginLeft: "0.5vw", fontSize: 65, color: "white", cursor: "pointer"}} />
                 </Link>
+
+                <div>
+                {/* <button id='playbgm' onClick={playBgm}>
+                    {bgm ? '음악 정지' : '음악 재생'}
+                </button> */}
+                </div>
                 {/* 햄버거 버튼 */}
                 <MenuRoundedIcon id={"ham"} onClick={handleClick} style={{opacity: isMouseMoving ? 1 : opacity}} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />
             </div>
@@ -317,6 +351,7 @@ const Render=() => {
                             {bgm ? <VolumeUpRoundedIcon id={"volume"} onClick={playBgm} sx={{fontSize: 65, color: "white", cursor: "pointer"}} /> 
                             : 
                             <VolumeOffRoundedIcon id={"volume"} onClick={playBgm} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />}
+                            
                         </div>
                     </div>
                         <div className={speedclick ? "" : ( hamclick ? "control_speed_Click" : "control_speed")} ></div>

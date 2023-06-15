@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-// 모달 창 뒷배경
+// 모달 창 뒷배경 구성 컴포넌트
 export const SearchModalBox = styled.div`
 	position: fixed;
 	top: 0;
@@ -14,7 +14,7 @@ export const SearchModalBox = styled.div`
     align-items: center;
 `
 
-// 여기에 만들고 싶은 모달 스타일 구현
+// 모달창 구성 컴포넌트
 export const SearchModalContent = styled.div`
     padding: 1.0rem 1.0rem;
     width: 42.5rem;

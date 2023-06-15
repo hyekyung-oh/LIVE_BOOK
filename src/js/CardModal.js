@@ -2,9 +2,10 @@ import { useState } from 'react'
 import Button from '@mui/material/Button';
 import Modal from './Modal';
 
-
+// 모달창 내부 컴포넌트
 const CardModal = (props) => {
 
+    // 책 고유값
     const id = props;
 
     // 모달 버튼 클릭 유무를 저장할 state

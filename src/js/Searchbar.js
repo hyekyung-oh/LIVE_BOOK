@@ -4,18 +4,8 @@ import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { memo } from "react";
-
-// NAVER 스타일의 검색창 적용 시 사용
-const Search1 = styled('div')(({ theme }) => ({
-    position: 'relative',
-    // borderRadius: theme.shape.borderRadius,
-    borderRadius: 32,
-    boxShadow: "0 0 0 3px #eede69",
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    width: "100%",
-  }));
   
-// GOOGLE 스타일의 검색창 적용 시 사용(현재 적용)
+// 검색창 컴포넌트
 const Search2 = styled('div')(({ theme }) => ({
     position: 'relative',
     // borderRadius: theme.shape.borderRadius,
@@ -25,6 +15,7 @@ const Search2 = styled('div')(({ theme }) => ({
     width: "100%",
   }));
 
+// 검색 아이콘을 담는 컴포넌트
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: '100%',
@@ -35,6 +26,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   justifyContent: 'center'
 }));
 
+// 검색어를 입력하는 컴포넌트
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
@@ -58,6 +50,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+// 검색 바를 이루는 컴포넌트로 인자를 넘겨받아 검색어와 검색어가 바뀔 시 일어나는 함수 onChange가 있음.
 const SearchBar = memo(({text, onChange})=> {
     return (
       <Box sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -82,4 +75,4 @@ const SearchBar = memo(({text, onChange})=> {
 };
 
 export default SearchBar;
-export {Search1, Search2, SearchIconWrapper, StyledInputBase}
+export {Search2, SearchIconWrapper, StyledInputBase}

@@ -5,7 +5,7 @@ const app     = express();
 const PORT    = 4000; // 포트번호 설정
 const fs = require('fs');
 
-// MySQL 연결
+// MySQL 연결.
 const db = mysql.createPool({
     host:'selab.hknu.ac.kr',
     port:'51714',
@@ -20,14 +20,15 @@ app.use(cors({
     optionsSuccessStatus: 200,  // 응답 상태 200으로 설정
 }))
 
-// post 요청 시 값을 객체로 바꿔줌
+// post 요청 시 값을 객체로 바꿔줌.
 app.use(express.urlencoded({ extended: true })) 
 
-// 서버 연결 시 발생
+// 서버 연결 시 발생함.
 app.listen(PORT, () => {
     console.log(`server running on port ${PORT}`);
 });
 
+// 모든 책 정보에 대해 데이터를 db로 부터 가져옴.
 app.get("/api/book", (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
     
@@ -39,10 +40,12 @@ app.get("/api/book", (req, res) => {
     });
 });
 
-app.get("/play/:param", (req, res) => {
+// 한 책에 대한 이미지 주소를 가져옴.
+app.get("/play/", (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
     
-    const paramValue = req.params.param; // URL 파라미터 값 가져오기
+    // const paramValue = req.params.param; // URL 파라미터 값 가져오기
+    const paramValue = req.param('id');
 
     const sqlQuery = "SELECT * FROM team3_Imgs_Pages WHERE team3_BooksID = ?";
     
@@ -54,6 +57,7 @@ app.get("/play/:param", (req, res) => {
     });
 });
 
+// 한 책에 대한 모든 정보를 가져옴.
 app.get("/api/bookinfo/", (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
     
@@ -71,11 +75,13 @@ app.get("/api/bookinfo/", (req, res) => {
 });
 
 // 브금 리스트의 폴더 경로를 반환한다.
-app.get("/bgm/:param", (req, res) => {
+app.get("/bgm/", (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
     
-    const paramValue = req.params.param; // URL 파라미터 값 가져오기
+    // const paramValue = req.params.param; // URL 파라미터 값 가져오기
     
+    const paramValue = req.param('mood');
+
     let folderPath = "";
     
     if (paramValue === "sad") {

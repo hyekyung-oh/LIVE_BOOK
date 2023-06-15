@@ -2,7 +2,8 @@ import { useState, useEffect } from "react"
 import { memo } from "react";
 import PropTypes from "prop-types"
 
-const SearchBookCount =memo(({text, option})=>{
+// 검색된 책의 수를 보여주는 컴포넌트
+const SearchBookCount =memo(({text})=>{
 
     const [books, setBooks] = useState([]);
     
@@ -12,7 +13,6 @@ const SearchBookCount =memo(({text, option})=>{
                 "http://localhost:4000/api/book")
         ).json();
         setBooks(json);
-
     }
 
     useEffect(()=>{
