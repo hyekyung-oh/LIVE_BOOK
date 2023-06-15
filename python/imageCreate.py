@@ -28,7 +28,7 @@ def summarize_text(text):
 def createImage(summarize_text, book_title, pno) :
     try : 
         res_img = openai.Image.create(
-            prompt=f'Book illustration, {summarize_text}',
+            prompt=f'Illustration styles Anime : {summarize_text}',
             n=1,
             size="256x256"
         )
@@ -71,30 +71,30 @@ book_title = os.path.splitext(filename)[0] # 파일명에서 확장자 제거
 os.makedirs(f'../public/temp/{book_title}', exist_ok=True)
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-openai.api_key = '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'
+openai.api_key = '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'
 
 # 썸네일 생성
 thumnail_fromPDF(doc, book_title)
 
-# subprocess.Popen(['open', PDF_FILE_PATH])
-# startPno = int(input("이미지를 생성할 페이지의 시작점을 정해주세요 \n>>"))
-# lastPg = int(input("이미지를 생성할 마지막 페이지를 입력해주세요 \n>>"))
+subprocess.Popen(['open', PDF_FILE_PATH])
+startPno = int(input("이미지를 생성할 페이지의 시작점을 정해주세요 \n>>"))
+lastPg = int(input("이미지를 생성할 마지막 페이지를 입력해주세요 \n>>"))
 
-# for pno in tqdm(range(startPno, lastPg+1)) :
-#     text = doc.get_page_text(pno=pno)
+for pno in tqdm(range(startPno, lastPg+1)) :
+    text = doc.get_page_text(pno=pno)
 
     
-#     # Preprocess text
-#     text = re.sub(r"\s+", " ", text)
-#     # Remove page number
-#     text = ' '.join(text.split(' ')[:-1])
+    # Preprocess text
+    text = re.sub(r"\s+", " ", text)
+    # Remove page number
+    text = ' '.join(text.split(' ')[:-1])
     
-#     contents = summarize_text(text)
-#     print("데이터 확인!!--------")
-#     print(contents)
-#     print("데이터 확인!!--------")
+    contents = summarize_text(text)
+    print("데이터 확인!!--------")
+    print(contents)
+    print("데이터 확인!!--------")
     
-#     print(pno, "페이지 이미지 생성 중입니다.\n")
-#     createImage(contents, book_title, pno)
-#     print("성공")
+    print(pno, "페이지 이미지 생성 중입니다.\n")
+    createImage(contents, book_title, pno)
+    print("성공")
 
