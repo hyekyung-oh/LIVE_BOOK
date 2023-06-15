@@ -4,30 +4,38 @@ import logos from './logodata';
 import "../css/Render.css";
 import { Link } from 'react-router-dom';
 
+// 책 재생 컴포넌트
+// 책에 대한 고유값을 가져와 그 책에 대한 이미지와 tts, bgm을 재생할 수 있다.
 const Render=() => {
+    // 책에 대한 고유값
     const BookID = window.location.href.split("=")[1];
+    // 아이콘
     const { out, ham, back, play, stop, forward, volume, speed , mute } = logos;
 
     const synthRef = React.useRef(window.speechSynthesis);
 
     // 상태값 
     const [clicks, setClicks] = useState({
-        volumeclick: true,
-        speedclick: true,
-        hamclick: false,
-        isMouseMoving: false,
-        opacity: 1, // 투명도 조절//
+        speedclick: true, // tts 속도 조절 이벤트 함수
+        hamclick: false, // 텍스트 박스 on/off 이벤트 함수
+        isMouseMoving: false, // 마우스의 움직임 이벤트 감지
+        opacity: 1, // 투명도 조절
         delay: 2000, // 딜레이 상태 추가
-        playing: true,
+        playing: true, // 재생 여부
         contents: [], // 텍스트 상태 추가
-        page: 1,
-        img_path: "",
-        final_page:1,
-        state:1,
+        page: 1, // 첫 페이지
+        img_path: "", // 이미지 주소
+        final_page:1, // 마지막 페이지
+        state:1, // 책에대한 진행률
+        bgm: false, // bgm 재생 여부
+        audio: null, // bgm 소리
+        tense: "", // 책의 분위기
     });
     
-    const { volumeclick, speedclick, hamclick, isMouseMoving,
-         opacity, delay, playing, contents, page ,img_path,final_page,state, tense } = clicks;
+    // 상태값 정의
+    const { speedclick, hamclick, isMouseMoving,
+         opacity, delay, playing, contents, page, 
+         img_path,final_page,state, tense, bgm, audio } = clicks;
     
     //서버로부터 json파일을 불러옴
     useEffect(() => {
@@ -35,7 +43,6 @@ const Render=() => {
             .get(`http://localhost:4000/play/${BookID}`)
             .then((response) => {
                 const Tense = response.data[page-1]["team3_textTense"];
-                console.log(Tense)
                 const text = response.data[page - 1]["team3_text"];
                 const slicedText = text.replace(/\. /g, '.\n\n')
                                         .replace(/\? /g, '?\n\n')
@@ -70,9 +77,11 @@ const Render=() => {
 
         // 페이지 이동시 기존 음악 종료
         if (bgm && audio) {
-            console.log("재생 종료!");
             audio.pause();
-            setBgm(false);
+            setClicks(prevState => ({
+                ...prevState,
+                bgm: false,
+            }));
           }
 
         let setTense = "";
@@ -89,20 +98,19 @@ const Render=() => {
         .then((response) => {
 
             const bgmFiles = response.data;
-            console.log(bgmFiles)
             let music = "";
             let Index = Math.floor(Math.random() * bgmFiles.length);
-            console.log(Index)
             music = bgmFiles[Index];
             music = music.slice(12);
-
-            console.log(music)
 
             const newAudio = new Audio(music);
             newAudio.autoplay = true;
             newAudio.loop = true;
-            setBgm(true);
-            setAudio(newAudio);
+            setClicks(prevState => ({
+                ...prevState,
+                bgm: true,
+                audio: newAudio,
+            }));
         });
     }, [tense, page]); // end useEffect()
 
@@ -112,6 +120,8 @@ const Render=() => {
         // 변수
         let timeid;
 
+        // 마우스 움직임이 있을 때 이벤트
+        // 투명도가 없다. -> 불투명함
         const handleMouseMove = () => {
             setClicks(prevState => ({
                 ...prevState,
@@ -119,6 +129,8 @@ const Render=() => {
                 opacity: 1
             }));
 
+            // 움직임이 2초 이상 없을 시 작동 이벤트
+            // 투명도를 0.1 -> 투명하게 보인다.
             clearTimeout(timeid);
             timeid = setTimeout(() => {
                 setClicks(prevState => ({
@@ -126,6 +138,7 @@ const Render=() => {
                     isMouseMoving: false,
                     opacity: 0.1
                 }));
+                // 딜레이 시간이 5초이면 2초로 만들어줌.
                 if (delay === 5000) {
                     setClicks(prevState => ({
                         ...prevState,
@@ -134,7 +147,7 @@ const Render=() => {
                   }
             }, delay);
         };
-    
+    // 마우스 움직임에 대한 이벤트 핸들러
     window.addEventListener('mousemove', handleMouseMove);
     return () => {
         window.removeEventListener('mousemove', handleMouseMove);
@@ -142,8 +155,10 @@ const Render=() => {
         };
     }, [delay]); // end useEffect()
     
-
+    // 다음 페이지 버튼에 대한 핸들러 함수.
     const nextPage = () => {
+        // 페이지가 마지막페이지가 아니면 page + 1을 하고 진행률도 업데이트
+        // 페이지가 마지막페이지이면 else문 작동
         if(page < final_page){
             setClicks(prevState => ({
                 ...prevState,
@@ -155,7 +170,10 @@ const Render=() => {
             alert("마지막 페이지 입니다.")
         }
     };
+    // 이전 페이지 버튼에 대한 핸들러 함수.
     const beforePage = () => {
+        // 페이지가 1보다 크면 page - 1을 하고 진행률 업데이트
+        // 페이지가 1 미만이면 else문 작동
         if (page > 1) {
             setClicks(prevState => ({
                 ...prevState,
@@ -168,13 +186,6 @@ const Render=() => {
         }
     };
 
-    const volumehandle = () => {
-        setClicks(prevState => ({
-            ...prevState,
-            volumeclick: !prevState.volumeclick
-        }));
-    };
-
     const speedhandle = () => {
         setClicks(prevState => ({
             ...prevState,
@@ -182,6 +193,9 @@ const Render=() => {
         }));
     };
 
+    // 햄버거 아이콘 클릭시 이벤트 핸들러 함수.
+    // hamclick : true 이면 텍스트 박스를 보여준다. 그리고 delay를 5초로 만들어줌.
+    // hamclick : false이면 텍스트 박스를 가린다.
     const handleClick = () => {
         setClicks(prevState => ({
             ...prevState,
@@ -195,6 +209,9 @@ const Render=() => {
         }
     };
     
+    // 재생 아이콘 클릭시 이벤트 핸들러 함수.
+    // tts를 통해 책 내용을 들려줌.
+    // 재생과 중지 기능이 있다.
     const playClick = () => {
         if(!playing){
             synthRef.current.cancel();
@@ -211,33 +228,37 @@ const Render=() => {
             playing: !prevState.playing
         }));
     };
-    
-    const [bgm, setBgm] = useState(false);
-    const [audio, setAudio] = useState(null);
 
+    // 소리 아이콘 클릭 시 이벤트 핸들러 함수.
+    // bgm 소리를 출력해줌.
     const playBgm = () => {
         if (bgm && audio) {
-          console.log("재생 정지!");
           audio.pause();
-          setBgm(false);
+          setClicks(prevState => ({
+            ...prevState,
+            bgm: false,
+        }));
         } else {
           if (audio) {
-            console.log("재생 중!");
             audio.play();
-            setBgm(true);
+            setClicks(prevState => ({
+                ...prevState,
+                bgm: true,
+            }));
           }
         }
       };
 
+    // 나가기 아이콘 클릭시 이벤트 핸들러 함수.
+    // bgm을 종료시켜줌.
     const movePageMusicOff = () => {
         synthRef.current.cancel();
         if(audio) {
-            console.log("재생 종료!");
             audio.pause();
-            setAudio(null);
-        }
-        else {
-
+            setClicks(prevState => ({
+                ...prevState,
+                audio: null,
+            }));
         }
     }
 
@@ -247,12 +268,6 @@ const Render=() => {
                 <Link to={"/"}>
                     <input type={"image"} id={"out"} src={out} alt="out" onClick={movePageMusicOff}  style={{ opacity: isMouseMoving ? 1 : opacity }}/>
                 </Link>
-
-                <div>
-                {/* <button id='playbgm' onClick={playBgm}>
-                    {bgm ? '음악 정지' : '음악 재생'}
-                </button> */}
-                </div>
                 <input type={"image"} id={"ham"} src={ham} alt="tag" onClick={handleClick} style={{ opacity: isMouseMoving ? 1 : opacity }}/>
             </div>
             <div className={hamclick ? "div_bottom_Click" : "div_bottom_UnClick"}>
@@ -283,7 +298,7 @@ const Render=() => {
                         </div>
                     </div>
                         <div className={speedclick ? "" : ( hamclick ? "control_speed_Click" : "control_speed")} ></div>
-                        <div className={volumeclick ? "" :( hamclick ? "control_volume_Click" : "control_volume")} ></div> 
+                        <div className={playBgm ? "" :( hamclick ? "control_volume_Click" : "control_volume")} ></div> 
                 </div>
             </div>
             <div className={hamclick ? "div_right_Click" : "" }>

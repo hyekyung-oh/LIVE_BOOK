@@ -1,4 +1,3 @@
-// import { useState } from 'react'
 import React from 'react';
 import { SearchModalBox, SearchModalContent } from './Modal.tsx'
 import BookInfo from './BookInfo.js'
@@ -8,10 +7,11 @@ import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 
+// 모달창 컴포넌트
 const Modal = (props) => {
   	// 전달받은 state 함수
-    const clickModal = props.clickModal;
-    const {id} = props.id    
+    const clickModal = props.clickModal; // 클릭 이벤트 핸들러 함수
+    const {id} = props.id // 책의 고유값
     
     return (  
       	// 뒷배경을 클릭하면 모달을 나갈 수 있게 해야하므로 뒷 배경 onClick에 state함수를 넣는다.
