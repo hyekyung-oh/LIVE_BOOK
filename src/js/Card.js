@@ -23,10 +23,10 @@ const MediaCard = memo(({ id,title, author, genre, thumnail }) => {
         <Typography gutterBottom variant="h6" component="div" fontSize={"18px"}  style={{fontFamily : 'Noto Sans, Noto Sans KR', fontWeight: "800"}}>
           {title}
         </Typography>
-        <Typography variant="body2" color="text.secondary" fontSize={"12px"} style={{float:"left", fontFamily : 'Noto Sans, Noto Sans KR', fontWeight: "500"}}>
+        <Typography variant="body2" color="text.secondary" fontSize={"12px"} style={{float:"left", fontFamily : 'Noto Sans, Noto Sans KR', fontWeight: "600"}}>
           작가 : {author}
         </Typography>
-        <Typography variant='body2' color="text.secondary" fontSize={"12px"} style={{fontFamily : 'Noto Sans, Noto Sans KR', fontWeight: "500"}}>
+        <Typography variant='body2' color="text.secondary" fontSize={"12px"} style={{fontFamily : 'Noto Sans, Noto Sans KR', fontWeight: "600"}}>
           분류 : {genre}
         </Typography>
       </CardContent>

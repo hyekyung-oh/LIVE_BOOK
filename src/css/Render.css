@@ -295,8 +295,6 @@
     font-size: 20px;
     padding: 7px;
     position: absolute;
-    /* font-family: cursive; */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: azure;
     letter-spacing: 2.5px;
 }
@@ -312,5 +310,4 @@
     font-size: 20px;
     /* background-color: beige; */
     position: absolute;
-    font-family: fantasy;
 }

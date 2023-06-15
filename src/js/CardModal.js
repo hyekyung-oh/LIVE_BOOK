@@ -16,7 +16,7 @@ const CardModal = (props) => {
 
     return (
         <div style={{width: "100%"}}>
-            <Button size="small" onClick={clickModal}>더보기</Button>
+            <Button size="small" onClick={clickModal} sx={{fontFamily: 'NanumBarunGothic'}}>더보기</Button>
             {showModal && <Modal id={id} clickModal={clickModal} />}
         </div>
     )

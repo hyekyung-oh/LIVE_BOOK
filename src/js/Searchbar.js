@@ -34,10 +34,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'), // 해당 요소의 너비가 변경될 때 부드러운 전환 효과
-    width: '500px',
+    width: '700px',
+    height: '35px',
     // placeholder fontSize 변경
     '::placeholder': {
       fontSize: '16px', 
+      fontFamily: 'NanumBarunGothic'
     },
     [theme.breakpoints.down('sm')]: {
       adding: theme.spacing(0.5, 0.5, 0.5, 0),
