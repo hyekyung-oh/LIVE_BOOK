@@ -41,13 +41,14 @@ const Render=() => {
         tense: "", // 책의 분위기
         playbackSpeed: 1.0,
         playVol: 1.0,
+        playstate: 0,
     });
     
     // 상태값 정의
     const { speedclick, hamclick, isMouseMoving,
          opacity, delay, playing, contents, page, 
          img_path,final_page,state, tense, bgm, audio
-         , playbackSpeed , playVol } = clicks;
+         , playbackSpeed , playVol, playstate } = clicks;
     
     // tts 기능                                                     
     //서버로부터 json파일을 불러옴
@@ -63,7 +64,6 @@ const Render=() => {
                                         .split("\n"); // 개행 문자를 기준으로 텍스트를 자름
                 setClicks(prevState => ({
                     ...prevState,
-                    
                     contents: slicedText,
                     img_path: "temp/"+response.data[page-1]["team3_imgPath"]
                     .split("temp/")[1].split("/")[0]+"/"+response.data[page-1]["team3_imgPath"]
@@ -72,18 +72,8 @@ const Render=() => {
                     final_page: response.data[response.data.length-1]["team3_page_number"] - response.data[0]["team3_page_number"] +1,
                     state: page/final_page*100,
                     tense: Tense,
+                    playstate: 0,
                 }));
-                if (playing) {
-                    // 말하기 시작
-                    synthRef.current.cancel();
-                    const utterance = new SpeechSynthesisUtterance(slicedText); 
-                    utterance.volume = playVol;
-                    utterance.rate = playbackSpeed;
-                    synthRef.current.speak(utterance);
-                    utterance.onend = function (event) {
-                        nextPage();
-                    };
-                }
             });
     }, [page]); // end useEffect()
 
@@ -97,6 +87,28 @@ const Render=() => {
         }
         // volume 또는 playbackSpeed 상태가 변경될 때마다 호출됨
     }, [playVol, playbackSpeed]);
+
+    useEffect(() => {
+        if (playing) {
+            // 말하기 시작
+            synthRef.current.cancel();
+            const utterance = new SpeechSynthesisUtterance(contents[playstate]); 
+            utterance.volume = playVol;
+            utterance.rate = playbackSpeed;
+            synthRef.current.speak(utterance);
+            utterance.onend = function (event) {
+                if(playstate === contents.length){
+                    nextPage();
+                }else{
+                    setClicks(prevState => ({
+                        ...prevState,
+                        playstate: prevState.playstate + 1,
+                        state: (page)/final_page*100 + (prevState.playstate + 1)/contents.length*(1/final_page*100)
+                    }));
+                }
+            };
+        }
+    }, [playstate, playing]);
 
     // bgm 기능
     // 음악 파일 리스트를 받아온다.
@@ -244,16 +256,7 @@ const Render=() => {
     // tts를 통해 책 내용을 들려줌.
     // 재생과 중지 기능이 있다.
     const playClick = () => {
-        if(!playing){
-            synthRef.current.cancel();
-            const utterance = new SpeechSynthesisUtterance(contents);
-            utterance.volume = playVol;
-            utterance.rate = playbackSpeed;
-            synthRef.current.speak(utterance);
-            utterance.onend = function(event) {
-                nextPage();
-            };
-        }else{
+        if(playing){
             synthRef.current.cancel();
         }
         setClicks(prevState => ({
