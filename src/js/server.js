@@ -4,7 +4,6 @@ const mysql   = require("mysql2");   // npm i mysql2 | yarn add mysql2
 const app     = express();
 const PORT    = 4000; // 포트번호 설정
 const fs = require('fs');
-const { Zoom } = require("@mui/material");
 
 // MySQL 연결.
 const db = mysql.createPool({
@@ -42,10 +41,11 @@ app.get("/api/book", (req, res) => {
 });
 
 // 한 책에 대한 이미지 주소를 가져옴.
-app.get("/play/:param", (req, res) => {
+app.get("/play/", (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
     
-    const paramValue = req.params.param; // URL 파라미터 값 가져오기
+    // const paramValue = req.params.param; // URL 파라미터 값 가져오기
+    const paramValue = req.param('id');
 
     const sqlQuery = "SELECT * FROM team3_Imgs_Pages WHERE team3_BooksID = ?";
     
@@ -75,11 +75,13 @@ app.get("/api/bookinfo/", (req, res) => {
 });
 
 // 브금 리스트의 폴더 경로를 반환한다.
-app.get("/bgm/:param", (req, res) => {
+app.get("/bgm/", (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
     
-    const paramValue = req.params.param; // URL 파라미터 값 가져오기
+    // const paramValue = req.params.param; // URL 파라미터 값 가져오기
     
+    const paramValue = req.param('mood');
+
     let folderPath = "";
     
     if (paramValue === "sad") {
