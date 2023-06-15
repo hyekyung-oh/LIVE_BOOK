@@ -39,7 +39,7 @@ const Render=() => {
         bgm: false, // bgm 재생 여부
         audio: null, // bgm 소리
         tense: "", // 책의 분위기
-        playbackSpeed: 1.0,
+        playbackSpeed: 0.9,
         playVol: 1.0,
         playstate: 1,
     });
@@ -147,6 +147,7 @@ const Render=() => {
             const newAudio = new Audio(music);
             newAudio.autoplay = false;
             newAudio.loop = true;
+            newAudio.volume = 0.4;
             setClicks(prevState => ({
                 ...prevState,
                 audio: newAudio,
