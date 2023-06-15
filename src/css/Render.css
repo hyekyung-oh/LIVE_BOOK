@@ -69,16 +69,16 @@
     position: fixed;
     top: 2vh;
     left: 2vh;
-    width: 4vw;
-    height: 8vh;
+    /* width: 4vw;
+    height: 8vh; */
     opacity: 0.7;
-    filter: invert(100%);
+    /* filter: invert(100%); */
     margin-top: 1vh;
 }
 #outed{
     position: absolute;
-    width: 4vw;
-    height: 8vh;
+    /* width: 4vw;
+    height: 8vh; */
     opacity: 0.2;
     margin-top: 1vh;
 }
@@ -89,18 +89,13 @@
 }
 #ham {
     position: relative;  /* 태그 겹치기 relative : 겹치기 허용, absolute : 원래자리 유지 */
-    width: 4vw;
-    height: 6vh;  /* vw, vh : 화면 비율에 맞춰서 작동*/
     float: right; /* 플러팅 : 어디에 뛰울지 */
     opacity: 0.7; /* 불투명도 */
     margin-right: 1vw;
-    filter: invert(100%);
     margin-top: 1vh;
 }
 #hamed {
     position: relative;  /* 태그 겹치기 relative : 겹치기 허용, absolute : 원래자리 유지 */
-    width: 4vw;
-    height: 6vh;  /* vw, vh : 화면 비율에 맞춰서 작동*/
     float: right; /* 플러팅 : 어디에 뛰울지 */
     opacity: 0.2; /* 불투명도 */
     margin-right: 1vw;
@@ -176,10 +171,7 @@
 
 }
 
-/*  <------ 다음으로가기 아이콘 태그 ------->  */
-#forward{
-    margin-right: 23vw;
-}
+
 /*  <------ 음량 아이콘 태그 ------->  */
 #volume::before,
 #volume::after{

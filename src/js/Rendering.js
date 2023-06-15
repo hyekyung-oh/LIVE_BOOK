@@ -1,13 +1,22 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import logos from './logodata';
 import "../css/Render.css";
 import { Link } from 'react-router-dom';
+
+// icon 모음
+import FastRewindRoundedIcon from '@mui/icons-material/FastRewindRounded';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
+import FastForwardRoundedIcon from '@mui/icons-material/FastForwardRounded';
+import VolumeUpRoundedIcon from '@mui/icons-material/VolumeUpRounded';
+import VolumeOffRoundedIcon from '@mui/icons-material/VolumeOffRounded';
+import SlowMotionVideoRoundedIcon from '@mui/icons-material/SlowMotionVideoRounded';
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+
 const Render=() => {
     const BookID = window.location.href.split("=")[1];
-    const { out, ham, back, play, stop, forward, volume, speed , mute } = logos;
+    const synthRef = React.useRef(window.speechSynthesis);
 
     // 상태값 
     const [clicks, setClicks] = useState({
@@ -36,7 +45,10 @@ const Render=() => {
                 const Tense = response.data[page-1]["team3_textTense"];
                 console.log(Tense)
                 const text = response.data[page - 1]["team3_text"];
-                const slicedText = text.split("\n"); // 개행 문자를 기준으로 텍스트를 자름
+                const slicedText = text.replace(/\. /g, '.\n\n')
+                                        .replace(/\? /g, '?\n\n')
+                                        .replace(/! /g, '!\n\n')
+                                        .split("\n"); // 개행 문자를 기준으로 텍스트를 자름
                 setClicks(prevState => ({
                     ...prevState,
                     
@@ -49,6 +61,15 @@ const Render=() => {
                     state: page/final_page*100,
                     tense: Tense,
                 }));
+                if (playing) {
+                    // 말하기 시작
+                    synthRef.current.cancel();
+                    const utterance = new SpeechSynthesisUtterance(slicedText);
+                    synthRef.current.speak(utterance);
+                    utterance.onend = function (event) {
+                        nextPage();
+                    };
+                }
             });
     }, [page]); // end useEffect()
 
@@ -137,7 +158,7 @@ const Render=() => {
                 page: prevState.page + 1,
                 state: (page+1)/final_page*100
             }));
-            
+            synthRef.current.cancel();
         } else{
             alert("마지막 페이지 입니다.")
         }
@@ -149,6 +170,7 @@ const Render=() => {
                 page: prevState.page - 1,
                 state: (page)/final_page*100
             }));
+            synthRef.current.cancel();
         } else{
             alert("첫 페이지 입니다.")
         }
@@ -182,6 +204,16 @@ const Render=() => {
     };
     
     const playClick = () => {
+        if(!playing){
+            synthRef.current.cancel();
+            const utterance = new SpeechSynthesisUtterance(contents);
+            synthRef.current.speak(utterance);
+            utterance.onend = function(event) {
+                nextPage();
+            };
+        }else{
+            synthRef.current.cancel();
+        }
         setClicks(prevState => ({
             ...prevState,
             playing: !prevState.playing
@@ -206,6 +238,7 @@ const Render=() => {
       };
 
     const movePageMusicOff = () => {
+        synthRef.current.cancel();
         if(audio) {
             console.log("재생 종료!");
             audio.pause();
@@ -220,7 +253,7 @@ const Render=() => {
         <div className={"divRender"}>
             <div className={hamclick ? 'div_top_Click' : 'div_top_UnClick'}>
                 <Link to={"/"}>
-                    <input type={"image"} id={"out"} src={out} alt="out" onClick={movePageMusicOff}  style={{ opacity: isMouseMoving ? 1 : opacity }}/>
+                    <LogoutRoundedIcon id={"out"} onClick={movePageMusicOff} style={{opacity: isMouseMoving ? 1 : opacity}} sx={{marginLeft: "0.5vw", fontSize: 65, color: "white", cursor: "pointer"}} />
                 </Link>
 
                 <div>
@@ -228,7 +261,8 @@ const Render=() => {
                     {bgm ? '음악 정지' : '음악 재생'}
                 </button> */}
                 </div>
-                <input type={"image"} id={"ham"} src={ham} alt="tag" onClick={handleClick} style={{ opacity: isMouseMoving ? 1 : opacity }}/>
+                {/* 햄버거 버튼 */}
+                <MenuRoundedIcon id={"ham"} onClick={handleClick} style={{opacity: isMouseMoving ? 1 : opacity}} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />
             </div>
             <div className={hamclick ? "div_bottom_Click" : "div_bottom_UnClick"}>
                 {/* set background-image */}
@@ -244,20 +278,23 @@ const Render=() => {
                     <div className={"settingBox"}>
                         <div id={hamclick ? "settingbar_Click" : "settingbar_UnClick"}>
                             {/* 한 페이지 이전으로 넘기기 */}
-                            <div><input type={"image"} id={"backward"} src={back} alt="back" onClick={beforePage} /></div>
-                            {/* 재생 / 일시정지 */}{/* <input type={"image"} id={"play"} src={playing ? play : stop} alt="play" onClick={playClick}/> */}
-                            <div>
-                                {playing ? <PlayArrowRoundedIcon onClick={playClick} sx={{fontSize: 65, color: "white"}} /> 
-                                : 
-                                <PauseRoundedIcon onClick={playClick} sx={{fontSize: 65, color: "white"}} />}
-                            </div>
+                            <FastRewindRoundedIcon id={"backward"} onClick={beforePage} sx={{marginLeft: "0.5vw", fontSize: 70, color: "white", cursor: "pointer"}} />
+                            
+                            {/* 재생 / 일시정지 */}
+                            {playing ? <PlayArrowRoundedIcon id={"play"} onClick={playClick} sx={{fontSize: 73, color: "white", cursor: "pointer"}} /> 
+                            : 
+                            <PauseRoundedIcon id={"play"} onClick={playClick} sx={{fontSize: 73, color: "white", cursor: "pointer"}} />}
+                            
                             {/* 한 페이지 다음으로 넘기기 */}
-                            <div><input type={"image"} id={"forward"} src={forward} alt="forward" onClick={nextPage} /></div>
+                            <FastForwardRoundedIcon id={"forward"} onClick={nextPage} sx={{fontSize: 70, color: "white", cursor: "pointer"}} />
+                            
                             {/* 배속 조절 */}
-                            <div><input type={"image"} id={"speed"} src={speed} alt="speed" onClick={speedhandle}/></div>
+                            <SlowMotionVideoRoundedIcon id={"speed"} onClick={speedhandle} sx={{marginLeft: "2vw", marginRight: "0.5vw", fontSize: 65, color: "white", cursor: "pointer"}} />
                                 
                             {/* 볼륨 조절 */}
-                            <div><input type={"image"} id={"volume"} src={bgm ? volume : mute} alt="volume" onClick={playBgm}/></div>
+                            {bgm ? <VolumeUpRoundedIcon id={"volume"} onClick={playBgm} sx={{fontSize: 65, color: "white", cursor: "pointer"}} /> 
+                            : 
+                            <VolumeOffRoundedIcon id={"volume"} onClick={playBgm} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />}
                             
                         </div>
                     </div>
