@@ -22,7 +22,7 @@
 .top-div {
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: flex-start;
     margin-bottom: 5px;
 }
 #title, #author, #genre {
@@ -42,7 +42,7 @@
 #info {
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: flex-start;
     margin-bottom: 7px;
     font-family: 'NanumBarunGothicBold';
 }
