@@ -98,7 +98,7 @@ const Render=() => {
                 utterance.rate = playbackSpeed;
                 synthRef.current.speak(utterance);
                 utterance.onend = function (event) {
-                    if(playstate === contents.length + 1){
+                    if(playstate > contents.length){
                         nextPage();
                     }else{
                         setClicks(prevState => ({
