@@ -30,15 +30,15 @@ const BookInfo = (props) => {
                     <div id="rightside">
                         {/* rightside의 top은 책 제목, 저자, 장르가 담긴 부분 */}
                         <div id="top">
-                            <div class="top-div">
+                            <div className="top-div">
                                 <div id="title">제목</div> 
                                 <div id="booktitle">{info.team3_BooksTitle}</div>
                             </div>
-                            <div class="top-div">
+                            <div className="top-div">
                                 <div id="author">저자</div> 
                                 <div id="bookauthor">{info.team3_Books_author}</div>
                             </div>
-                            <div class="top-div">
+                            <div className="top-div">
                                 <div id="genre">장르</div> 
                                 <div id="bookgenre">{info.team3_Books_genre}</div>
                             </div> 

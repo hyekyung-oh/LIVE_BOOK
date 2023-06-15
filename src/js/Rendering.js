@@ -298,7 +298,7 @@ const Render=() => {
                         </div>
                     </div>
                         <div className={speedclick ? "" : ( hamclick ? "control_speed_Click" : "control_speed")} ></div>
-                        <div className={volumeclick ? "" :( hamclick ? "control_volume_Click" : "control_volume")} ></div> 
+                        <div className={playBgm ? "" :( hamclick ? "control_volume_Click" : "control_volume")} ></div> 
                 </div>
             </div>
             <div className={hamclick ? "div_right_Click" : "" }>
