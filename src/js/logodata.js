@@ -7,6 +7,7 @@ const logos = {
     volume: require("../logo/volume.jpg"),
     speed: require("../logo/speed.png"),
     stop: require("../logo/stop.jpg"),
+    mute: require("../logo/mute.jpg"),
   };
   
   export default logos;

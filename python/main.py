@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import fitz
 from nltk import sent_tokenize
 import re
@@ -15,7 +16,7 @@ import subprocess
 global last_insert_id
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-openai.api_key = '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'
+openai.api_key = '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'
 
 # 번역 함수
 def translate_enTokr(text) :
@@ -77,7 +78,19 @@ def extract_AtoB(doc, rangeA, rangeB) :
         print("프로그램을 다시 시작해주세요.")
         sys.exit()
     
-
+# gpt 이용 분위기 추출함수 
+def extract_of_tense(text) :
+    prompt = (f"다음 문장에서 분위기를 긴장, 신남, 공포, 고요, 신비 중에서 한개만 골라서 단어만 말해줘. \n\n{text}")
+    completions = openai.Completion.create(
+        engine="text-davinci-002",
+        prompt=prompt,
+        max_tokens=200,
+        n=1,
+        stop=None,
+        temperature=1,
+    )
+    message = completions.choices[0].text.strip()
+    return message
 
 # 책 본문 내용 2줄 요약 함수
 def summarize_book_content(text):
@@ -241,7 +254,8 @@ def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
         
         # team3_Books_Imgs_Pages 테이블에 입력
         # 쿼리 문장
-        sql_query = "INSERT INTO team3_Imgs_Pages (team3_BooksID, team3_page_number, team3_text, team3_imgPath) VALUES (%s, %s, %s, %s)"
+        # sql_query = "INSERT INTO team3_Imgs_Pages (team3_BooksID, team3_page_number, team3_text, team3_imgPath) VALUES (%s, %s, %s, %s)"
+        sql_query = "INSERT INTO team3_Imgs_Pages (team3_BooksID, team3_page_number, team3_text, team3_imgPath, team3_textTense) VALUES (%s, %s, %s, %s, %s)"
         
         # SQL query 실행
         with db.cursor() as cursor:
@@ -250,17 +264,51 @@ def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
             team3_page_number = page
             team3_text = page_FullText
             team3_imgPath = filePath
-            
+            team3_textTense = extract_of_tense(page_FullText)
             # 쿼리 실행
-            cursor.execute(sql_query, (team3_BooksID, team3_page_number, team3_text, team3_imgPath))
+            cursor.execute(sql_query, (team3_BooksID, team3_page_number, team3_text, team3_imgPath,team3_textTense))
         
         time.sleep(0.5)  #0.5초 
+        print("분위기 추축 결과 : ", team3_textTense)
         print("----------------------------")
         print(f"********************* {filename} : {page} 페이지 DB입력 완료 ********************* ")
     
     # 데이터 변화 적용
     db.commit()
     print("성공적으로 team3_Books 테이블의 데이터를 입력하였습니다!")
+    
+# gpt 이용 분위기 추출함수
+def extract_of_tense(text) :
+    prompt = f"다음 문장에서 분위기를 긴장, 신남, 공포, 고요, 신비, 행복, 슬픔 중에서 한개만 골라줘. \n\n{text}"
+    completions = openai.Completion.create(
+        engine="text-davinci-002",
+        prompt=prompt,
+        max_tokens=200,
+        n=1,
+        stop=None,
+        temperature=1,
+    )
+    message = completions.choices[0].text.strip()
+    
+    
+    if "긴장" in message : 
+        result = "긴장"
+    elif "신남" in message :
+        result = "신남"
+    elif "공포" in message :
+        result = "공포"
+    elif "고요" in message :
+        result = "고요"
+    elif "신비" in message :
+        result = "신비"
+    elif "행복" in message :
+        result = "행복"
+    elif "슬픔" in message :
+        result = "슬픔"
+    else :
+        result = "실패"
+    
+    return result
 
 
 #-------- main --------#
