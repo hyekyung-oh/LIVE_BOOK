@@ -361,11 +361,11 @@ const Render=() => {
                             <VolumeOffRoundedIcon id={"volume"} onClick={playBgm} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />}
                         </div>
                     </div>
-                        <div className={speedclick ? "" : ( hamclick ? "control_speed_Click" : "control_speed")} >
+                        <div className={speedclick ? "" : ( hamclick ? "control_speed_Click" : "control_speed")} style={{display: "flex", flexDirection: "row"}} >
                             <input className={speedclick ? "note" : ( hamclick ? "" : "")}
-                                type="range" min="0.2" max="2" step="0.1" value={playbackSpeed} onChange={handlePlaybackSpeedChange}/>
+                                type="range" min="0.2" max="2" step="0.1" value={playbackSpeed} onChange={handlePlaybackSpeedChange} style={{appearance: "slider-vertical", width: "33px"}}/>
                             <input className={speedclick ? "note" : ( hamclick ? "" : "")}
-                                type="range" min="0" max="1" step="0.01" value={playVol} onChange={handleVolumeChange}/>
+                                type="range" min="0" max="1" step="0.01" value={playVol} onChange={handleVolumeChange} style={{appearance: "slider-vertical", width: "33px"}}/>
                         </div>
                         <div className={playBgm ? "" :( hamclick ? "control_volume_Click" : "control_volume")} ></div> 
                 </div>
@@ -373,7 +373,7 @@ const Render=() => {
             <div className={hamclick ? "div_right_Click" : "" }>
                  {/* 본문 내용 출력부 */}
                  <div id={hamclick ? "contents" : ""} style={{ opacity: hamclick ? 1 : 0 }}>
-                    <div id={"contents_text"} style={{ overflow: "auto" }}>
+                    <div id={"contents_text"} style={{ overflow: "auto", fontFamily: 'NanumBarunGothic'}}>
                     {/* 배열로 된 텍스트를 맵 함수를 사용하여 출력 */}
                     {contents.map((text, index) => (
                             <span key={index}>{text}<br /></span>
