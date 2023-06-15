@@ -354,11 +354,11 @@ const Render=() => {
                             <VolumeOffRoundedIcon id={"volume"} onClick={playBgm} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />}
                         </div>
                     </div>
-                        <div className={speedclick ? "" : ( hamclick ? "control_speed_Click" : "control_speed")} >
+                        <div className={speedclick ? "" : ( hamclick ? "control_speed_Click" : "control_speed")} style={{display: "flex", flexDirection: "row"}} >
                             <input className={speedclick ? "note" : ( hamclick ? "" : "")}
-                                type="range" min="0.2" max="2" step="0.1" value={playbackSpeed} onChange={handlePlaybackSpeedChange}/>
+                                type="range" min="0.2" max="2" step="0.1" value={playbackSpeed} onChange={handlePlaybackSpeedChange} style={{appearance: "slider-vertical", width: "33px"}}/>
                             <input className={speedclick ? "note" : ( hamclick ? "" : "")}
-                                type="range" min="0" max="1" step="0.01" value={playVol} onChange={handleVolumeChange}/>
+                                type="range" min="0" max="1" step="0.01" value={playVol} onChange={handleVolumeChange} style={{appearance: "slider-vertical", width: "33px"}}/>
                         </div>
                         <div className={playBgm ? "" :( hamclick ? "control_volume_Click" : "control_volume")} ></div> 
                 </div>
