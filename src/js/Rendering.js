@@ -376,7 +376,7 @@ const Render=() => {
                             <MusicOffRoundedIcon id={"bgm"} onClick={playBgm} sx={{marginLeft: "1.5vw", fontSize: 65, color: "white", cursor: "pointer"}} />}
 
                             {/* tts 볼륨 조절 Icon */}
-                            {playVol == 0? (<VolumeOffRoundedIcon id={"volume"} onClick={volumehandle} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />
+                            {playVol === '0' ? (<VolumeOffRoundedIcon id={"volume"} onClick={volumehandle} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />
                             ) : ( 
                                 <VolumeUpRoundedIcon id={"volume"} onClick={volumehandle} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />)}
                         </div>
