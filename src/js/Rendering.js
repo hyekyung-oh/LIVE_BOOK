@@ -100,11 +100,17 @@ const Render=() => {
                     }
                 };
             }else{
-                setClicks(prevState => ({
-                    ...prevState,
-                    playstate: prevState.playstate + 1,
-                    state: (page)/final_page*100 + (prevState.playstate + 1)/contents.length*(1/final_page*100)
-                }));
+                if(playstate >= contents.length){
+                    if(playstate >= 2){
+                        nextPage();
+                    }
+                }else{
+                    setClicks(prevState => ({
+                        ...prevState,
+                        playstate: prevState.playstate + 1,
+                        state: (page)/final_page*100 + (prevState.playstate + 1)/contents.length*(1/final_page*100)
+                    }));
+                }
             }
         }
     }, [playstate, playing]);
@@ -208,13 +214,13 @@ const Render=() => {
                 ...prevState,
                 page: prevState.page + 1,
                 state: (page)/final_page*100,
-                playstate: 100
+                playstate: 1
             }));
             synthRef.current.cancel();
         } else{
             setClicks(prevState => ({
                 ...prevState,
-                state: 100
+                state: 1
             }));
             alert("마지막 페이지 입니다.")
         }
@@ -228,7 +234,7 @@ const Render=() => {
                 ...prevState,
                 page: prevState.page - 1,
                 state: (page)/final_page*100,
-                playstate: 100
+                playstate: 1
             }));
             synthRef.current.cancel();
         } else{
