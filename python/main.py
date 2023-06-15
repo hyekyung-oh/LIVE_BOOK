@@ -17,23 +17,7 @@ import requests, uuid, json
 global last_insert_id
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-openai.api_key = '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'
-
-# 번역 함수
-# def translate_enTokr(text) :
-#     # 번역기 객체를 생성합니다.
-#     translator = googletrans.Translator()
-#     try :
-#         outStr = translator.translate(text, dest = 'ko', src = 'en')
-#         return outStr
-#     except Exception as ex :
-#         print("\n\n=====================")
-#         print("*********** 에러가 발생했습니다 *********", ex)
-#         print("=====================")
-#         print("1초 후다시 시도합니다...\n\n")
-        
-#         time.sleep(0.5)  # 1초간 쉬기
-#         return translate_enTokr(text)
+openai.api_key = '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'
 
 # 번역 함수
 def translate_enTokr(text) :
