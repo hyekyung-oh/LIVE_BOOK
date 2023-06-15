@@ -17,9 +17,6 @@ import requests, uuid, json
 global last_insert_id
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-<<<<<<< HEAD
-openai.api_key = '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'
-=======
 openai.api_key = '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'
 
 # 번역 함수
@@ -37,7 +34,6 @@ openai.api_key = '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'
         
 #         time.sleep(0.5)  # 1초간 쉬기
 #         return translate_enTokr(text)
->>>>>>> 5a531f95df120243c6076bc39a3ec6597f09e7fe
 
 # 번역 함수
 def translate_enTokr(text) :
@@ -310,13 +306,8 @@ def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
             # 쿼리 실행
             cursor.execute(sql_query, (team3_BooksID, team3_page_number, team3_text, team3_imgPath,team3_textTense))
         
-<<<<<<< HEAD
-        time.sleep(0.5)  #0.5초 
-        print("분위기 추축 결과 : ", team3_textTense)
-=======
         # time.sleep(0.5)  #0.5초 
         print("분위기 추측 결과 : ", team3_textTense)
->>>>>>> 5a531f95df120243c6076bc39a3ec6597f09e7fe
         print("----------------------------")
         print(f"********************* {filename} : {page} 페이지 DB입력 완료 ********************* ")
     
@@ -379,4 +370,3 @@ update_summarize_data = print_summarize(doc, 6, 7)
 
 # 추출한 정보를 입력 후2, 그 행에 요약정보(Info)를 추가함
 Insert_Sql(PDF_FILE_PATH, doc, extractData, update_summarize_data)
-
