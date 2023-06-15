@@ -31,7 +31,7 @@ const Render=() => {
         tense: "", // 책의 분위기
         playbackSpeed: 1.0,
         playVol: 1.0,
-        playstate: 0,
+        playstate: 1,
     });
     
     // 상태값 정의
@@ -104,47 +104,50 @@ const Render=() => {
     // 음악 파일 리스트를 받아온다.
     useEffect(() => {
 
-        // 페이지 이동시 기존 음악 종료
-        if (bgm && audio) {
+        if(audio){
             audio.pause();
+        }
+        let setTense = "";
+        if(tense === "슬픔") {setTense = "sad";} 
+        else if(tense === "고요") {setTense = "slience";}
+        else if(tense === "공포") {setTense = "scary";} 
+        else if(tense === "긴장") {setTense = "nervous";} 
+        else if(tense === "신남") {setTense = "exciting";} 
+        else if(tense === "실패") {setTense = "fail";} 
+        else if(tense === "신비") {setTense = "mystery";} 
+        else if(tense === "행복") {setTense = "happy";}
+        axios
+        .get(`http://localhost:4000/bgm?mood=${setTense}`) // Tense 값을 사용하여 요청
+        .then((response) => {
+
+            const bgmFiles = response.data;
+            let music = "";
+            let Index = Math.floor(Math.random() * bgmFiles.length);
+            music = bgmFiles[Index];
+            music = music.slice(12);
+
+            const newAudio = new Audio(music);
+            newAudio.autoplay = false;
+            newAudio.loop = true;
             setClicks(prevState => ({
                 ...prevState,
-                bgm: false,
+                audio: newAudio,
             }));
-        }
-        if(bgm){
-            let setTense = "";
-            if(tense === "슬픔") {setTense = "sad";} 
-            else if(tense === "고요") {setTense = "slience";}
-            else if(tense === "공포") {setTense = "scary";} 
-            else if(tense === "긴장") {setTense = "nervous";} 
-            else if(tense === "신남") {setTense = "exciting";} 
-            else if(tense === "실패") {setTense = "fail";} 
-            else if(tense === "신비") {setTense = "mystery";} 
-            else if(tense === "행복") {setTense = "happy";}
-            axios
-            .get(`http://localhost:4000/bgm?mood=${setTense}`) // Tense 값을 사용하여 요청
-            .then((response) => {
-
-                const bgmFiles = response.data;
-                let music = "";
-                let Index = Math.floor(Math.random() * bgmFiles.length);
-                music = bgmFiles[Index];
-                music = music.slice(12);
-
-                const newAudio = new Audio(music);
-                newAudio.autoplay = true;
-                newAudio.loop = true;
-                setClicks(prevState => ({
-                    ...prevState,
-                    bgm: true,
-                    audio: newAudio,
-                }));
-            });
-        }
+        });
         
-    }, [tense, page]); // end useEffect()
+    }, [tense]); // end useEffect()
 
+    useEffect(() => {
+        if (bgm) {
+            if(audio){
+                audio.play();
+            }
+        } else {
+          if (audio) {
+            audio.pause();
+          }
+        }
+    }, [audio]);
     // 이벤트 핸들링
     useEffect(() => {
 
@@ -262,21 +265,19 @@ const Render=() => {
     // 소리 아이콘 클릭 시 이벤트 핸들러 함수.
     // bgm 소리를 출력해줌.
     const playBgm = () => {
-        if (bgm && audio) {
-          audio.pause();
-          setClicks(prevState => ({
-            ...prevState,
-            bgm: false,
-        }));
+        if (bgm) {
+            if(audio){
+                audio.pause();
+            }
         } else {
           if (audio) {
             audio.play();
-            setClicks(prevState => ({
-                ...prevState,
-                bgm: true,
-            }));
           }
         }
+        setClicks(prevState => ({
+            ...prevState,
+            bgm: !prevState.bgm,
+        }));
       };
 
     // 나가기 아이콘 클릭시 이벤트 핸들러 함수.
