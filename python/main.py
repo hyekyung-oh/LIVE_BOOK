@@ -12,27 +12,65 @@ import os
 import time
 from tqdm import tqdm
 import subprocess
+import requests, uuid, json
 
 global last_insert_id
 
 # api 키는 push할때 초기화 됨. 동훈한테 문의해서 테스트시 api키를 받으세여
-openai.api_key = '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'
+openai.api_key = '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'
+
+# 번역 함수
+# def translate_enTokr(text) :
+#     # 번역기 객체를 생성합니다.
+#     translator = googletrans.Translator()
+#     try :
+#         outStr = translator.translate(text, dest = 'ko', src = 'en')
+#         return outStr
+#     except Exception as ex :
+#         print("\n\n=====================")
+#         print("*********** 에러가 발생했습니다 *********", ex)
+#         print("=====================")
+#         print("1초 후다시 시도합니다...\n\n")
+        
+#         time.sleep(0.5)  # 1초간 쉬기
+#         return translate_enTokr(text)
 
 # 번역 함수
 def translate_enTokr(text) :
-    # 번역기 객체를 생성합니다.
-    translator = googletrans.Translator()
-    try :
-        outStr = translator.translate(text, dest = 'ko', src = 'en')
-        return outStr
-    except Exception as ex :
-        print("\n\n=====================")
-        print("*********** 에러가 발생했습니다 *********", ex)
-        print("=====================")
-        print("1초 후다시 시도합니다...\n\n")
-        
-        time.sleep(1)  # 1초간 쉬기
-        return translate_enTokr(text)
+    # Add your key and endpoint
+    key = "bdfe8b4d4959402a8279cae4870f1368"
+    endpoint = "https://api.cognitive.microsofttranslator.com"
+
+    # location, also known as region.
+    # required if you're using a multi-service or regional (not global) resource. It can be found in the Azure portal on the Keys and Endpoint page.
+    location = "koreacentral"
+
+    path = '/translate'
+    constructed_url = endpoint + path
+
+    params = {
+        'api-version': '3.0',
+        'from': 'en',
+        'to': ['ko']
+    }
+
+    headers = {
+        'Ocp-Apim-Subscription-Key': key,
+        # location required if you're using a multi-service or regional (not global) resource.
+        'Ocp-Apim-Subscription-Region': location,
+        'Content-type': 'application/json',
+        'X-ClientTraceId': str(uuid.uuid4())
+    }
+
+    # You can pass more than one object in body.
+    body = [{
+        'text': text
+    }]
+
+    request = requests.post(constructed_url, params=params, headers=headers, json=body)
+    response = request.json()
+    translated_text = response[0]['translations'][0]['text']
+    return translated_text
 
 # Extract the team3_BooksTitle, team3_Books_genre, and team3_Books_author from the given text and provide a query statement to insert them into the database 2023_1_pbl3.team3_Books,
 # 책 정보 추출 및 query 생성 함수
@@ -134,7 +172,7 @@ def print_summarize(doc,rangeA, rangeB) :
         tokenized_text += tokenized_page
     #책 요약 정보 text 출력
     summarize_contents = summarize_book_content(tokenized_text)
-    summariz_KR_contents = translate_enTokr(summarize_contents).text
+    summariz_KR_contents = translate_enTokr(summarize_contents)
     print("***책 정보를 요약하겠습니다*** \n------\n" + summariz_KR_contents)
     print("------------")
     
@@ -200,8 +238,8 @@ def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
                 
         except Exception as ex :
             print("다음과 같은 에러가 발생했습니다 : ", ex)
-            print("3초 뒤 다시 시도합니다..")
-            time.sleep(3)
+            print("1초 뒤 다시 시도합니다..")
+            time.sleep(1)
             Insert_Sql(doc ,SQLcontents, update_summarize_data)
             
     
@@ -238,7 +276,7 @@ def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
             # 페이지리스트의 j번째 문장의 공백을 제거한 new_text
             new_text = re.sub(r'\s', ' ', SelectPage_text_list[j])
             # 공백 제거된 문장을 한글로 번역
-            kr_text = translate_enTokr(new_text).text
+            kr_text = translate_enTokr(new_text)
             
             #진행상황 확인 ㅋㅋ..
             # print(kr_text)
@@ -268,8 +306,8 @@ def Insert_Sql(PDF_FILE_PATH, doc ,SQLcontents, update_summarize_data) :
             # 쿼리 실행
             cursor.execute(sql_query, (team3_BooksID, team3_page_number, team3_text, team3_imgPath,team3_textTense))
         
-        time.sleep(0.5)  #0.5초 
-        print("분위기 추축 결과 : ", team3_textTense)
+        # time.sleep(0.5)  #0.5초 
+        print("분위기 추측 결과 : ", team3_textTense)
         print("----------------------------")
         print(f"********************* {filename} : {page} 페이지 DB입력 완료 ********************* ")
     
