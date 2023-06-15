@@ -1,3 +1,4 @@
+// 각 로고들의 위치로부터 가져옴.
 const logos = {
     out: require("../logo/out.jpg"),
     ham: require("../logo/hambuger.jpg"),

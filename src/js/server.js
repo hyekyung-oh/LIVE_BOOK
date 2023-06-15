@@ -4,8 +4,9 @@ const mysql   = require("mysql2");   // npm i mysql2 | yarn add mysql2
 const app     = express();
 const PORT    = 4000; // 포트번호 설정
 const fs = require('fs');
+const { Zoom } = require("@mui/material");
 
-// MySQL 연결
+// MySQL 연결.
 const db = mysql.createPool({
     host:'selab.hknu.ac.kr',
     port:'51714',
@@ -20,14 +21,15 @@ app.use(cors({
     optionsSuccessStatus: 200,  // 응답 상태 200으로 설정
 }))
 
-// post 요청 시 값을 객체로 바꿔줌
+// post 요청 시 값을 객체로 바꿔줌.
 app.use(express.urlencoded({ extended: true })) 
 
-// 서버 연결 시 발생
+// 서버 연결 시 발생함.
 app.listen(PORT, () => {
     console.log(`server running on port ${PORT}`);
 });
 
+// 모든 책 정보에 대해 데이터를 db로 부터 가져옴.
 app.get("/api/book", (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
     
@@ -39,6 +41,7 @@ app.get("/api/book", (req, res) => {
     });
 });
 
+// 한 책에 대한 이미지 주소를 가져옴.
 app.get("/play/:param", (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
     
@@ -54,6 +57,7 @@ app.get("/play/:param", (req, res) => {
     });
 });
 
+// 한 책에 대한 모든 정보를 가져옴.
 app.get("/api/bookinfo/", (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
     
