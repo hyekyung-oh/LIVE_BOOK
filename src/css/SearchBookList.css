@@ -1,6 +1,6 @@
 .card_book {
     display: grid;
     grid-template-columns: repeat(4,1fr);
-    justify-items: start;
-    width: 84vw;
+    justify-items: center;
+    /* width: 80vw; */
 }

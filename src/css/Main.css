@@ -84,17 +84,17 @@
     clear: both;
     width: auto;
     height: auto;
-    /* display: flex;
-    justify-content: ;
-    align-items: center; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 40px;
 }
 .input_searchListBox{
     /* border: 2px solid cadetblue; */
     width: auto;
     height: auto;
-    /* display: flex;
+    display: flex;
     justify-content: center;
-    align-items: center; */
+    align-items: center;
     /* padding-top: 7vh; */
 }
