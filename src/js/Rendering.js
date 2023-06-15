@@ -367,7 +367,7 @@ const Render=() => {
                             {/* 한 페이지 다음으로 넘기기 */}
                             <FastForwardRoundedIcon id={"forward"} onClick={nextPage} sx={{fontSize: 70, color: "white", cursor: "pointer"}} />
                             
-                            {/* 배속 조절 */}
+                            {/* 속도 조절 Icon */}
                             <SlowMotionVideoRoundedIcon id={"speed"} onClick={speedhandle} sx={{marginLeft: "1.5vw", marginRight: "0.5vw", fontSize: 65, color: "white", cursor: "pointer"}} />
                                 
                             {/* bgm 조절 */}
@@ -375,22 +375,21 @@ const Render=() => {
                             : 
                             <MusicOffRoundedIcon id={"bgm"} onClick={playBgm} sx={{marginLeft: "1.5vw", fontSize: 65, color: "white", cursor: "pointer"}} />}
 
-                            {/* tts 볼륨 조절 */}
-                            <VolumeUpRoundedIcon id={"volume"} onClick={volumehandle}  sx={{fontSize: 65, color: "white", cursor: "pointer"}} /> 
-                            {/* {volumeclick ? <VolumeUpRoundedIcon id={"volume"} onClick={volumehandle} sx={{fontSize: 65, color: "white", cursor: "pointer"}} /> 
-                            : 
-                            <VolumeOffRoundedIcon id={"volume"} onClick={volumehandle} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />} */}
+                            {/* tts 볼륨 조절 Icon */}
+                            {playVol === '0' ? (<VolumeOffRoundedIcon id={"volume"} onClick={volumehandle} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />
+                            ) : ( 
+                                <VolumeUpRoundedIcon id={"volume"} onClick={volumehandle} sx={{fontSize: 65, color: "white", cursor: "pointer"}} />)}
                         </div>
                     </div>
                     {/* tts 음량 조절 */}
                     <div className={volumeclick ? "" : ( hamclick ? "control_volume_Click" : "control_volume")} style={{display: "flex", flexDirection: "row"}} >
                         <input className={volumeclick ? "note" : ( hamclick ? "" : "")}
-                            type="range" min="0" max="1" step="0.01" value={playVol} onChange={handleVolumeChange} style={{appearance: "slider-vertical", width: "50px"}}/>
+                            type="range" min="0" max="1" step="0.01" value={playVol} onChange={handleVolumeChange} style={{appearance: "slider-vertical", width: "50px", accentColor: "white"}}/>
                     </div> 
                     {/* tts 속도 조절 */}
                     <div className={speedclick ? "" : ( hamclick ? "control_speed_Click" : "control_speed")} style={{display: "flex", flexDirection: "row"}} >
                         <input className={speedclick ? "note" : ( hamclick ? "" : "")}
-                            type="range" min="0.2" max="2" step="0.1" value={playbackSpeed} onChange={handlePlaybackSpeedChange} style={{appearance: "slider-vertical", width: "55px"}}/>
+                            type="range" min="0.2" max="2" step="0.1" value={playbackSpeed} onChange={handlePlaybackSpeedChange} style={{appearance: "slider-vertical", width: "55px", accentColor: "white"}}/>
                     </div>
                     <div className={playBgm ? "" :( hamclick ? "control_volume_Click" : "control_volume")} ></div> 
                 </div>
