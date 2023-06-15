@@ -26,7 +26,7 @@ const Render=() => {
         page: 1, // 첫 페이지
         img_path: "", // 이미지 주소
         final_page:1, // 마지막 페이지
-        state:1, // 책에대한 진행률
+        state:0, // 책에대한 진행률
         bgm: false, // bgm 재생 여부
         audio: null, // bgm 소리
         tense: "", // 책의 분위기
@@ -37,10 +37,11 @@ const Render=() => {
          opacity, delay, playing, contents, page, 
          img_path,final_page,state, tense, bgm, audio } = clicks;
     
+    // tts 기능
     //서버로부터 json파일을 불러옴
     useEffect(() => {
         axios
-            .get(`http://localhost:4000/play/${BookID}`)
+            .get(`http://localhost:4000/play?id=${BookID}`)
             .then((response) => {
                 const Tense = response.data[page-1]["team3_textTense"];
                 const text = response.data[page - 1]["team3_text"];
@@ -72,6 +73,7 @@ const Render=() => {
             });
     }, [page]); // end useEffect()
 
+    // bgm 기능
     // 음악 파일 리스트를 받아온다.
     useEffect(() => {
 
@@ -92,9 +94,9 @@ const Render=() => {
         else if(tense === "신남") {setTense = "exciting";} 
         else if(tense === "실패") {setTense = "fail";} 
         else if(tense === "신비") {setTense = "mystery";} 
-        else if(tense === "행복") { setTense = "happy";}
+        else if(tense === "행복") {setTense = "happy";}
         axios
-        .get(`http://localhost:4000/bgm/${setTense}`) // Tense 값을 사용하여 요청
+        .get(`http://localhost:4000/bgm?mood=${setTense}`) // Tense 값을 사용하여 요청
         .then((response) => {
 
             const bgmFiles = response.data;
@@ -163,10 +165,14 @@ const Render=() => {
             setClicks(prevState => ({
                 ...prevState,
                 page: prevState.page + 1,
-                state: (page+1)/final_page*100
+                state: (page)/final_page*100
             }));
             synthRef.current.cancel();
         } else{
+            setClicks(prevState => ({
+                ...prevState,
+                state: 100
+            }));
             alert("마지막 페이지 입니다.")
         }
     };
