@@ -29,7 +29,7 @@ const Modal = (props) => {
                 <div style={{width: "100%", paddingTop: "15px"}}>
                     <Link to={`/Render?id=${id}`} style={{ textDecoration: "none" }}>
                         <Button variant="contained" aria-label="play" size="large" color="primary"
-                                sx={{fontFamily: "'Noto Sans KR', sans-serif", fontSize: 28}}>재생하기
+                                sx={{fontFamily: 'NanumBarunGothic', fontSize: 26}}>재생하기
                             <PlayCircleOutlineIcon sx={{fontSize: 55, display: "flex", alignItems: "center", color: "white"}} />
                         </Button>
                     </Link>

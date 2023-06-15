@@ -12,8 +12,8 @@
 #logo_livebook{
     /*border: 2px solid palegreen;*/
     margin-top: 18vh;
-    width: 500px;
-    height: 130px;
+    width: 640px;
+    height: 160px;
 }
 @media screen and (max-width: 540px) {
     #logo_livebook{
@@ -40,6 +40,8 @@
 
 /** changing css */
 .input_main{
+    margin:0;
+    padding:0;
     width: 100vw;
     height: 100vh;
     opacity: 0.9;
@@ -60,21 +62,21 @@
     margin-left: 150px;
 }
 #input_logo_livebook{
-    width: 190px;
-    height: 50px;
+    width: 220px;
+    height: 65px;
     cursor: pointer;
 }
 .input_search{
     /* border: 2px solid khaki; */
     float: left;
-    width: auto;
-    height: auto;
+    /* width: auto; */
+    /* height: auto; */
     margin-left: 70px;
 }
 .input_searchValue{
     /* border: 2px solid indianred; */
-    width: auto;
-    height: auto;
+    /* width: auto; */
+    /* height: auto; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,8 +84,8 @@
 }
 .input_down_box {
     clear: both;
-    width: auto;
-    height: auto;
+    /* width: auto; */
+    /* height: auto; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -91,8 +93,8 @@
 }
 .input_searchListBox{
     /* border: 2px solid cadetblue; */
-    width: auto;
-    height: auto;
+    /* width: auto; */
+    /* height: auto; */
     display: flex;
     justify-content: center;
     align-items: center;
