@@ -47,14 +47,12 @@
     margin-left: 70vw;
 }
 #text{
-    /*border: 2px solid palevioletred;*/
     position: absolute;
     width: 24vw;
     height: 50vh;
 }
 /*  <------ 하단 컨트롤 바 div 태그 ------->  */
 .divbox{
-    /*border: 2px solid greenyellow;*/
     position: absolute;
     margin-top: 87vh;
     
@@ -69,16 +67,11 @@
     position: fixed;
     top: 2vh;
     left: 2vh;
-    /* width: 4vw;
-    height: 8vh; */
     opacity: 0.7;
-    /* filter: invert(100%); */
     margin-top: 1vh;
 }
 #outed{
     position: absolute;
-    /* width: 4vw;
-    height: 8vh; */
     opacity: 0.2;
     margin-top: 1vh;
 }
@@ -103,9 +96,7 @@
 }
 /*  <------ 이미지 출력 화면 태그 ------->  */
 #main {
-    /* border: 3px solid black; */
     position: absolute;
-    /*border: 2px solid orange;*/
     width: 100%;
     height: 96vh;
     background-size: 100% 100%;
@@ -116,18 +107,15 @@
 /*  <------ 진행률 바 태그 ------->  */
 .playbarBox{
     position: relative;
-    /* border: 2px solid blue; */
     width: 98vw;
     height: 2vh;
 }
 #playbar_UnClick{
     width: 98vw;
-    /* border: 2px solid blue; */
     height: 2vh;
     background-color: #ececec;
 }
 #playbar_Click{
-    /* border: 2px solid blue; */
     height: 2vh;
     width: 70vw;
 }
@@ -139,7 +127,6 @@
 #settingbar_UnClick {
     display: table-cell; /* 테이블 속성으로 사용하게 만들어줌 */
     position: relative;
-    /*border: 2px solid red;*/
     width: 98vw;
     height: 6vh;
     table-layout: fixed; /* 고정된 영역 이상으로 넓어지지 않도록 테이블을 고정하는 속성 */
@@ -150,7 +137,6 @@
 #settingbar_Click{
     display: table-cell; /* 테이블 속성으로 사용하게 만들어줌 */
     position: relative;
-    /*border: 2px solid red;*/
     width: 70vw;
     height: 6vh;
     table-layout: fixed; /* 고정된 영역 이상으로 넓어지지 않도록 테이블을 고정하는 속성 */
@@ -162,14 +148,12 @@
 #settingbar_Click > div { /* 아이콘 묶음 태그 */
     display: inline; /* 태그들을 나란히 정렬 */
     height: 100%;
-    /*background: aliceblue; /* 간격과 영역을 보여주기 위한 속성 */
 }
 #settingbar_UnClick > div > input,
 #settingbar_Click > div > input { /* 각 아이콘 모양 */
     height: 100%;
     padding: 0 1.5vw;
     filter: invert(90%);
-
 }
 
 /*  <------ bgm 음량 아이콘 태그 ------->  */
@@ -207,9 +191,9 @@
   
     /* 음량조절 창 디자인 */
     background-color: gray;
-    opacity: 0.7;
-    border: 2px solid black;
-    border-radius: 1px;
+    opacity: 0.8;
+    /* border: 2px solid black; */
+    border-radius: 5px;
 } 
 .control_volume_Click { /*  음량조절 이벤트 창  */
     /* 음량조절 창 크기 */
@@ -229,9 +213,9 @@
   
     /* 음량조절 창 디자인 */
     background-color: gray;
-    opacity: 0.7;
-    border: 2px solid black;
-    border-radius: 1px;
+    opacity: 0.8;
+    /* border: 2px solid black; */
+    border-radius: 5px;
 } 
 
 /*  <------ 재생속도 아이콘 태그 ------->  */
@@ -258,9 +242,9 @@
   
     /* 재생속도 창 디자인 */
     background-color: gray;
-    opacity: 0.7;
-    border: 2px solid black;
-    border-radius: 1px;
+    opacity: 0.8;
+    /* border: 2px solid black; */
+    border-radius: 5px;
 }
 .control_speed_Click { /*  재생속도 이벤트 창  */
     /* 재생속도 창 크기 */
@@ -278,9 +262,9 @@
   
     /* 재생속도 창 디자인 */
     background-color: gray;
-    opacity: 0.7;
-    border: 2px solid black;
-    border-radius: 1px;
+    opacity: 0.8;
+    /* border: 2px solid black; */
+    border-radius: 5px;
 }
 .note{
     display: none;
