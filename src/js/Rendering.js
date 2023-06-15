@@ -41,13 +41,14 @@ const Render=() => {
         tense: "", // 책의 분위기
         playbackSpeed: 1.0,
         playVol: 1.0,
+        playstate: 0,
     });
     
     // 상태값 정의
     const { speedclick, hamclick, isMouseMoving,
          opacity, delay, playing, contents, page, 
          img_path,final_page,state, tense, bgm, audio
-         , playbackSpeed , playVol } = clicks;
+         , playbackSpeed , playVol, playstate } = clicks;
     
     // tts 기능                                                     
     //서버로부터 json파일을 불러옴
@@ -63,7 +64,6 @@ const Render=() => {
                                         .split("\n"); // 개행 문자를 기준으로 텍스트를 자름
                 setClicks(prevState => ({
                     ...prevState,
-                    
                     contents: slicedText,
                     img_path: "temp/"+response.data[page-1]["team3_imgPath"]
                     .split("temp/")[1].split("/")[0]+"/"+response.data[page-1]["team3_imgPath"]
@@ -72,18 +72,8 @@ const Render=() => {
                     final_page: response.data[response.data.length-1]["team3_page_number"] - response.data[0]["team3_page_number"] +1,
                     state: page/final_page*100,
                     tense: Tense,
+                    playstate: 0,
                 }));
-                if (playing) {
-                    // 말하기 시작
-                    synthRef.current.cancel();
-                    const utterance = new SpeechSynthesisUtterance(slicedText); 
-                    utterance.volume = playVol;
-                    utterance.rate = playbackSpeed;
-                    synthRef.current.speak(utterance);
-                    utterance.onend = function (event) {
-                        nextPage();
-                    };
-                }
             });
     }, [page]); // end useEffect()
 
@@ -98,6 +88,28 @@ const Render=() => {
         // volume 또는 playbackSpeed 상태가 변경될 때마다 호출됨
     }, [playVol, playbackSpeed]);
 
+    useEffect(() => {
+        if (playing) {
+            // 말하기 시작
+            synthRef.current.cancel();
+            const utterance = new SpeechSynthesisUtterance(contents[playstate]); 
+            utterance.volume = playVol;
+            utterance.rate = playbackSpeed;
+            synthRef.current.speak(utterance);
+            utterance.onend = function (event) {
+                if(playstate === contents.length){
+                    nextPage();
+                }else{
+                    setClicks(prevState => ({
+                        ...prevState,
+                        playstate: prevState.playstate + 1,
+                        state: (page)/final_page*100 + (prevState.playstate + 1)/contents.length*(1/final_page*100)
+                    }));
+                }
+            };
+        }
+    }, [playstate, playing]);
+
     // bgm 기능
     // 음악 파일 리스트를 받아온다.
     useEffect(() => {
@@ -109,36 +121,38 @@ const Render=() => {
                 ...prevState,
                 bgm: false,
             }));
-          }
+        }
+        if(bgm){
+            let setTense = "";
+            if(tense === "슬픔") {setTense = "sad";} 
+            else if(tense === "고요") {setTense = "slience";}
+            else if(tense === "공포") {setTense = "scary";} 
+            else if(tense === "긴장") {setTense = "nervous";} 
+            else if(tense === "신남") {setTense = "exciting";} 
+            else if(tense === "실패") {setTense = "fail";} 
+            else if(tense === "신비") {setTense = "mystery";} 
+            else if(tense === "행복") {setTense = "happy";}
+            axios
+            .get(`http://localhost:4000/bgm?mood=${setTense}`) // Tense 값을 사용하여 요청
+            .then((response) => {
 
-        let setTense = "";
-        if(tense === "슬픔") {setTense = "sad";} 
-        else if(tense === "고요") {setTense = "slience";}
-        else if(tense === "공포") {setTense = "scary";} 
-        else if(tense === "긴장") {setTense = "nervous";} 
-        else if(tense === "신남") {setTense = "exciting";} 
-        else if(tense === "실패") {setTense = "fail";} 
-        else if(tense === "신비") {setTense = "mystery";} 
-        else if(tense === "행복") {setTense = "happy";}
-        axios
-        .get(`http://localhost:4000/bgm?mood=${setTense}`) // Tense 값을 사용하여 요청
-        .then((response) => {
+                const bgmFiles = response.data;
+                let music = "";
+                let Index = Math.floor(Math.random() * bgmFiles.length);
+                music = bgmFiles[Index];
+                music = music.slice(12);
 
-            const bgmFiles = response.data;
-            let music = "";
-            let Index = Math.floor(Math.random() * bgmFiles.length);
-            music = bgmFiles[Index];
-            music = music.slice(12);
-
-            const newAudio = new Audio(music);
-            newAudio.autoplay = true;
-            newAudio.loop = true;
-            setClicks(prevState => ({
-                ...prevState,
-                bgm: true,
-                audio: newAudio,
-            }));
-        });
+                const newAudio = new Audio(music);
+                newAudio.autoplay = true;
+                newAudio.loop = true;
+                setClicks(prevState => ({
+                    ...prevState,
+                    bgm: true,
+                    audio: newAudio,
+                }));
+            });
+        }
+        
     }, [tense, page]); // end useEffect()
 
     // 이벤트 핸들링
@@ -190,7 +204,8 @@ const Render=() => {
             setClicks(prevState => ({
                 ...prevState,
                 page: prevState.page + 1,
-                state: (page)/final_page*100
+                state: (page)/final_page*100,
+                playstate: 100
             }));
             synthRef.current.cancel();
         } else{
@@ -209,7 +224,8 @@ const Render=() => {
             setClicks(prevState => ({
                 ...prevState,
                 page: prevState.page - 1,
-                state: (page)/final_page*100
+                state: (page)/final_page*100,
+                playstate: 100
             }));
             synthRef.current.cancel();
         } else{
@@ -244,16 +260,7 @@ const Render=() => {
     // tts를 통해 책 내용을 들려줌.
     // 재생과 중지 기능이 있다.
     const playClick = () => {
-        if(!playing){
-            synthRef.current.cancel();
-            const utterance = new SpeechSynthesisUtterance(contents);
-            utterance.volume = playVol;
-            utterance.rate = playbackSpeed;
-            synthRef.current.speak(utterance);
-            utterance.onend = function(event) {
-                nextPage();
-            };
-        }else{
+        if(playing){
             synthRef.current.cancel();
         }
         setClicks(prevState => ({
