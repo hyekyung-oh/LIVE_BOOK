@@ -326,7 +326,7 @@ const Render=() => {
             <div className={hamclick ? "div_right_Click" : "" }>
                  {/* 본문 내용 출력부 */}
                  <div id={hamclick ? "contents" : ""} style={{ opacity: hamclick ? 1 : 0 }}>
-                    <div id={"contents_text"} style={{ overflow: "auto" }}>
+                    <div id={"contents_text"} style={{ overflow: "auto", fontFamily: 'NanumBarunGothic'}}>
                     {/* 배열로 된 텍스트를 맵 함수를 사용하여 출력 */}
                     {contents.map((text, index) => (
                             <span key={index}>{text}<br /></span>
