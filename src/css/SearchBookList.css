@@ -1,6 +1,7 @@
 .card_book {
     display: grid;
+    gap: 50px 70px;
     grid-template-columns: repeat(4,1fr);
     justify-items: center;
-    /* width: 80vw; */
+    align-items: center;
 }

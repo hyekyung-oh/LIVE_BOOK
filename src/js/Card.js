@@ -19,7 +19,7 @@ const MediaCard = memo(({ id,title, author, genre, thumnail }) => {
           src={thumnail.slice(10,)}
           title="sin"
       />
-      <CardContent sx={{height:"44px"}}>
+      <CardContent sx={{height:"43px"}}>
         <Typography gutterBottom variant="h6" component="div" fontSize={"18px"}  style={{fontFamily : 'Noto Sans, Noto Sans KR', fontWeight: "800"}}>
           {title}
         </Typography>
