@@ -5,43 +5,35 @@
     opacity: 0.9;
 }
 .logo{
-    /* border: 2px solid greenyellow; */
     width: auto;
     height: auto;
 }
 #logo_livebook{
-    /*border: 2px solid palegreen;*/
     margin-top: 18vh;
     width: 640px;
     height: 160px;
 }
 @media screen and (max-width: 540px) {
     #logo_livebook{
-        /*border: 2px solid palegreen;*/
         margin-top: 18vh;
         width: 250px;
         height: 60px;
     }
 }
 .search{
-    /*border: 2px solid blueviolet;*/
     width: auto;
     height: 8vh;
     z-index: 3;
     display: flex;
     justify-content: center;
-    /* align-items: center; */
 }
 
 .alpha{
     opacity: 0%;
 }
 
-
 /** changing css */
 .input_main{
-    margin:0;
-    padding:0;
     width: 100vw;
     height: 100vh;
     opacity: 0.9;
@@ -67,16 +59,14 @@
     cursor: pointer;
 }
 .input_search{
-    /* border: 2px solid khaki; */
     float: left;
-    /* width: auto; */
-    /* height: auto; */
+    width: auto;
+    height: auto;
     margin-left: 70px;
 }
 .input_searchValue{
-    /* border: 2px solid indianred; */
-    /* width: auto; */
-    /* height: auto; */
+    width: auto;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -84,19 +74,17 @@
 }
 .input_down_box {
     clear: both;
-    /* width: auto; */
-    /* height: auto; */
+    width: auto;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 40px;
 }
 .input_searchListBox{
-    /* border: 2px solid cadetblue; */
-    /* width: auto; */
-    /* height: auto; */
+    width: auto;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* padding-top: 7vh; */
 }
